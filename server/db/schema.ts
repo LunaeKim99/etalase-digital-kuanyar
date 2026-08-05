@@ -1,11 +1,60 @@
 import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core'
 
-export const etalase = sqliteTable('etalase', {
+export const users = sqliteTable('users', {
   id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  title: text('title').notNull(),
+  name: text('name').notNull(),
+  email: text('email').unique().notNull(),
+  passwordHash: text('password_hash').notNull(),
+  role: text('role').notNull().default('umkm_owner'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const umkm = sqliteTable('umkm', {
+  id: integer('id').primaryKey(),
+  ownerId: integer('owner_id').references(() => users.id).notNull(),
+  name: text('name').notNull(),
   description: text('description'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().defaultNow(),
+  address: text('address'),
+  whatsapp: text('whatsapp'),
+  logo: text('logo'),
+  status: text('status').notNull().default('pending'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const products = sqliteTable('products', {
+  id: integer('id').primaryKey(),
+  umkmId: integer('umkm_id').references(() => umkm.id).notNull(),
+  name: text('name').notNull(),
+  description: text('description'),
+  price: integer('price').notNull(),
+  image: text('image'),
+  stock: integer('stock').notNull().default(0),
+  status: text('status').notNull().default('active'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const posts = sqliteTable('posts', {
+  id: integer('id').primaryKey(),
+  title: text('title').notNull(),
+  slug: text('slug').unique().notNull(),
+  content: text('content').notNull(),
+  category: text('category').notNull(),
+  publishedAt: text('published_at'),
+  authorId: integer('author_id').references(() => users.id).notNull(),
+  coverImage: text('cover_image'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const postImages = sqliteTable('post_images', {
+  id: integer('id').primaryKey(),
+  postId: integer('post_id').references(() => posts.id).notNull(),
+  imageUrl: text('image_url').notNull(),
+  caption: text('caption'),
+  sortOrder: integer('sort_order').notNull().default(0),
 })
 
 export const categories = sqliteTable('categories', {
@@ -14,113 +63,18 @@ export const categories = sqliteTable('categories', {
   slug: text('slug').unique().notNull(),
 })
 
-export const umkms = sqliteTable('umkms', {
+export const villageProfile = sqliteTable('village_profile', {
   id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
-  owner: text('owner').notNull(),
-  category: text('category').notNull(),
-  phone: text('phone'),
-  description: text('description'),
-  address: text('address'),
-  image: text('image'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const products = sqliteTable('products', {
-  id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
-  umkmId: integer('umkm_id').notNull(),
-  category: text('category').notNull(),
-  price: integer('price').notNull(),
-  unit: text('unit').notNull(),
-  stock: integer('stock').notNull().default(0),
-  description: text('description'),
-  image: text('image'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const tourism = sqliteTable('tourism', {
-  id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
-  category: text('category').notNull(),
-  location: text('location').notNull(),
-  lat: real('lat').notNull(),
-  lng: real('lng').notNull(),
-  description: text('description'),
-  address: text('address'),
-  phone: text('phone'),
-  image: text('image'),
-  gallery: text('gallery'),
+  name: text('name').notNull().default('Desa Kuanyar'),
+  overview: text('overview'),
+  history: text('history'),
+  vision: text('vision'),
+  mission: text('mission'),
+  demographics: text('demographics'),
   facilities: text('facilities'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const cultures = sqliteTable('cultures', {
-  id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
-  category: text('category').notNull(),
-  description: text('description'),
-  image: text('image'),
-  schedule: text('schedule'),
-  location: text('location'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const events = sqliteTable('events', {
-  id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  name: text('name').notNull(),
-  date: text('date').notNull(),
-  endDate: text('end_date'),
-  location: text('location').notNull(),
-  description: text('description'),
-  image: text('image'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const gallery = sqliteTable('gallery', {
-  id: integer('id').primaryKey(),
-  type: text('type').notNull(),
-  title: text('title').notNull(),
-  category: text('category').notNull(),
-  image: text('image').notNull(),
-  videoUrl: text('video_url'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const articles = sqliteTable('articles', {
-  id: integer('id').primaryKey(),
-  slug: text('slug').unique().notNull(),
-  title: text('title').notNull(),
-  category: text('category').notNull(),
-  author: text('author').notNull(),
-  date: text('date').notNull(),
-  cover: text('cover').notNull(),
-  excerpt: text('excerpt'),
-  content: text('content'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const admins = sqliteTable('admins', {
-  id: integer('id').primaryKey(),
-  username: text('username').unique().notNull(),
-  passwordHash: text('password_hash').notNull(),
-  name: text('name').notNull(),
-  role: text('role').notNull().default('admin'),
-  createdAt: text('created_at').notNull(),
-})
-
-export const produk = sqliteTable('produk', {
-  id: integer('id').primaryKey(),
-  etalaseId: integer('etalase_id')
-    .references(() => etalase.id)
-    .notNull(),
-  name: text('name').notNull(),
-  price: integer('price').notNull(),
-  stock: integer('stock').notNull().default(0),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().defaultNow(),
+  adminInfo: text('admin_info'),
+  contactInfo: text('contact_info'),
+  lat: real('lat'),
+  lng: real('lng'),
+  updatedAt: text('updated_at').notNull(),
 })

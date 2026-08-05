@@ -1,26 +1,28 @@
 import { Link } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 import { Container } from '@/components/ui/container'
+import { Button } from '@/components/ui/button'
+import { Typography, Text } from '@/components/ui/typography'
+import { Home } from 'lucide-react'
 
-function NotFound() {
+export default function NotFound() {
   return (
-    <section className="py-28 md:py-36">
+    <div className="min-h-screen flex items-center justify-center bg-surface py-16">
       <Container>
-        <div className="flex flex-col items-center text-center">
-          <p className="text-6xl md:text-8xl font-bold text-primary">404</p>
-          <h1 className="mt-6 text-2xl md:text-3xl font-bold text-text">
+        <div className="text-center max-w-2xl mx-auto">
+          <div className="text-9xl font-bold text-primary/20 leading-none mb-4">404</div>
+          <Typography variant="h1" className="mb-4">
             Halaman Tidak Ditemukan
-          </h1>
-          <p className="mt-3 max-w-md text-text-muted">
-            Halaman yang Anda cari tidak ada atau telah dipindahkan.
-          </p>
-          <Button asChild variant="primary" className="mt-8">
-            <Link to="/">Kembali ke Beranda</Link>
+          </Typography>
+          <Text className="text-text-muted mb-8 text-lg">
+            Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.
+          </Text>
+          <Button asChild size="lg">
+            <Link to="/">
+              <Home className="w-4 h-4 mr-2" /> Kembali ke Beranda
+            </Link>
           </Button>
         </div>
       </Container>
-    </section>
+    </div>
   )
 }
-
-export default NotFound

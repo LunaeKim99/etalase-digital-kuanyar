@@ -1,17 +1,7 @@
 import { db } from './client'
-import {
-  categories,
-  umkms,
-  products,
-  tourism,
-  cultures,
-  events,
-  gallery,
-  articles,
-  admins,
-} from './schema'
-import * as mockData from '../data/mockData'
+import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema'
 import { hashPassword } from '../middleware/password'
+import * as mockData from '../data/mockData'
 
 function kebabCase(s: string): string {
   return s.toLowerCase().replace(/\s+/g, '-')
@@ -20,154 +10,123 @@ function kebabCase(s: string): string {
 async function seed() {
   console.log('Seeding database...')
 
-  // Truncate all tables (reverse FK order)
+  await db.delete(postImages)
+  await db.delete(posts)
   await db.delete(products)
-  await db.delete(umkms)
-  await db.delete(tourism)
-  await db.delete(cultures)
-  await db.delete(events)
-  await db.delete(gallery)
-  await db.delete(articles)
-  await db.delete(categories)
-  await db.delete(admins)
+  await db.delete(umkm)
+  await db.delete(categoriesTbl)
+  await db.delete(villageProfile)
+  await db.delete(users)
 
   const now = new Date().toISOString()
 
-  // Collect unique categories from all data sources (dedup by slug)
-  const seenSlugs = new Map<string, string>()
-  function addCategory(name: string) {
-    const slug = kebabCase(name)
-    if (!seenSlugs.has(slug)) seenSlugs.set(slug, name)
-  }
-  mockData.categories.forEach((c) => addCategory(c))
-  mockData.tourism.forEach((t) => addCategory(t.category))
-  mockData.cultures.forEach((c) => addCategory(c.category))
-  mockData.galleryItems.forEach((g) => addCategory(g.category))
-  mockData.articles.forEach((a) => addCategory(a.category))
+  await db.insert(users).values({
+    name: 'Administrator',
+    email: 'admin@kuanyar.desa.id',
+    passwordHash: hashPassword('admin123'),
+    role: 'admin',
+    createdAt: now,
+    updatedAt: now,
+  })
 
-  const categoryRows = Array.from(seenSlugs.entries()).map(([slug, name]) => ({
-    name,
-    slug,
-  }))
-  await db.insert(categories).values(categoryRows)
+  const userRows = [
+    { id: 2, name: 'Sutrisno', email: 'sutrisno@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 3, name: 'Wijaya', email: 'wijaya@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 4, name: 'Rini', email: 'rini@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 5, name: 'Sari', email: 'sari@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 6, name: 'Budi', email: 'budi@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 7, name: 'Maya', email: 'maya@kuanyar.desa.id', role: 'umkm_owner' as const },
+  ]
+
+  for (const u of userRows) {
+    await db.insert(users).values({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      passwordHash: hashPassword('owner123'),
+      role: u.role,
+      createdAt: now,
+      updatedAt: now,
+    })
+  }
+
+  const categoryRows = mockData.categories.map((c) => ({ name: c, slug: kebabCase(c) }))
+  await db.insert(categoriesTbl).values(categoryRows)
 
   const umkmRows = mockData.umkms.map((u) => ({
     id: u.id,
-    slug: u.slug,
+    ownerId: u.ownerId,
     name: u.name,
-    owner: u.owner,
-    category: u.category,
-    phone: u.phone ?? null,
-    description: u.description ?? null,
-    address: u.address ?? null,
-    image: u.image ?? null,
+    description: u.description,
+    address: u.address,
+    whatsapp: u.whatsapp,
+    logo: u.logo,
+    status: u.status as 'pending' | 'approved' | 'rejected',
     createdAt: now,
+    updatedAt: now,
   }))
-  await db.insert(umkms).values(umkmRows)
+  await db.insert(umkm).values(umkmRows)
 
   const productRows = mockData.products.map((p) => ({
     id: p.id,
-    slug: p.slug,
-    name: p.name,
     umkmId: p.umkmId,
-    category: p.category,
+    name: p.name,
+    description: p.description,
     price: p.price,
-    unit: p.unit,
+    image: p.image,
     stock: p.stock,
-    description: p.description ?? null,
-    image: p.image ?? null,
+    status: p.status as 'active' | 'draft' | 'inactive',
     createdAt: now,
+    updatedAt: now,
   }))
   await db.insert(products).values(productRows)
 
-  const tourismRows = mockData.tourism.map((t) => ({
-    id: t.id,
-    slug: t.slug,
-    name: t.name,
-    category: t.category,
-    location: t.location,
-    lat: t.lat,
-    lng: t.lng,
-    description: t.description ?? null,
-    address: t.address ?? null,
-    phone: t.phone ?? null,
-    image: t.image ?? null,
-    gallery: JSON.stringify(t.gallery ?? []),
-    facilities: JSON.stringify(t.facilities ?? []),
-    createdAt: now,
-  }))
-  await db.insert(tourism).values(tourismRows)
+  for (const post of mockData.posts) {
+    await db.insert(posts).values({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      content: post.content,
+      category: post.category,
+      publishedAt: post.publishedAt,
+      authorId: post.authorId,
+      coverImage: post.coverImage,
+      createdAt: now,
+      updatedAt: now,
+    })
+    for (const img of post.images) {
+      await db.insert(postImages).values({
+        postId: post.id,
+        imageUrl: img.imageUrl,
+        caption: img.caption ?? null,
+        sortOrder: img.sortOrder ?? 0,
+      })
+    }
+  }
 
-  const cultureRows = mockData.cultures.map((c) => ({
-    id: c.id,
-    slug: c.slug,
-    name: c.name,
-    category: c.category,
-    description: c.description ?? null,
-    image: c.image ?? null,
-    schedule: c.schedule ?? null,
-    location: c.location ?? null,
-    createdAt: now,
-  }))
-  await db.insert(cultures).values(cultureRows)
-
-  const eventRows = mockData.events.map((e) => ({
-    id: e.id,
-    slug: e.slug,
-    name: e.name,
-    date: e.date,
-    endDate: e.endDate ?? null,
-    location: e.location,
-    description: e.description ?? null,
-    image: e.image ?? null,
-    createdAt: now,
-  }))
-  await db.insert(events).values(eventRows)
-
-  const galleryRows = mockData.galleryItems.map((g) => ({
-    id: g.id,
-    type: g.type,
-    title: g.title,
-    category: g.category,
-    image: g.image,
-    videoUrl: g.videoUrl ?? null,
-    createdAt: g.createdAt,
-  }))
-  await db.insert(gallery).values(galleryRows)
-
-  const articleRows = mockData.articles.map((a) => ({
-    id: a.id,
-    slug: a.slug,
-    title: a.title,
-    category: a.category,
-    author: a.author,
-    date: a.date,
-    cover: a.cover,
-    excerpt: a.excerpt ?? null,
-    content: a.content ?? null,
-    createdAt: a.createdAt,
-  }))
-  await db.insert(articles).values(articleRows)
-
-  await db.insert(admins).values({
-    id: 1,
-    username: 'admin',
-    passwordHash: hashPassword('admin123'),
-    name: 'Administrator',
-    role: 'admin',
-    createdAt: now,
+  await db.insert(villageProfile).values({
+    id: mockData.villageProfile.id,
+    name: mockData.villageProfile.name,
+    overview: mockData.villageProfile.overview,
+    history: mockData.villageProfile.history,
+    vision: mockData.villageProfile.vision,
+    mission: mockData.villageProfile.mission,
+    demographics: mockData.villageProfile.demographics,
+    facilities: mockData.villageProfile.facilities,
+    adminInfo: mockData.villageProfile.adminInfo,
+    contactInfo: mockData.villageProfile.contactInfo,
+    lat: mockData.villageProfile.lat,
+    lng: mockData.villageProfile.lng,
+    updatedAt: now,
   })
 
   console.log('Seed completed:')
+  console.log(`  users: ${1 + userRows.length} rows`)
   console.log(`  categories: ${categoryRows.length} rows`)
-  console.log(`  umkms: ${umkmRows.length} rows`)
+  console.log(`  umkm: ${umkmRows.length} rows`)
   console.log(`  products: ${productRows.length} rows`)
-  console.log(`  tourism: ${tourismRows.length} rows`)
-  console.log(`  cultures: ${cultureRows.length} rows`)
-  console.log(`  events: ${eventRows.length} rows`)
-  console.log(`  gallery: ${galleryRows.length} rows`)
-  console.log(`  articles: ${articleRows.length} rows`)
-  console.log('  admins: 1 row')
+  console.log(`  posts: ${mockData.posts.length} rows`)
+  console.log('  village_profile: 1 row')
 }
 
 if (import.meta.main) {

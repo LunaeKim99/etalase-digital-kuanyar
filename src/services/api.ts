@@ -1,5 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import type { ListResponse, ItemResponse, Umkm, Product, Tourism, Culture, Event, GalleryItem, GalleryCategory, Article, ArticleCategory } from '@/types/catalog'
+import type {
+  ListResponse,
+  ItemResponse,
+  Umkm,
+  Product,
+  Post,
+  PostWithImages,
+  VillageProfile,
+} from '@/types/catalog'
 import { formatRupiah } from '@/lib/utils'
 
 async function getJson<T>(url: string): Promise<T> {
@@ -11,209 +19,102 @@ async function getJson<T>(url: string): Promise<T> {
 export { formatRupiah }
 
 export const api = {
-  getUmkms: (search?: string, category?: string) => {
+  getVillageProfile: () => getJson<ItemResponse<VillageProfile>>('/api/village-profile'),
+  getPosts: (search?: string, category?: string) => {
     const params = new URLSearchParams()
     if (search) params.set('search', search)
     if (category) params.set('category', category)
+    return getJson<ListResponse<Post>>(`/api/posts?${params.toString()}`)
+  },
+  getPost: (slug: string) => getJson<ItemResponse<PostWithImages>>(`/api/posts/${slug}`),
+  getCategories: () => getJson<ListResponse<{ id: number; name: string; slug: string }>>('/api/categories'),
+  getUmkms: (search?: string) => {
+    const params = new URLSearchParams()
+    if (search) params.set('search', search)
     return getJson<ListResponse<Umkm>>(`/api/umkm?${params.toString()}`)
   },
-  getUmkm: (slug: string) => getJson<ItemResponse<Umkm>>(`/api/umkm/${slug}`),
-  getUmkmProducts: (slug: string) => getJson<ListResponse<Product>>(`/api/umkm/${slug}/produk`),
-  getProducts: (search?: string, category?: string) => {
+  getUmkm: (id: number) => getJson<ItemResponse<Umkm>>(`/api/umkm/${id}`),
+  getUmkmProducts: (id: number) => getJson<ListResponse<Product>>(`/api/umkm/${id}/products`),
+  getProducts: (search?: string) => {
     const params = new URLSearchParams()
     if (search) params.set('search', search)
-    if (category) params.set('category', category)
-    return getJson<ListResponse<Product>>(`/api/produk?${params.toString()}`)
+    return getJson<ListResponse<Product>>(`/api/products?${params.toString()}`)
   },
-  getProduct: (slug: string) => getJson<ItemResponse<Product>>(`/api/produk/${slug}`),
-  getKategori: () => getJson<ListResponse<string>>('/api/kategori'),
-  getTourisms: (search?: string, category?: string) => {
-    const params = new URLSearchParams()
-    if (search) params.set('search', search)
-    if (category) params.set('category', category)
-    return getJson<ListResponse<Tourism>>(`/api/wisata?${params.toString()}`)
-  },
-  getTourism: (slug: string) => getJson<ItemResponse<Tourism>>(`/api/wisata/${slug}`),
-  getTourismGallery: (slug: string) => getJson<ListResponse<string>>(`/api/wisata/${slug}/galeri`),
-  getCultures: () => getJson<ListResponse<Culture>>('/api/budaya'),
-  getCulture: (slug: string) => getJson<ItemResponse<Culture>>(`/api/budaya/${slug}`),
-  getEvents: () => getJson<ListResponse<Event>>('/api/event'),
-  getEvent: (slug: string) => getJson<ItemResponse<Event>>(`/api/event/${slug}`),
-  getGaleri: (type?: string, category?: string) => {
-    const params = new URLSearchParams()
-    if (type) params.set('type', type)
-    if (category) params.set('category', category)
-    return getJson<ListResponse<GalleryItem>>(`/api/galeri?${params.toString()}`)
-  },
-  getGallery: (id: number) => getJson<ItemResponse<GalleryItem>>(`/api/galeri/${id}`),
-  getGaleriKategori: () => getJson<ListResponse<GalleryCategory>>('/api/galeri-kategori'),
-  getArticles: (search?: string, category?: string) => {
-    const params = new URLSearchParams()
-    if (search) params.set('search', search)
-    if (category) params.set('kategori', category)
-    return getJson<ListResponse<Article>>(`/api/artikel?${params.toString()}`)
-  },
-  getArticle: (slug: string) => getJson<ItemResponse<Article>>(`/api/artikel/${slug}`),
-  getArticleKategori: () => getJson<ListResponse<ArticleCategory>>('/api/artikel-kategori'),
+  getProduct: (id: number) => getJson<ItemResponse<Product>>(`/api/products/${id}`),
 }
 
-export function useUmkms(search?: string, category?: string) {
+export function useVillageProfile() {
   return useQuery({
-    queryKey: ['umkms', search, category],
-    queryFn: () => api.getUmkms(search, category),
+    queryKey: ['village-profile'],
+    queryFn: api.getVillageProfile,
     select: (r) => r.data,
   })
 }
 
-export function useUmkm(slug: string) {
+export function usePosts(search?: string, category?: string) {
   return useQuery({
-    queryKey: ['umkm', slug],
-    queryFn: () => api.getUmkm(slug),
+    queryKey: ['posts', search, category],
+    queryFn: () => api.getPosts(search, category),
+    select: (r) => r.data,
+  })
+}
+
+export function usePost(slug: string) {
+  return useQuery({
+    queryKey: ['post', slug],
+    queryFn: () => api.getPost(slug),
     enabled: !!slug,
     select: (r) => r.data,
   })
 }
 
-export function useUmkmProducts(slug: string) {
+export function useCategories() {
   return useQuery({
-    queryKey: ['umkm-produk', slug],
-    queryFn: () => api.getUmkmProducts(slug),
-    enabled: !!slug,
+    queryKey: ['categories'],
+    queryFn: api.getCategories,
     select: (r) => r.data,
   })
 }
 
-export function useProducts(search?: string, category?: string) {
+export function useUmkms(search?: string) {
   return useQuery({
-    queryKey: ['products', search, category],
-    queryFn: () => api.getProducts(search, category),
+    queryKey: ['umkms', search],
+    queryFn: () => api.getUmkms(search),
     select: (r) => r.data,
   })
 }
 
-export function useProduct(slug: string) {
+export function useUmkm(id: number) {
   return useQuery({
-    queryKey: ['product', slug],
-    queryFn: () => api.getProduct(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useKategori() {
-  return useQuery({
-    queryKey: ['kategori'],
-    queryFn: api.getKategori,
-    select: (r) => r.data,
-  })
-}
-
-export function useTourisms(search?: string, category?: string) {
-  return useQuery({
-    queryKey: ['tourisms', search, category],
-    queryFn: () => api.getTourisms(search, category),
-    select: (r) => r.data,
-  })
-}
-
-export function useTourism(slug: string) {
-  return useQuery({
-    queryKey: ['tourism', slug],
-    queryFn: () => api.getTourism(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useTourismGallery(slug: string) {
-  return useQuery({
-    queryKey: ['tourism-gallery', slug],
-    queryFn: () => api.getTourismGallery(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useCultures() {
-  return useQuery({
-    queryKey: ['cultures'],
-    queryFn: api.getCultures,
-    select: (r) => r.data,
-  })
-}
-
-export function useCulture(slug: string) {
-  return useQuery({
-    queryKey: ['culture', slug],
-    queryFn: () => api.getCulture(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useEvents() {
-  return useQuery({
-    queryKey: ['events'],
-    queryFn: api.getEvents,
-    select: (r) => r.data,
-  })
-}
-
-export function useEvent(slug: string) {
-  return useQuery({
-    queryKey: ['event', slug],
-    queryFn: () => api.getEvent(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useGaleri(type?: string, category?: string) {
-  return useQuery({
-    queryKey: ['galeri', type, category],
-    queryFn: () => api.getGaleri(type, category),
-    select: (r) => r.data,
-  })
-}
-
-export function useGallery(id: number) {
-  return useQuery({
-    queryKey: ['gallery', id],
-    queryFn: () => api.getGallery(id),
+    queryKey: ['umkm', id],
+    queryFn: () => api.getUmkm(id),
     enabled: !!id,
     select: (r) => r.data,
   })
 }
 
-export function useGaleriKategori() {
+export function useUmkmProducts(id: number) {
   return useQuery({
-    queryKey: ['galeri-kategori'],
-    queryFn: api.getGaleriKategori,
+    queryKey: ['umkm-products', id],
+    queryFn: () => api.getUmkmProducts(id),
+    enabled: !!id,
     select: (r) => r.data,
   })
 }
 
-export function useArticles(search?: string, category?: string) {
+export function useProducts(search?: string) {
   return useQuery({
-    queryKey: ['articles', search, category],
-    queryFn: () => api.getArticles(search, category),
+    queryKey: ['products', search],
+    queryFn: () => api.getProducts(search),
     select: (r) => r.data,
   })
 }
 
-export function useArticle(slug: string) {
+export function useProduct(id: number) {
   return useQuery({
-    queryKey: ['article', slug],
-    queryFn: () => api.getArticle(slug),
-    enabled: !!slug,
-    select: (r) => r.data,
-  })
-}
-
-export function useArticleKategori() {
-  return useQuery({
-    queryKey: ['artikel-kategori'],
-    queryFn: api.getArticleKategori,
+    queryKey: ['product', id],
+    queryFn: () => api.getProduct(id),
+    enabled: !!id,
     select: (r) => r.data,
   })
 }

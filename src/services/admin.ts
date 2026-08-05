@@ -1,15 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Umkm, Product, Post, PostImage, VillageProfile } from '@/types/catalog'
 
 function getToken(): string | null {
-  try { return localStorage.getItem('admin_token') } catch { return null }
+  try { return localStorage.getItem('auth_token') } catch { return null }
 }
 
 function setToken(t: string | null) {
-  if (t) {
-    localStorage.setItem('admin_token', t)
-  } else {
-    localStorage.removeItem('admin_token')
-  }
+  if (t) localStorage.setItem('auth_token', t)
+  else localStorage.removeItem('auth_token')
 }
 
 async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T> {
@@ -31,8 +29,8 @@ async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T
 
 export function useLogin() {
   return useMutation({
-    mutationFn: async (creds: { username: string; password: string }) => {
-      const res = await apiReq<{ token: string; data: { id: number; username: string; name: string; role: string } }>(
+    mutationFn: async (creds: { email: string; password: string }) => {
+      const res = await apiReq<{ token: string; user: { id: number; name: string; email: string; role: string } }>(
         '/api/auth/login', 'POST', creds
       )
       setToken(res.token)
@@ -85,63 +83,66 @@ function useAdminUpdate<T>(key: string, endpoint: string) {
 
 export function useAdminUmkms() {
   return {
-    list: useAdminList<import('@/types/catalog').Umkm>('admin_umkm', '/api/umkm'),
-    create: useAdminCreate<import('@/types/catalog').Umkm>('admin_umkm', '/api/admin/umkm'),
-    update: useAdminUpdate<import('@/types/catalog').Umkm>('admin_umkm', '/api/admin/umkm'),
+    list: useAdminList<Umkm>('admin_umkm', '/api/admin/umkm'),
+    create: useAdminCreate<Umkm>('admin_umkm', '/api/admin/umkm'),
+    update: useAdminUpdate<Umkm>('admin_umkm', '/api/admin/umkm'),
     del: useAdminDelete('admin_umkm', '/api/admin/umkm'),
   }
 }
 
 export function useAdminProducts() {
   return {
-    list: useAdminList<import('@/types/catalog').Product>('admin_produk', '/api/produk'),
-    create: useAdminCreate<import('@/types/catalog').Product>('admin_produk', '/api/admin/produk'),
-    update: useAdminUpdate<import('@/types/catalog').Product>('admin_produk', '/api/admin/produk'),
-    del: useAdminDelete('admin_produk', '/api/admin/produk'),
+    list: useAdminList<Product>('admin_produk', '/api/admin/products'),
+    create: useAdminCreate<Product>('admin_produk', '/api/admin/products'),
+    update: useAdminUpdate<Product>('admin_produk', '/api/admin/products'),
+    del: useAdminDelete('admin_produk', '/api/admin/products'),
   }
 }
 
-export function useAdminTourisms() {
+export function useAdminPosts() {
   return {
-    list: useAdminList<import('@/types/catalog').Tourism>('admin_wisata', '/api/wisata'),
-    create: useAdminCreate<import('@/types/catalog').Tourism>('admin_wisata', '/api/admin/wisata'),
-    update: useAdminUpdate<import('@/types/catalog').Tourism>('admin_wisata', '/api/admin/wisata'),
-    del: useAdminDelete('admin_wisata', '/api/admin/wisata'),
+    list: useAdminList<Post>('admin_posts', '/api/admin/posts'),
+    create: useAdminCreate<Post>('admin_posts', '/api/admin/posts'),
+    update: useAdminUpdate<Post>('admin_posts', '/api/admin/posts'),
+    del: useAdminDelete('admin_posts', '/api/admin/posts'),
   }
 }
 
-export function useAdminCultures() {
+export function useAdminPostImages() {
+  const qc = useQueryClient()
   return {
-    list: useAdminList<import('@/types/catalog').Culture>('admin_budaya', '/api/budaya'),
-    create: useAdminCreate<import('@/types/catalog').Culture>('admin_budaya', '/api/admin/budaya'),
-    update: useAdminUpdate<import('@/types/catalog').Culture>('admin_budaya', '/api/admin/budaya'),
-    del: useAdminDelete('admin_budaya', '/api/admin/budaya'),
+    add: useMutation({
+      mutationFn: (data: { postId: number; imageUrl: string; caption?: string; sortOrder?: number }) =>
+        apiReq<{ data: PostImage }>(`/api/admin/posts/${data.postId}/images`, 'POST', data),
+      onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_posts'] }),
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/images/${id}`, 'DELETE'),
+      onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_posts'] }),
+    }),
   }
 }
 
-export function useAdminEvents() {
+export function useAdminCategories() {
   return {
-    list: useAdminList<import('@/types/catalog').Event>('admin_event', '/api/event'),
-    create: useAdminCreate<import('@/types/catalog').Event>('admin_event', '/api/admin/event'),
-    update: useAdminUpdate<import('@/types/catalog').Event>('admin_event', '/api/admin/event'),
-    del: useAdminDelete('admin_event', '/api/admin/event'),
+    list: useAdminList<{ id: number; name: string; slug: string }>('admin_categories', '/api/admin/categories'),
+    create: useAdminCreate<{ name: string; slug: string }>('admin_categories', '/api/admin/categories'),
+    del: useAdminDelete('admin_categories', '/api/admin/categories'),
   }
 }
 
-export function useAdminGallery() {
+export function useAdminVillageProfile() {
+  const qc = useQueryClient()
   return {
-    list: useAdminList<import('@/types/catalog').GalleryItem>('admin_galeri', '/api/galeri'),
-    create: useAdminCreate<import('@/types/catalog').GalleryItem>('admin_galeri', '/api/admin/galeri'),
-    update: useAdminUpdate<import('@/types/catalog').GalleryItem>('admin_galeri', '/api/admin/galeri'),
-    del: useAdminDelete('admin_galeri', '/api/admin/galeri'),
-  }
-}
-
-export function useAdminArticles() {
-  return {
-    list: useAdminList<import('@/types/catalog').Article>('admin_artikel', '/api/artikel'),
-    create: useAdminCreate<import('@/types/catalog').Article>('admin_artikel', '/api/admin/artikel'),
-    update: useAdminUpdate<import('@/types/catalog').Article>('admin_artikel', '/api/admin/artikel'),
-    del: useAdminDelete('admin_artikel', '/api/admin/artikel'),
+    get: useQuery({
+      queryKey: ['admin_village_profile'],
+      queryFn: () => apiReq<{ data: VillageProfile }>('/api/admin/village-profile', 'GET'),
+      select: (r) => r.data,
+    }),
+    update: useMutation({
+      mutationFn: (data: Partial<VillageProfile>) =>
+        apiReq<{ data: VillageProfile }>('/api/admin/village-profile', 'PUT', data),
+      onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_village_profile'] }),
+    }),
   }
 }

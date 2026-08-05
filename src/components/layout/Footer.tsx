@@ -2,22 +2,11 @@ import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Profil', href: '/profil' },
+  { label: 'Beranda', href: '/' },
+  { label: 'Profil Desa', href: '/profil' },
+  { label: 'Berita & Galeri', href: '/berita-galeri' },
   { label: 'UMKM', href: '/umkm' },
-  { label: 'Produk', href: '/produk' },
-  { label: 'Wisata', href: '/wisata' },
-  { label: 'Galeri', href: '/galeri' },
-  { label: 'Berita', href: '/berita' },
   { label: 'Kontak', href: '/kontak' },
-]
-
-const potensiLinks = [
-  { label: 'UMKM', href: '/potensi/umkm' },
-  { label: 'Pertanian', href: '/potensi/pertanian' },
-  { label: 'Perkebunan', href: '/potensi/perkebunan' },
-  { label: 'Peternakan', href: '/potensi/peternakan' },
-  { label: 'Kerajinan', href: '/potensi/kerajinan' },
-  { label: 'Wisata', href: '/potensi/wisata' },
 ]
 
 const contactInfo = [
@@ -73,19 +62,10 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-text mb-4">Potensi</h3>
-            <ul className="space-y-2">
-              {potensiLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-text-muted hover:text-primary transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <h3 className="font-bold text-text mb-4">UMKM</h3>
+            <p className="text-text-muted text-sm">
+              Dukung produk UMKM lokal Desa Kuanyar.
+            </p>
           </div>
 
           <div>

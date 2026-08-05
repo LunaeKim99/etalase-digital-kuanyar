@@ -1,28 +1,41 @@
+export interface User {
+  id: number
+  name: string
+  email: string
+  role: 'admin' | 'umkm_owner'
+}
+
 export interface Umkm {
   id: number
-  slug: string
+  ownerId: number
   name: string
-  owner: string
-  category: string
-  phone: string
   description: string
   address: string
-  image?: string
+  whatsapp: string
+  logo: string
+  status: 'pending' | 'approved' | 'rejected'
 }
 
 export interface Product {
   id: number
-  slug: string
-  name: string
   umkmId: number
-  umkmName: string
-  umkmSlug: string
-  category: string
-  price: number
-  unit: string
-  stock: number
+  name: string
   description: string
-  image?: string
+  price: number
+  image: string
+  stock: number
+  status: 'active' | 'draft' | 'inactive'
+}
+
+export interface Post {
+  id: number
+  title: string
+  slug: string
+  content: string
+  category: string
+  publishedAt?: string
+  authorId: number
+  coverImage?: string
 }
 
 export interface ListResponse<T> {
@@ -33,73 +46,35 @@ export interface ItemResponse<T> {
   data: T
 }
 
-export interface Tourism {
+export interface VillageProfile {
   id: number
-  slug: string
   name: string
-  category: string
-  location: string
-  lat: number
-  lng: number
-  description: string
-  address: string
-  phone?: string
-  image?: string
-  gallery?: string[]
-  facilities?: string[]
+  overview: string
+  history: string
+  vision: string
+  mission: string
+  demographics: string
+  facilities: string
+  adminInfo: string
+  contactInfo: string
+  lat: number | null
+  lng: number | null
 }
 
-export interface Culture {
+export interface PostImage {
   id: number
-  slug: string
-  name: string
-  category: string
-  description: string
-  image?: string
-  schedule?: string
-  location?: string
+  postId: number
+  imageUrl: string
+  caption: string | null
+  sortOrder: number
 }
 
-export interface Event {
-  id: number
-  slug: string
-  name: string
-  date: string
-  endDate?: string
-  location: string
-  description: string
-  image?: string
+export interface PostWithImages extends Post {
+  images: PostImage[]
+  authorName: string
 }
 
-export interface GalleryItem {
-  id: number
-  type: 'foto' | 'video'
-  title: string
-  category: string
-  image: string
-  videoUrl?: string
-  createdAt: string
-}
-
-export interface GalleryCategory {
-  id: string
-  label: string
-}
-
-export interface Article {
-  id: number
-  slug: string
-  title: string
-  category: string
-  author: string
-  date: string
-  cover: string
-  excerpt: string
-  content: string
-  createdAt: string
-}
-
-export interface ArticleCategory {
-  id: string
-  label: string
+export interface UmkmWithProducts extends Umkm {
+  products: Product[]
+  ownerName: string
 }

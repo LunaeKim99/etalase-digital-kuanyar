@@ -4,9 +4,9 @@ import { logout } from '@/services/admin'
 
 interface User {
   id: number
-  username: string
   name: string
-  role: string
+  email: string
+  role: 'admin' | 'umkm_owner'
 }
 
 interface AuthState {
@@ -26,8 +26,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const saved = localStorage.getItem('admin_token')
-    const savedUser = localStorage.getItem('admin_user')
+    const saved = localStorage.getItem('auth_token')
+    const savedUser = localStorage.getItem('auth_user')
     if (saved && savedUser) {
       setToken(saved)
       setUser(JSON.parse(savedUser) as User)
@@ -35,15 +35,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback((newToken: string, newUser: User) => {
-    localStorage.setItem('admin_token', newToken)
-    localStorage.setItem('admin_user', JSON.stringify(newUser))
+    localStorage.setItem('auth_user', JSON.stringify(newUser))
     setToken(newToken)
     setUser(newUser)
   }, [])
 
   const doLogout = useCallback(() => {
     logout()
-    localStorage.removeItem('admin_user')
+    localStorage.removeItem('auth_user')
     setToken(null)
     setUser(null)
   }, [])
