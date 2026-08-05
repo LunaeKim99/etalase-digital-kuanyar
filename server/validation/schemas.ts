@@ -19,6 +19,7 @@ export const umkmSchema = z.object({
   description: z.string().optional(),
   address: z.string().optional(),
   image: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const productSchema = z.object({
@@ -31,6 +32,7 @@ export const productSchema = z.object({
   stock: z.number().int().min(0, 'Stok tidak boleh negatif').default(0),
   description: z.string().optional(),
   image: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const tourismSchema = z.object({
@@ -46,6 +48,7 @@ export const tourismSchema = z.object({
   image: z.string().optional(),
   gallery: z.array(z.string()).optional(),
   facilities: z.array(z.string()).optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const cultureSchema = z.object({
@@ -56,6 +59,7 @@ export const cultureSchema = z.object({
   image: z.string().optional(),
   schedule: z.string().optional(),
   location: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const eventSchema = z.object({
@@ -66,6 +70,7 @@ export const eventSchema = z.object({
   location: z.string().min(1, 'Lokasi wajib diisi'),
   description: z.string().optional(),
   image: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const gallerySchema = z.object({
@@ -74,6 +79,7 @@ export const gallerySchema = z.object({
   category: z.string().min(1, 'Kategori wajib diisi'),
   image: z.string().min(1, 'URL gambar wajib diisi'),
   videoUrl: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export const articleSchema = z.object({
@@ -85,6 +91,7 @@ export const articleSchema = z.object({
   cover: z.string().min(1, 'URL sampul wajib diisi'),
   excerpt: z.string().optional(),
   content: z.string().optional(),
+  createdAt: z.string().default(new Date().toISOString()),
 })
 
 export type LoginInput = z.infer<typeof loginSchema>

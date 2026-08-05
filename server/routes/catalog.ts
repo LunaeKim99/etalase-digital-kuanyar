@@ -19,6 +19,8 @@ import {
   listCategories,
   listGalleryCategories,
   listArticleCategories,
+  createCategory,
+  deleteCategory,
   createUmkm,
   updateUmkm,
   deleteUmkm,
@@ -40,8 +42,6 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
-  createCategory,
-  deleteCategory,
   authenticateAdmin,
 } from '../services/catalog'
 import { authMiddleware, generateToken } from '../middleware/auth'
@@ -59,18 +59,6 @@ import {
 
 const catalog = new Hono()
 
-function validateBody(schema: { safeParse: (data: unknown) => { success: boolean; error?: { errors: unknown[] } } }) {
-  return async (c: any, next: any) => {
-    const body = await c.req.json().catch(() => ({}))
-    const result = schema.safeParse(body)
-    if (!result.success) {
-      return c.json({ error: 'Validation failed', details: result.error?.errors }, 400)
-    }
-    c.set('body', result)
-    await next()
-  }
-}
-
 // Public auth endpoint
 catalog.post('/auth/login', async (c) => {
   const body = await c.req.json().catch(() => ({}))
@@ -87,8 +75,11 @@ catalog.post('/auth/login', async (c) => {
 const admin = new Hono()
 admin.use('*', authMiddleware)
 
-admin.post('/kategori', validateBody(categorySchema), async (c) => {
-  return c.json(await createCategory(c.var.body))
+admin.post('/kategori', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = categorySchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createCategory(parsed.data))
 })
 
 admin.delete('/kategori/:id', async (c) => {
@@ -98,8 +89,11 @@ admin.delete('/kategori/:id', async (c) => {
 })
 
 // UMKM
-admin.post('/umkm', validateBody(umkmSchema), async (c) => {
-  return c.json(await createUmkm(c.var.body))
+admin.post('/umkm', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = umkmSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createUmkm(parsed.data))
 })
 
 admin.put('/umkm/:id', async (c) => {
@@ -107,7 +101,7 @@ admin.put('/umkm/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = umkmSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateUmkm(id, parsed.data))
 })
 
@@ -118,8 +112,11 @@ admin.delete('/umkm/:id', async (c) => {
 })
 
 // Produk
-admin.post('/produk', validateBody(productSchema), async (c) => {
-  return c.json(await createProduct(c.var.body))
+admin.post('/produk', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = productSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createProduct(parsed.data))
 })
 
 admin.put('/produk/:id', async (c) => {
@@ -127,7 +124,7 @@ admin.put('/produk/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = productSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateProduct(id, parsed.data))
 })
 
@@ -138,11 +135,16 @@ admin.delete('/produk/:id', async (c) => {
 })
 
 // Wisata
-admin.post('/wisata', validateBody(tourismSchema), async (c) => {
-  const validated: Record<string, unknown> = { ...c.var.body }
-  if (Array.isArray(validated.gallery)) validated.gallery = JSON.stringify(validated.gallery)
-  if (Array.isArray(validated.facilities)) validated.facilities = JSON.stringify(validated.facilities)
-  return c.json(await createTourism(validated))
+admin.post('/wisata', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = tourismSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  const insert = {
+    ...parsed.data,
+    gallery: parsed.data.gallery ? JSON.stringify(parsed.data.gallery) : undefined,
+    facilities: parsed.data.facilities ? JSON.stringify(parsed.data.facilities) : undefined,
+  } as typeof import('../db/schema').tourism.$inferInsert
+  return c.json(await createTourism(insert))
 })
 
 admin.put('/wisata/:id', async (c) => {
@@ -150,11 +152,11 @@ admin.put('/wisata/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = tourismSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
-  const validated: Record<string, unknown> = { ...parsed.data }
-  if (Array.isArray(validated.gallery)) validated.gallery = JSON.stringify(validated.gallery)
-  if (Array.isArray(validated.facilities)) validated.facilities = JSON.stringify(validated.facilities)
-  return c.json(await updateTourism(id, validated))
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  const update: Record<string, unknown> = { ...parsed.data }
+  if (Array.isArray(update.gallery)) update.gallery = JSON.stringify(update.gallery)
+  if (Array.isArray(update.facilities)) update.facilities = JSON.stringify(update.facilities)
+  return c.json(await updateTourism(id, update))
 })
 
 admin.delete('/wisata/:id', async (c) => {
@@ -164,8 +166,11 @@ admin.delete('/wisata/:id', async (c) => {
 })
 
 // Budaya
-admin.post('/budaya', validateBody(cultureSchema), async (c) => {
-  return c.json(await createCulture(c.var.body))
+admin.post('/budaya', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = cultureSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createCulture(parsed.data))
 })
 
 admin.put('/budaya/:id', async (c) => {
@@ -173,7 +178,7 @@ admin.put('/budaya/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = cultureSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateCulture(id, parsed.data))
 })
 
@@ -184,8 +189,11 @@ admin.delete('/budaya/:id', async (c) => {
 })
 
 // Event
-admin.post('/event', validateBody(eventSchema), async (c) => {
-  return c.json(await createEvent(c.var.body))
+admin.post('/event', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = eventSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createEvent(parsed.data))
 })
 
 admin.put('/event/:id', async (c) => {
@@ -193,7 +201,7 @@ admin.put('/event/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = eventSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateEvent(id, parsed.data))
 })
 
@@ -204,8 +212,11 @@ admin.delete('/event/:id', async (c) => {
 })
 
 // Galeri
-admin.post('/galeri', validateBody(gallerySchema), async (c) => {
-  return c.json(await createGallery(c.var.body))
+admin.post('/galeri', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = gallerySchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createGallery(parsed.data))
 })
 
 admin.put('/galeri/:id', async (c) => {
@@ -213,7 +224,7 @@ admin.put('/galeri/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = gallerySchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateGallery(id, parsed.data))
 })
 
@@ -224,8 +235,11 @@ admin.delete('/galeri/:id', async (c) => {
 })
 
 // Artikel
-admin.post('/artikel', validateBody(articleSchema), async (c) => {
-  return c.json(await createArticle(c.var.body))
+admin.post('/artikel', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const parsed = articleSchema.safeParse(body)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
+  return c.json(await createArticle(parsed.data))
 })
 
 admin.put('/artikel/:id', async (c) => {
@@ -233,7 +247,7 @@ admin.put('/artikel/:id', async (c) => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   const parsed = articleSchema.partial().safeParse(body)
-  if (!parsed.success) return c.json({ error: 'Validation failed', details: parsed.error?.errors }, 400)
+  if (!parsed.success) return c.json({ error: 'Validation gagal', details: parsed.error.flatten().fieldErrors }, 400)
   return c.json(await updateArticle(id, parsed.data))
 })
 
