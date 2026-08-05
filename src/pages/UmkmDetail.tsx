@@ -139,7 +139,7 @@ export default function UmkmDetail() {
                           )}
                           <span className={`absolute top-2 right-2 text-xs font-medium px-2 py-1 rounded ${
                             product.status === 'active' ? 'bg-green-100 text-green-700' :
-                            product.status === 'draft' ? 'bg-gray-100 text-gray-700' :
+                            product.status === 'draft' ? 'bg-surface text-text-muted' :
                             'bg-red-100 text-red-700'
                           }`}>
                             {product.status}

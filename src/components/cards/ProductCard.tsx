@@ -13,7 +13,7 @@ interface ProductCardProps {
 export default function ProductCard({ image, name, price, unit, slug }: ProductCardProps) {
   return (
     <div className="card overflow-hidden">
-      <img src={image} alt={name} className="w-full h-48 object-cover" loading="lazy" />
+      <img src={image} alt={name} className="w-full h-48 object-cover" loading="lazy" decoding="async" />
       <div className="p-4">
         <Typography variant="h5" className="mb-1">
           {name}

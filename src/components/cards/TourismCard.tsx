@@ -10,7 +10,7 @@ interface TourismCardProps {
 export default function TourismCard({ image, name, location }: TourismCardProps) {
   return (
     <div className="card overflow-hidden relative">
-      <img src={image} alt={name} className="w-full h-48 object-cover" loading="lazy" />
+      <img src={image} alt={name} className="w-full h-48 object-cover" loading="lazy" decoding="async" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <Typography variant="h5" className="text-white mb-1">

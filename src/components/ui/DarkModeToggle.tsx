@@ -1,22 +1,38 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import { Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+
+function getSnapshot(): boolean {
+  return document.documentElement.classList.contains('dark')
+}
+
+function getServerSnapshot(): boolean {
+  return false
+}
+
+function subscribe(callback: () => void): () => void {
+  // Re-render when system theme changes (only matters if user hasn't set manual preference)
+  const mq = window.matchMedia('(prefers-color-scheme: dark)')
+  mq.addEventListener('change', callback)
+  return () => mq.removeEventListener('change', callback)
+}
 
 export function DarkModeToggle() {
-  const [dark, setDark] = useState(false)
+  const dark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const initial = saved ? saved === 'dark' : prefersDark
-    setDark(initial)
-    document.documentElement.classList.toggle('dark', initial)
+    // Follow system when no manual preference is stored
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = (e: MediaQueryListEvent) => {
+      if (localStorage.getItem('theme')) return
+      document.documentElement.classList.toggle('dark', e.matches)
+    }
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
   const toggle = () => {
     const next = !dark
-    setDark(next)
     localStorage.setItem('theme', next ? 'dark' : 'light')
     document.documentElement.classList.toggle('dark', next)
   }
@@ -27,30 +43,8 @@ export function DarkModeToggle() {
       size="sm"
       onClick={toggle}
       aria-label={dark ? 'Light mode' : 'Dark mode'}
-      className={cn('relative p-2', dark && 'text-yellow-400')}
     >
       {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </Button>
   )
-}
-
-export function useDarkMode() {
-  const [dark, setDark] = useState(false)
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const initial = saved ? saved === 'dark' : prefersDark
-    setDark(initial)
-    document.documentElement.classList.toggle('dark', initial)
-  }, [])
-
-  const toggle = () => {
-    const next = !dark
-    setDark(next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
-    document.documentElement.classList.toggle('dark', next)
-  }
-
-  return { dark, toggle }
 }

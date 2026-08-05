@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { prefetchRoute } from '@/lib/prefetch'
 import { Button } from '@/components/ui/button'
+import { DarkModeToggle } from '@/components/ui/DarkModeToggle'
 
 const navItems = [
   { label: 'Beranda', href: '/' },
@@ -54,6 +56,8 @@ export function Navbar() {
               <Link
                 key={item.href}
                 to={item.href}
+                onMouseEnter={() => prefetchRoute(item.href)}
+                onFocus={() => prefetchRoute(item.href)}
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                   isActive(item.href)
@@ -67,6 +71,7 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <DarkModeToggle />
             <Button variant="ghost" size="sm" asChild>
               <Link to="/admin/login">Admin</Link>
             </Button>
@@ -95,6 +100,8 @@ export function Navbar() {
               <Link
                 key={item.href}
                 to={item.href}
+                onMouseEnter={() => prefetchRoute(item.href)}
+                onFocus={() => prefetchRoute(item.href)}
                 className={cn(
                   'block px-4 py-3 rounded-lg text-base font-medium transition-colors',
                   isActive(item.href)
@@ -107,6 +114,7 @@ export function Navbar() {
             ))}
             <hr className="border-border my-2" />
             <div className="px-4 pt-2 space-y-2">
+              <DarkModeToggle />
               <Button variant="outline" className="w-full justify-start" asChild>
                 <Link to="/admin/login">Masuk Admin</Link>
               </Button>

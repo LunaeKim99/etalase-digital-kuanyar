@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react'
 import { useVillageProfile } from '@/services/api'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
@@ -8,8 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { MapPin, ArrowRight, Users, Building2, Clock, Mail, Phone, Calendar } from 'lucide-react'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
-
-const VillageMap = lazy(() => import('@/components/sections/VillageMap'))
+import MapLazy from '@/components/sections/MapLazy'
 
 export default function Profil() {
   const { data: profile, isLoading } = useVillageProfile()
@@ -20,7 +18,7 @@ export default function Profil() {
   if (isLoading) {
     return (
       <>
-        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
+<Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
           <Container>
             <div className="max-w-3xl space-y-4">
               <div className="h-12 w-3/4 bg-surface rounded animate-pulse" />
@@ -50,7 +48,7 @@ export default function Profil() {
 
   return (
     <>
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -89,9 +87,7 @@ export default function Profil() {
             <div>
               <Typography variant="h2" className="mb-6">Lokasi Desa Kuanyar</Typography>
               <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                <Suspense fallback={<div className="h-96 w-full bg-surface animate-pulse" />}>
-                  <VillageMap villageName={villageName} contactInfo={contactInfo} />
-                </Suspense>
+                <MapLazy villageName={villageName} contactInfo={contactInfo} />
               </div>
               <div className="mt-4">
                 <a

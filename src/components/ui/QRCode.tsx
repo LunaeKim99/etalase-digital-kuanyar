@@ -21,7 +21,7 @@ export default function QRCode({
         alt="QR Code"
         width={size}
         height={size}
-        className="rounded-lg bg-white p-2"
+        className="rounded-lg bg-background p-2"
       />
       <Muted>{label}</Muted>
     </div>

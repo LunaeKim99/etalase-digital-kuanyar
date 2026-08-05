@@ -13,4 +13,16 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return
+          if (id.includes('react-router-dom') || /[\\/]react[\\/]/.test(id) || /[\\/]react-dom[\\/]/.test(id)) return 'react-vendor'
+          if (id.includes('leaflet')) return 'map-vendor'
+          if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) return 'forms'
+        },
+      },
+    },
+  },
 })

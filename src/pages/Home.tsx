@@ -67,7 +67,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="py-20 bg-white">
+      <Section className="py-20 bg-background">
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
@@ -117,7 +117,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="py-20 bg-white">
+      <Section className="py-20 bg-background">
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
@@ -150,7 +150,7 @@ export default function Home() {
             <Text className="mb-8 opacity-90">
               Daftarkan UMKM Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
             </Text>
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-background text-primary hover:bg-surface">
               <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
             </Button>
           </div>
