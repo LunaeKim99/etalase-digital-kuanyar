@@ -30,3 +30,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Superpowers working files
+.superpowers/
+
+# Project docs
+docs/
