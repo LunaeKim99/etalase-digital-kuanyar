@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <>
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-20 bg-gradient-to-br from-primary-light via-white to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-20 bg-gradient-to-br from-primary-light via-background to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -67,7 +67,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="py-20 bg-background">
+<Section className="py-20 bg-background">
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
@@ -80,7 +80,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statCards.map((stat, i) => (
               <Card key={i} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className={`${stat.bg} ${stat.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                <div className="${stat.bg} ${stat.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-7 h-7" />
                 </div>
                 <Typography variant="h3" className="mb-1">

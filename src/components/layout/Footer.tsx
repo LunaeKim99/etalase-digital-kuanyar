@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 
@@ -16,7 +17,7 @@ const contactInfo = [
   { icon: Clock, text: 'Senin - Sabtu, 08.00 - 16.00 WIB' },
 ]
 
-export function Footer() {
+export const Footer = memo(function Footer() {
   return (
     <footer className="bg-surface border-t border-border">
       <div className="container py-12">
@@ -92,4 +93,4 @@ export function Footer() {
       </div>
     </footer>
   )
-}
+})

@@ -21,9 +21,9 @@ export default function Profil() {
 <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
           <Container>
             <div className="max-w-3xl space-y-4">
-              <div className="h-12 w-3/4 bg-surface rounded animate-pulse" />
-              <div className="h-6 w-full bg-surface rounded animate-pulse" />
-              <div className="h-6 w-2/3 bg-surface rounded animate-pulse" />
+              <div className="h-12 w-3/4 bg-surface-hover rounded animate-pulse" />
+              <div className="h-6 w-full bg-surface-hover rounded animate-pulse" />
+              <div className="h-6 w-2/3 bg-surface-hover rounded animate-pulse" />
             </div>
           </Container>
         </Section>

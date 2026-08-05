@@ -16,7 +16,7 @@ export default function BeritaGaleri() {
 
   return (
     <>
-      <Section className="pt-16 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
+      <Section className="pt-16 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -90,6 +90,7 @@ export default function BeritaGaleri() {
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <div className="w-full h-full bg-surface flex items-center justify-center">

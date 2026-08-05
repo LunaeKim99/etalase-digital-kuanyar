@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -14,7 +14,7 @@ const navItems = [
   { label: 'Kontak', href: '/kontak' },
 ]
 
-export function Navbar() {
+export const Navbar = memo(function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
@@ -23,7 +23,7 @@ export function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
     }
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -124,4 +124,4 @@ export function Navbar() {
       </nav>
     </header>
   )
-}
+})
