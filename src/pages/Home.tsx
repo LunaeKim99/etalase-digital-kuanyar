@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <>
-      <Section className="pt-16 pb-20 bg-gradient-to-br from-primary-light via-white to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-20 bg-gradient-to-br from-primary-light via-white to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">

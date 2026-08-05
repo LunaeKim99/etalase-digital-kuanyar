@@ -1,5 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+import { lazy, Suspense } from 'react'
 import { useVillageProfile } from '@/services/api'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
@@ -8,32 +7,36 @@ import { Typography, Text, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import { MapPin, ArrowRight, Users, Building2, Clock, Mail, Phone, Calendar } from 'lucide-react'
-import L from 'leaflet'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 
-delete (L.Icon.Default.prototype as any)._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-})
+const VillageMap = lazy(() => import('@/components/sections/VillageMap'))
 
 export default function Profil() {
   const { data: profile, isLoading } = useVillageProfile()
 
+  const lat = -6.752317320870769
+  const lng = 110.73665112293429
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-      </div>
+      <>
+        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
+          <Container>
+            <div className="max-w-3xl space-y-4">
+              <div className="h-12 w-3/4 bg-surface rounded animate-pulse" />
+              <div className="h-6 w-full bg-surface rounded animate-pulse" />
+              <div className="h-6 w-2/3 bg-surface rounded animate-pulse" />
+            </div>
+          </Container>
+        </Section>
+        <Section className="py-16">
+          <Container>
+            <LoadingSkeleton variant="card" count={4} />
+          </Container>
+        </Section>
+      </>
     )
   }
-
-  const lat = profile?.lat ?? -6.7175
-  const lng = profile?.lng ?? 110.7491
-  const location: [number, number] = [lat, lng]
 
   const infoCards = [
     { icon: Users, label: 'Penduduk', value: '4.500+ jiwa', desc: 'KK: 1.300+' },
@@ -47,7 +50,7 @@ export default function Profil() {
 
   return (
     <>
-      <Section className="pt-16 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-white to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -86,25 +89,9 @@ export default function Profil() {
             <div>
               <Typography variant="h2" className="mb-6">Lokasi Desa Kuanyar</Typography>
               <div className="rounded-xl overflow-hidden shadow-lg border border-border">
-                <MapContainer
-                  center={location}
-                  zoom={14}
-                  scrollWheelZoom={false}
-                  className="h-96 w-full"
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <Marker position={location}>
-                    <Popup>
-                      <div className="text-center">
-                        <Typography variant="h5">{villageName}</Typography>
-                        <Muted className="text-sm">{contactInfo}</Muted>
-                      </div>
-                    </Popup>
-                  </Marker>
-                </MapContainer>
+                <Suspense fallback={<div className="h-96 w-full bg-surface animate-pulse" />}>
+                  <VillageMap villageName={villageName} contactInfo={contactInfo} />
+                </Suspense>
               </div>
               <div className="mt-4">
                 <a

@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ title, subtitle, ctaPrimary, ctaSecondary }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen pt-16 md:pt-20 flex items-center bg-gradient-to-br from-primary-light via-white to-surface">
+    <section className="relative min-h-screen pt-28 md:pt-32 lg:pt-36 flex items-center bg-gradient-to-br from-primary-light via-white to-surface">
       <Container>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-slide-up">

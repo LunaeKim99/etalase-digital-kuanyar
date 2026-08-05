@@ -67,6 +67,10 @@
     color: var(--color-text);
   }
 
+  h1, h2, h3, h4, h5, h6, section {
+    scroll-margin-top: 6rem;
+  }
+
   h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
   h2 { font-size: clamp(2rem, 4vw, 3rem); }
   h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
@@ -97,6 +101,12 @@
   input, textarea, select {
     font-family: inherit;
     font-size: inherit;
+  }
+
+  * {
+    transition-property: color, background-color, border-color, box-shadow, transform;
+    transition-timing-function: ease;
+    transition-duration: 150ms;
   }
 
   ::selection {
