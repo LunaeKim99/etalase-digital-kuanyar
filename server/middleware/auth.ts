@@ -1,6 +1,7 @@
 import { jwtVerify, SignJWT } from 'jose'
+import { randomUUID } from 'node:crypto'
 
-const JWT_SECRET = process.env.JWT_SECRET || crypto.randomUUID()
+const JWT_SECRET = process.env.JWT_SECRET || randomUUID()
 const JWT_EXPIRES_IN = '24h'
 
 export interface JwtPayload {
