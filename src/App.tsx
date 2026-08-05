@@ -5,7 +5,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import { router } from '@/router'
 import { AuthProvider } from '@/contexts/AuthContext'
 import ErrorBoundary from '@/components/ui/ErrorBoundary'
-import { TopProgress } from '@/components/ui/TopProgress'
 import { prefetchOnIdle } from '@/lib/prefetch'
 
 const queryClient = new QueryClient({
@@ -25,7 +24,6 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TopProgress />
       <AuthProvider>
         <HelmetProvider>
           <ErrorBoundary>

@@ -1,8 +1,9 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import MainLayout from '@/layouts/MainLayout'
 import AdminLayout from '@/layouts/AdminLayout'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+import { TopProgress } from '@/components/ui/TopProgress'
 
 const Home = lazy(() => import('@/pages/Home'))
 const Profil = lazy(() => import('@/pages/Profil'))
@@ -25,36 +26,50 @@ function LazyWrapper({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<LoadingSkeleton variant="card" count={1} />}>{children}</Suspense>
 }
 
+function RootLayout() {
+  return (
+    <>
+      <TopProgress />
+      <Outlet />
+    </>
+  )
+}
+
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <MainLayout />,
+    element: <RootLayout />,
     children: [
-      { index: true, element: <LazyWrapper><Home /></LazyWrapper> },
-      { path: 'profil', element: <LazyWrapper><Profil /></LazyWrapper> },
-      { path: 'berita-galeri', element: <LazyWrapper><BeritaGaleri /></LazyWrapper> },
-      { path: 'berita-galeri/:slug', element: <LazyWrapper><BeritaGaleriDetail /></LazyWrapper> },
-      { path: 'umkm', element: <LazyWrapper><Umkm /></LazyWrapper> },
-      { path: 'umkm/:id', element: <LazyWrapper><UmkmDetail /></LazyWrapper> },
-      { path: 'produk/:id', element: <LazyWrapper><ProductDetail /></LazyWrapper> },
-      { path: 'kontak', element: <LazyWrapper><Kontak /></LazyWrapper> },
-      { path: '*', element: <LazyWrapper><NotFound /></LazyWrapper> },
-    ],
-  },
-  {
-    path: '/admin/login',
-    element: <LazyWrapper><AdminLogin /></LazyWrapper>,
-  },
-  {
-    path: '/admin',
-    element: <AdminLayout />,
-    children: [
-      { index: true, element: <Navigate to="/admin/dashboard" replace /> },
-      { path: 'dashboard', element: <LazyWrapper><AdminDashboard /></LazyWrapper> },
-      { path: 'umkm', element: <LazyWrapper><AdminUmkm /></LazyWrapper> },
-      { path: 'produk', element: <LazyWrapper><AdminProduk /></LazyWrapper> },
-      { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
-      { path: 'profil', element: <LazyWrapper><AdminProfil /></LazyWrapper> },
+      {
+        path: '/',
+        element: <MainLayout />,
+        children: [
+          { index: true, element: <LazyWrapper><Home /></LazyWrapper> },
+          { path: 'profil', element: <LazyWrapper><Profil /></LazyWrapper> },
+          { path: 'berita-galeri', element: <LazyWrapper><BeritaGaleri /></LazyWrapper> },
+          { path: 'berita-galeri/:slug', element: <LazyWrapper><BeritaGaleriDetail /></LazyWrapper> },
+          { path: 'umkm', element: <LazyWrapper><Umkm /></LazyWrapper> },
+          { path: 'umkm/:id', element: <LazyWrapper><UmkmDetail /></LazyWrapper> },
+          { path: 'produk/:id', element: <LazyWrapper><ProductDetail /></LazyWrapper> },
+          { path: 'kontak', element: <LazyWrapper><Kontak /></LazyWrapper> },
+          { path: '*', element: <LazyWrapper><NotFound /></LazyWrapper> },
+        ],
+      },
+      {
+        path: '/admin/login',
+        element: <LazyWrapper><AdminLogin /></LazyWrapper>,
+      },
+      {
+        path: '/admin',
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <Navigate to="/admin/dashboard" replace /> },
+          { path: 'dashboard', element: <LazyWrapper><AdminDashboard /></LazyWrapper> },
+          { path: 'umkm', element: <LazyWrapper><AdminUmkm /></LazyWrapper> },
+          { path: 'produk', element: <LazyWrapper><AdminProduk /></LazyWrapper> },
+          { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
+          { path: 'profil', element: <LazyWrapper><AdminProfil /></LazyWrapper> },
+        ],
+      },
     ],
   },
 ])
