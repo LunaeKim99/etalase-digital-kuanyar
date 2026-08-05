@@ -1,0 +1,52 @@
+export { Typography } from './typography'
+export type { TypographyProps } from './typography'
+
+import { forwardRef, type HTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
+import { Typography } from './typography'
+
+type TextProps = HTMLAttributes<HTMLElement> & {
+  balance?: boolean
+}
+
+export const Text = forwardRef<HTMLElement, TextProps>(
+  ({ className, children, balance, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn('text-base leading-relaxed', balance && 'text-balance', className)}
+      {...props}
+    >
+      {children}
+    </p>
+  )
+)
+
+Text.displayName = 'Text'
+
+export const Muted = forwardRef<HTMLElement, TextProps>(
+  ({ className, children, balance, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn('text-sm text-text-muted', balance && 'text-balance', className)}
+      {...props}
+    >
+      {children}
+    </p>
+  )
+)
+
+Muted.displayName = 'Muted'
+
+export const Lead = forwardRef<HTMLElement, TextProps>(
+  ({ className, children, balance, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn('text-xl leading-relaxed text-text-muted', balance && 'text-balance', className)}
+      {...props}
+    >
+      {children}
+    </p>
+  )
+)
+
+Lead.displayName = 'Lead'
