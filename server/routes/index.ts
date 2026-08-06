@@ -6,22 +6,32 @@ import { generateToken } from '../middleware/auth'
 const publicRoutes = new Hono()
 
 publicRoutes.post('/auth/login', async (c) => {
-  const body = await c.req.json().catch(() => ({}))
-  const email = body.email
-  const password = body.password
-  if (!email || !password) return c.json({ error: 'Email dan password wajib diisi' }, 400)
-  const user = await authenticateUser(email, password)
-  if (!user) return c.json({ error: 'Email atau password salah' }, 401)
-  const token = await generateToken({ id: user.id, name: user.name, email: user.email, role: user.role as any })
-  return c.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } })
+  try {
+    const body = await c.req.json().catch(() => ({}))
+    const email = body.email
+    const password = body.password
+    if (!email || !password) return c.json({ error: 'Email dan password wajib diisi' }, 400)
+    const user = await authenticateUser(email, password)
+    if (!user) return c.json({ error: 'Email atau password salah' }, 401)
+    const token = await generateToken({ id: user.id, name: user.name, email: user.email, role: user.role as any })
+    return c.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } })
+  } catch (err) {
+    console.error('Login error:', err)
+    return c.json({ error: 'Terjadi kesalahan server' }, 500)
+  }
 })
 
 publicRoutes.post('/auth/register', async (c) => {
-  const body = await c.req.json().catch(() => ({}))
-  const { name, email, password, role } = body
-  if (!name || !email || !password) return c.json({ error: 'Nama, email, dan password wajib diisi' }, 400)
-  const existing = await createUser({ name, email, passwordHash: hashPassword(password), role: role || 'umkm_owner', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() })
-  return c.json({ token: await generateToken({ id: existing.id, name: existing.name, email: existing.email, role: existing.role as any }), user: { id: existing.id, name: existing.name, email: existing.email, role: existing.role } })
+  try {
+    const body = await c.req.json().catch(() => ({}))
+    const { name, email, password, role } = body
+    if (!name || !email || !password) return c.json({ error: 'Nama, email, dan password wajib diisi' }, 400)
+    const existing = await createUser({ name, email, passwordHash: hashPassword(password), role: role || 'umkm_owner', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() })
+    return c.json({ token: await generateToken({ id: existing.id, name: existing.name, email: existing.email, role: existing.role as any }), user: { id: existing.id, name: existing.name, email: existing.email, role: existing.role } })
+  } catch (err) {
+    console.error('Register error:', err)
+    return c.json({ error: 'Terjadi kesalahan server' }, 500)
+  }
 })
 
 export default publicRoutes

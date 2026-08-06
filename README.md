@@ -81,7 +81,7 @@ pnpm db:generate
 pnpm db:migrate
 
 # (Opsional) Seed data development
-pnpm tsx server/db/seed.ts
+pnpm seed
 
 # Jalankan development (2 terminal)
 # Terminal 1: API server
@@ -94,18 +94,31 @@ Frontend: `http://localhost:5173` (proxy `/api` → `localhost:4000`)
 API: `http://localhost:4000`  
 Health check: `http://localhost:4000/health`
 
-## 📜 Scripts
+### Seed database
+
+```bash
+# Untuk production Turso: set TURSO_DATABASE_URL dan TURSO_AUTH_TOKEN
+npm run seed
+```
+
+### Default admin
+
+Email: admin@kuanyar.desa.id  
+Password: admin123
+
+## Scripts
 
 | Command | Deskripsi |
 |---------|-----------|
-| `pnpm dev` | Frontend dev server (Vite) |
-| `pnpm dev:server` | Backend API server (Hono + tsx) |
-| `pnpm build` | Build production (typecheck + Vite build) |
-| `pnpm lint` | Lint dengan Oxlint |
-| `pnpm preview` | Preview build production |
-| `pnpm db:generate` | Generate migrasi Drizzle |
-| `pnpm db:migrate` | Jalankan migrasi |
-| `pnpm db:studio` | Buka Drizzle Studio (GUI database) |
+| `pnpm dev` or `npm run dev` | Frontend dev server (Vite) |
+| `pnpm dev:server` or `npm run dev:server` | Backend API server (Hono + tsx) |
+| `pnpm build` or `npm run build` | Build production (typecheck + Vite build) |
+| `pnpm lint` or `npm run lint` | Lint dengan Oxlint |
+| `pnpm preview` or `npm run preview` | Preview build production |
+| `pnpm seed` or `npm run seed` | Seed database (Turso production atau local) |
+| `pnpm db:generate` or `npm run db:generate` | Generate migrasi Drizzle |
+| `pnpm db:migrate` or `npm run db:migrate` | Jalankan migrasi |
+| `pnpm db:studio` or `npm run db:studio` | Buka Drizzle Studio (GUI database) |
 
 ## 🗂 Struktur Proyek
 
@@ -213,7 +226,7 @@ Health check: `http://localhost:4000/health`
 | DELETE | `/api/admin/artikel/:id` | Hapus artikel |
 
 **Autentikasi Admin**: Header `Authorization: Bearer <token>`  
-Default dev: `username: admin`, `password: admin123`
+Default admin: `email: admin@kuanyar.desa.id`, `password: admin123`
 
 ## 🗄 Database Schema
 
