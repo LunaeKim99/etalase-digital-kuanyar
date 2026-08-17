@@ -6,7 +6,7 @@ const navLinks = [
   { label: 'Beranda', href: '/' },
   { label: 'Profil Desa', href: '/profil' },
   { label: 'Berita & Galeri', href: '/berita-galeri' },
-  { label: 'UMKM', href: '/umkm' },
+  { label: 'Potensi Desa', href: '/potensi' },
   { label: 'Kontak', href: '/kontak' },
 ]
 
@@ -41,7 +41,7 @@ export const Footer = memo(function Footer() {
               <span className="font-bold text-lg text-text">Desa Kuanyar</span>
             </div>
             <p className="text-text-muted text-sm leading-relaxed">
-              Etalase digital desa untuk memajukan potensi lokal, UMKM, produk, dan wisata
+              Etalase digital desa untuk memajukan potensi lokal, produk, dan wisata
               desa ke seluruh Indonesia.
             </p>
           </div>
@@ -63,9 +63,9 @@ export const Footer = memo(function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-text mb-4">UMKM</h3>
+            <h3 className="font-bold text-text mb-4">Potensi Desa</h3>
             <p className="text-text-muted text-sm">
-              Dukung produk UMKM lokal Desa Kuanyar.
+              Dukung potensi lokal Desa Kuanyar — konveksi, UMKM makanan, dan pertanian.
             </p>
           </div>
 
