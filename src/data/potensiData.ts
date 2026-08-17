@@ -185,7 +185,7 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Pertanian',
       description:
         'Sektor pertanian merupakan salah satu potensi unggulan di Desa Kuanyar, dengan komoditas utama berupa padi dan jagung. Padi menjadi hasil pertanian yang paling banyak dihasilkan sekaligus menjadi salah satu ciri khas Desa Kuanyar.',
-      image: 'https://picsum.photos/seed/pertanian-1/600/400',
+      image: 'https://picsum.photos/seed/pertanian-kuanyar/600/400',
       category: 'pertanian',
       isSector: true,
       sectorData: {
