@@ -229,3 +229,4 @@ export function getItemById(id: string): PotensiItem | undefined {
 export function getCategoryMeta(slug: PotensiCategory): PotensiCategoryMeta | undefined {
   return categories.find((cat) => cat.slug === slug)
 }
+
