@@ -244,42 +244,42 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                   <Typography variant="h4" className="mb-3">Kontak</Typography>
                   <div className="flex flex-wrap gap-2">
                     {item.contact.whatsapp && (
-                      <a
-                        href={`https://wa.me/${item.contact.whatsapp}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button className="btn-primary">
+                      <Button asChild>
+                        <a
+                          href={`https://wa.me/${item.contact.whatsapp}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <MessageSquare className="w-4 h-4 mr-2" />
                           WhatsApp
-                        </Button>
-                      </a>
+                        </a>
+                      </Button>
                     )}
                     {item.contact.instagram && (
-                      <a
-                        href={`https://instagram.com/${item.contact.instagram}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button variant="outline">
+                      <Button asChild variant="outline">
+                        <a
+                          href={`https://instagram.com/${item.contact.instagram}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <ExternalLink className="w-4 h-4 mr-2" />
                           Instagram
-                        </Button>
-                      </a>
+                        </a>
+                      </Button>
                     )}
                     {item.contact.tiktok && (
-                      <a
-                        href={`https://tiktok.com/@${item.contact.tiktok}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button variant="outline">
+                      <Button asChild variant="outline">
+                        <a
+                          href={`https://tiktok.com/@${item.contact.tiktok}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <Music className="w-4 h-4 mr-2" />
                           TikTok
-                        </Button>
-                      </a>
+                        </a>
+                      </Button>
                     )}
-                    {item.contact.marketplace && !item.contact.whatsapp && !item.contact.instagram && !item.contact.tiktok && (
+                    {item.contact.marketplace && (
                       <span className="badge">{item.contact.marketplace}</span>
                     )}
                     {!item.contact.whatsapp && !item.contact.instagram && !item.contact.tiktok && !item.contact.marketplace && (
