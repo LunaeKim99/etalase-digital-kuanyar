@@ -11,17 +11,25 @@ function getServerSnapshot(): boolean {
 }
 
 function subscribe(callback: () => void): () => void {
-  // Re-render when system theme changes (only matters if user hasn't set manual preference)
   const mq = window.matchMedia('(prefers-color-scheme: dark)')
   mq.addEventListener('change', callback)
-  return () => mq.removeEventListener('change', callback)
+
+  const observer = new MutationObserver(callback)
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+
+  return () => {
+    mq.removeEventListener('change', callback)
+    observer.disconnect()
+  }
 }
 
 export function DarkModeToggle() {
   const dark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   useEffect(() => {
-    // Follow system when no manual preference is stored
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const handler = (e: MediaQueryListEvent) => {
       if (localStorage.getItem('theme')) return

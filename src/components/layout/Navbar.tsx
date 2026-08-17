@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { prefetchRoute } from '@/lib/prefetch'
-import { Button } from '@/components/ui/button'
 import { DarkModeToggle } from '@/components/ui/DarkModeToggle'
 
 const navItems = [
@@ -72,9 +71,6 @@ export const Navbar = memo(function Navbar() {
 
           <div className="hidden md:flex items-center gap-3">
             <DarkModeToggle />
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/admin/login">Admin</Link>
-            </Button>
           </div>
 
           <button
@@ -113,11 +109,8 @@ export const Navbar = memo(function Navbar() {
               </Link>
             ))}
             <hr className="border-border my-2" />
-            <div className="px-4 pt-2 space-y-2">
+            <div className="px-4 pt-2">
               <DarkModeToggle />
-              <Button variant="outline" className="w-full justify-start" asChild>
-                <Link to="/admin/login">Masuk Admin</Link>
-              </Button>
             </div>
           </div>
         </div>

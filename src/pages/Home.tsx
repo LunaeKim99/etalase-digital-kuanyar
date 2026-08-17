@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react'
-import { useVillageProfile } from '@/services/api'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useVillageProfile } from '@/services/api'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Typography, Text, Muted } from '@/components/ui/typography'
-import { ArrowRight, Users, Store, Image, Package } from 'lucide-react'
+import { ArrowRight, Users, Store, Image, Wheat } from 'lucide-react'
+import { getAllItems, getCategoryMeta } from '@/data/potensiData'
 
 export default function Home() {
   const { data: profile } = useVillageProfile()
-  const [stats, setStats] = useState({ umkm: 0, products: 0, posts: 0 })
+  const [posts, setPosts] = useState<Array<{ slug: string; title: string; coverImage?: string; publishedAt: string }>>([])
+  const [postsLoading, setPostsLoading] = useState(true)
 
   useEffect(() => {
-    const fetchStats = async () => {
+    let cancelled = false
+    const fetchData = async () => {
       try {
-        const [umkmRes, prodRes, postsRes] = await Promise.all([
-          fetch('/api/umkm'),
-          fetch('/api/products'),
-          fetch('/api/posts'),
+        const [postsRes] = await Promise.all([
+          fetch('/api/posts?limit=3'),
         ])
-        const [umkmData, prodData, postsData] = await Promise.all([
-          umkmRes.json(),
-          prodRes.json(),
-          postsRes.json(),
-        ])
-        setStats({
-          umkm: umkmData.data?.length || 0,
-          products: prodData.data?.length || 0,
-          posts: postsData.data?.length || 0,
-        })
+        if (cancelled) return
+        const postsData = await postsRes.json()
+        setPosts(postsData.data ?? [])
       } catch (e) {
-        console.error('Failed to fetch stats:', e)
+        console.error('Failed to fetch home data:', e)
+      } finally {
+        if (!cancelled) setPostsLoading(false)
       }
     }
-    fetchStats()
+    fetchData()
+    return () => { cancelled = true }
   }, [])
 
+  const allPotensi = getAllItems().filter((item) => !item.isSector)
+  const featuredPotensi = allPotensi.slice(0, 3)
+
   const statCards = [
-    { icon: Store, label: 'Potensi Terdaftar', value: stats.umkm, color: 'text-blue-600', bg: 'bg-blue-100' },
-    { icon: Package, label: 'Produk Tersedia', value: stats.products, color: 'text-green-600', bg: 'bg-green-100' },
-    { icon: Image, label: 'Berita & Galeri', value: stats.posts, color: 'text-purple-600', bg: 'bg-purple-100' },
+    { icon: Store, label: 'Potensi Desa', value: allPotensi.length, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { icon: Wheat, label: 'Sektor Pertanian', value: 1, color: 'text-amber-600', bg: 'bg-amber-100' },
+    { icon: Image, label: 'Berita & Galeri', value: posts.length, color: 'text-purple-600', bg: 'bg-purple-100' },
     { icon: Users, label: 'Pengunjung Bulanan', value: '1.2K+', color: 'text-orange-600', bg: 'bg-orange-100' },
   ]
 
@@ -67,7 +67,7 @@ export default function Home() {
         </Container>
       </Section>
 
-<Section className="py-20 bg-background">
+      <Section className="py-20 bg-background">
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
@@ -80,7 +80,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statCards.map((stat, i) => (
               <Card key={i} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="${stat.bg} ${stat.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className={`${stat.bg} ${stat.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4`}>
                   <stat.icon className="w-7 h-7" />
                 </div>
                 <Typography variant="h3" className="mb-1">
@@ -100,14 +100,41 @@ export default function Home() {
               Potensi Unggulan
             </Typography>
             <Text className="text-text-muted max-w-2xl mx-auto">
-              Produk-produk unggulan dari pengrajin dan petani Desa Kuanyar
+              Hasil observasi lapangan: UMKM dan konveksi yang menjadi penggerak ekonomi Desa Kuanyar
             </Text>
           </div>
-          <div className="grid md:grid-cols-3 gap-6" id="featured-umkm">
-            <div className="col-span-3 text-center py-8">
-              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-              <p className="text-text-muted mt-2">Memuat potensi...</p>
-            </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {featuredPotensi.map((item) => {
+              const meta = getCategoryMeta(item.category)
+              return (
+                <Link key={item.id} to="/potensi" className="block group">
+                  <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      {meta && (
+                        <span className={`absolute top-3 left-3 badge ${meta.lightColor} ${meta.color.replace('bg-', 'text-')}`}>
+                          {meta.title}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-5 space-y-1">
+                      <Typography variant="h5" className="group-hover:text-primary transition-colors">
+                        {item.name}
+                      </Typography>
+                      {item.owner && <Muted className="text-sm">{item.owner}</Muted>}
+                      <Text className="text-sm text-text-muted line-clamp-2 mt-1">
+                        {item.description}
+                      </Text>
+                    </div>
+                  </Card>
+                </Link>
+              )
+            })}
           </div>
           <div className="text-center mt-8">
             <Button asChild variant="outline" size="lg">
@@ -127,12 +154,55 @@ export default function Home() {
               Ikuti perkembangan terbaru kegiatan dan pembangunan di Desa Kuanyar
             </Text>
           </div>
-          <div className="grid md:grid-cols-3 gap-6" id="latest-posts">
-            <div className="col-span-3 text-center py-8">
-              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-              <p className="text-text-muted mt-2">Memuat berita...</p>
+          {postsLoading ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <Card key={i} className="overflow-hidden animate-pulse">
+                  <div className="h-40 bg-surface" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-4 bg-surface rounded w-1/3" />
+                    <div className="h-6 bg-surface rounded w-3/4" />
+                  </div>
+                </Card>
+              ))}
             </div>
-          </div>
+          ) : posts.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {posts.map((post) => (
+                <Link key={post.slug} to={`/berita-galeri/${post.slug}`}>
+                  <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow group">
+                    {post.coverImage && (
+                      <div className="relative h-40 overflow-hidden">
+                        <img
+                          src={post.coverImage}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <div className="p-5">
+                      <Typography variant="h5" className="group-hover:text-primary transition-colors line-clamp-2">
+                        {post.title}
+                      </Typography>
+                      <Muted className="text-sm mt-2">
+                        {new Date(post.publishedAt).toLocaleDateString('id-ID', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </Muted>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Image className="w-12 h-12 text-text-muted mx-auto mb-3" />
+              <Muted>Belum ada berita terbaru.</Muted>
+            </div>
+          )}
           <div className="text-center mt-8">
             <Button asChild variant="outline" size="lg">
               <Link to="/berita-galeri">Lihat Semua Berita <ArrowRight className="w-4 h-4 ml-2" /></Link>
@@ -145,7 +215,7 @@ export default function Home() {
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <Typography variant="h2" className="mb-4">
-              Ingin Produk Anda Terlihat di Sini?
+              Ingin Potensi Anda Terlihat di Sini?
             </Typography>
             <Text className="mb-8 opacity-90">
               Daftarkan potensi Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
