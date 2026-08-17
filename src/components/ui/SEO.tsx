@@ -16,7 +16,7 @@ interface SEOProps {
 
 export function SEO({
   title = 'Etalase Digital Desa Kuanyar',
-  description = 'Temui kekayaan potensi, UMKM, produk unggulan, dan wisata budaya Desa Kuanyar — modern, responsif, dan terhubung.',
+  description = 'Temui kekayaan potensi Desa Kuanyar — konveksi, UMKM makanan, dan pertanian yang menjadi tulang punggung ekonomi desa.',
   image = 'https://etalase-kuanyar.vercel.app/og-default.jpg',
   url,
   type = 'website',
