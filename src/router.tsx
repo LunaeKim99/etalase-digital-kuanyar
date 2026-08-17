@@ -9,8 +9,8 @@ const Home = lazy(() => import('@/pages/Home'))
 const Profil = lazy(() => import('@/pages/Profil'))
 const BeritaGaleri = lazy(() => import('@/pages/BeritaGaleri'))
 const BeritaGaleriDetail = lazy(() => import('@/pages/BeritaGaleriDetail'))
-const Umkm = lazy(() => import('@/pages/Umkm'))
-const UmkmDetail = lazy(() => import('@/pages/UmkmDetail'))
+const Potensi = lazy(() => import('@/pages/Potensi'))
+const PotensiDetail = lazy(() => import('@/pages/PotensiDetail'))
 const ProductDetail = lazy(() => import('@/pages/ProductDetail'))
 const Kontak = lazy(() => import('@/pages/Kontak'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -47,8 +47,8 @@ export const router = createBrowserRouter([
           { path: 'profil', element: <LazyWrapper><Profil /></LazyWrapper> },
           { path: 'berita-galeri', element: <LazyWrapper><BeritaGaleri /></LazyWrapper> },
           { path: 'berita-galeri/:slug', element: <LazyWrapper><BeritaGaleriDetail /></LazyWrapper> },
-          { path: 'umkm', element: <LazyWrapper><Umkm /></LazyWrapper> },
-          { path: 'umkm/:id', element: <LazyWrapper><UmkmDetail /></LazyWrapper> },
+          { path: 'potensi', element: <LazyWrapper><Potensi /></LazyWrapper> },
+          { path: 'potensi/:id', element: <LazyWrapper><PotensiDetail /></LazyWrapper> },
           { path: 'produk/:id', element: <LazyWrapper><ProductDetail /></LazyWrapper> },
           { path: 'kontak', element: <LazyWrapper><Kontak /></LazyWrapper> },
           { path: '*', element: <LazyWrapper><NotFound /></LazyWrapper> },
