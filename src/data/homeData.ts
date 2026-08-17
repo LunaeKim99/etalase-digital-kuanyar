@@ -13,7 +13,7 @@ export const hero: HeroData = {
   subtitle:
     'Temui kekayaan potensi, UMKM, produk unggulan, dan wisata budaya Desa Kuanyar — modern, responsif, dan terhubung.',
   ctaPrimary: { label: 'Jelajahi Potensi', href: '/potensi' },
-  ctaSecondary: { label: 'Lihat UMKM', href: '/umkm' },
+  ctaSecondary: { label: 'Lihat Potensi Desa', href: '/potensi' },
 }
 
 export interface StatData {
@@ -26,7 +26,7 @@ export interface StatData {
 export const stats: StatData[] = [
   { id: 'pop', value: '12.508', label: 'Jiwa', icon: Users },
   { id: 'area', value: '15,2', label: 'km² Luas Desa', icon: MapPin },
-  { id: 'umkm', value: '340+', label: 'UMKM Aktif', icon: Store },
+  { id: 'umkm', value: '340+', label: 'Potensi Aktif', icon: Store },
   { id: 'wisata', value: '8', label: 'Pusat Wisata', icon: Package },
 ]
 
