@@ -2,7 +2,7 @@ const routePrefetchers: Record<string, () => Promise<unknown>> = {
   '/':            () => import('@/pages/Home'),
   '/profil':      () => import('@/pages/Profil'),
   '/berita-galeri': () => import('@/pages/BeritaGaleri'),
-  '/umkm':        () => import('@/pages/Umkm'),
+  '/potensi':     () => import('@/pages/Potensi'),
   '/kontak':      () => import('@/pages/Kontak'),
 }
 
