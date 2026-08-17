@@ -29,7 +29,7 @@ export default function ProductDetail() {
         <div className="text-center">
           <Typography variant="h3" className="mb-2">Produk Tidak Ditemukan</Typography>
           <Button asChild variant="outline">
-            <Link to="/umkm">Kembali ke UMKM</Link>
+            <Link to="/potensi">Kembali ke Potensi Desa</Link>
           </Button>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function ProductDetail() {
       <Section className="pt-16 pb-8">
         <Container>
           <Button variant="ghost" size="sm" asChild className="mb-6">
-            <Link to="/umkm">
+            <Link to="/potensi">
               <ArrowLeft className="w-4 h-4 mr-2" /> Kembali
             </Link>
           </Button>
