@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
 
 export default function App() {
   useEffect(() => {
-    prefetchOnIdle(['/', '/profil', '/berita-galeri', '/umkm', '/kontak'])
+    prefetchOnIdle(['/', '/profil', '/berita-galeri', '/potensi', '/kontak'])
   }, [])
 
   return (
