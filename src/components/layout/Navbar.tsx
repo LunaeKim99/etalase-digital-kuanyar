@@ -10,7 +10,7 @@ const navItems = [
   { label: 'Beranda', href: '/' },
   { label: 'Profil Desa', href: '/profil' },
   { label: 'Berita & Galeri', href: '/berita-galeri' },
-  { label: 'UMKM', href: '/umkm' },
+  { label: 'Potensi Desa', href: '/potensi' },
   { label: 'Kontak', href: '/kontak' },
 ]
 
