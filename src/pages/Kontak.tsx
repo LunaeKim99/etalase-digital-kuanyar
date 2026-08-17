@@ -26,7 +26,7 @@ export default function Kontak() {
 
   return (
     <>
-      <Section className="pt-16 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
+      <Section className="pt-16 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">

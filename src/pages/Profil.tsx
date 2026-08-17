@@ -18,7 +18,7 @@ export default function Profil() {
   if (isLoading) {
     return (
       <>
-<Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
+<Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
           <Container>
             <div className="max-w-3xl space-y-4">
               <div className="h-12 w-3/4 bg-surface-hover rounded animate-pulse" />
@@ -48,7 +48,7 @@ export default function Profil() {
 
   return (
     <>
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-gradient-to-br from-primary-light via-background to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
