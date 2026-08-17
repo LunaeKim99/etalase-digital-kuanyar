@@ -38,7 +38,7 @@ export default function Home() {
   }, [])
 
   const statCards = [
-    { icon: Store, label: 'UMKM Terdaftar', value: stats.umkm, color: 'text-blue-600', bg: 'bg-blue-100' },
+    { icon: Store, label: 'Potensi Terdaftar', value: stats.umkm, color: 'text-blue-600', bg: 'bg-blue-100' },
     { icon: Package, label: 'Produk Tersedia', value: stats.products, color: 'text-green-600', bg: 'bg-green-100' },
     { icon: Image, label: 'Berita & Galeri', value: stats.posts, color: 'text-purple-600', bg: 'bg-purple-100' },
     { icon: Users, label: 'Pengunjung Bulanan', value: '1.2K+', color: 'text-orange-600', bg: 'bg-orange-100' },
@@ -57,7 +57,7 @@ export default function Home() {
             </Text>
             <div className="flex flex-wrap gap-4">
               <Button asChild size="lg">
-                <Link to="/umkm">Lihat UMKM <ArrowRight className="w-4 h-4 ml-2" /></Link>
+                <Link to="/potensi">Lihat Potensi Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link to="/profil">Profil Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
@@ -97,7 +97,7 @@ export default function Home() {
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
-              UMKM Unggulan
+              Potensi Unggulan
             </Typography>
             <Text className="text-text-muted max-w-2xl mx-auto">
               Produk-produk unggulan dari pengrajin dan petani Desa Kuanyar
@@ -106,12 +106,12 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6" id="featured-umkm">
             <div className="col-span-3 text-center py-8">
               <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-              <p className="text-text-muted mt-2">Memuat UMKM...</p>
+              <p className="text-text-muted mt-2">Memuat potensi...</p>
             </div>
           </div>
           <div className="text-center mt-8">
             <Button asChild variant="outline" size="lg">
-              <Link to="/umkm">Lihat Semua UMKM <ArrowRight className="w-4 h-4 ml-2" /></Link>
+              <Link to="/potensi">Lihat Semua Potensi Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
             </Button>
           </div>
         </Container>
@@ -148,7 +148,7 @@ export default function Home() {
               Ingin Produk Anda Terlihat di Sini?
             </Typography>
             <Text className="mb-8 opacity-90">
-              Daftarkan UMKM Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
+              Daftarkan potensi Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
             </Text>
             <Button asChild size="lg" className="bg-background text-primary hover:bg-surface">
               <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
