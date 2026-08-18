@@ -111,9 +111,9 @@ export default function Home() {
                   <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="relative aspect-[4/3] overflow-hidden bg-surface">
                       <img
-                        src={item.image}
+                        src={item.images[0]}
                         alt={item.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                       {meta && (

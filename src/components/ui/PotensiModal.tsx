@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import {
   X,
@@ -11,6 +11,8 @@ import {
   Calendar,
   Package,
   Wheat,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 import { Typography, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
@@ -27,9 +29,11 @@ interface PotensiModalProps {
 export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: PotensiModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
+  const [activeImg, setActiveImg] = useState(0)
 
   useEffect(() => {
     if (!isOpen) return
+    setActiveImg(0)
 
     previousActiveElement.current = document.activeElement as HTMLElement
 
@@ -65,7 +69,12 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
       document.body.style.overflow = ''
       previousActiveElement.current?.focus?.()
     }
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, item?.id])
+
+  const images = item?.images ?? []
+  const hasMultiple = images.length > 1
+  const prev = () => setActiveImg((i) => (i - 1 + images.length) % images.length)
+  const next = () => setActiveImg((i) => (i + 1) % images.length)
 
   if (!isOpen || !item || !categoryMeta) return null
 
@@ -112,6 +121,40 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
 
             <Typography id="potensi-modal-title" variant="h2">{item.name}</Typography>
             <Muted className="leading-relaxed">{item.description}</Muted>
+
+            {images.length > 0 && (
+              <section>
+                <Typography variant="h4" className="mb-3">Galeri</Typography>
+                <div className="relative aspect-[16/9] bg-surface overflow-hidden rounded-lg">
+                  <LazyImage
+                    src={images[activeImg]}
+                    alt={`${item.name} — foto ${activeImg + 1}`}
+                    width={800}
+                    height={450}
+                    className="w-full h-full object-contain"
+                  />
+                  {hasMultiple && (
+                    <>
+                      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto sebelumnya">
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto berikutnya">
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
+                </div>
+                {hasMultiple && (
+                  <div className="flex gap-2 mt-3 overflow-x-auto">
+                    {images.map((src, i) => (
+                      <button key={src} onClick={() => setActiveImg(i)} className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-border'}`} aria-label={`Lihat foto ${i + 1}`}>
+                        <img src={src} alt="" className="w-full h-full object-contain" loading="lazy" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
 
             {item.sectorData && (
               <>
@@ -176,13 +219,59 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
           <div>
             <div className="relative aspect-[16/9] bg-surface overflow-hidden">
               <LazyImage
-                src={item.image}
-                alt={item.name}
+                src={images[activeImg] ?? images[0]}
+                alt={`${item.name} — foto ${activeImg + 1}`}
                 width={800}
                 height={450}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
+              {hasMultiple && (
+                <>
+                  <button
+                    onClick={prev}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    aria-label="Foto sebelumnya"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={next}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    aria-label="Foto berikutnya"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {images.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`w-2 h-2 rounded-full transition-colors ${i === activeImg ? 'bg-white' : 'bg-white/40'}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
+
+            {hasMultiple && (
+              <div className="flex gap-2 p-4 overflow-x-auto bg-surface/50">
+                {images.map((src, i) => (
+                  <button
+                    key={src}
+                    onClick={() => setActiveImg(i)}
+                    className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-border'}`}
+                    aria-label={`Lihat foto ${i + 1}`}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-2 flex-wrap">

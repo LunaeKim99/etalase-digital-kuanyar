@@ -30,7 +30,7 @@ export interface PotensiItem {
   id: string
   name: string
   description: string
-  image: string
+  images: string[]
   category: PotensiCategory
   features?: string[]
   owner?: string
@@ -86,7 +86,12 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'MYG Collection',
       description:
         'Usaha konveksi milik Bapak H. Miftah yang memproduksi celana cewek dan cowok dengan kapasitas sekitar 1.000 pcs per bulan. MYG Collection menerima pesanan custom sesuai permintaan pelanggan.',
-      image: '/images/potensi/konveksi-1.jpg',
+      images: [
+        '/images/potensi/konveksi-1/IMG_7875.jpg',
+        '/images/potensi/konveksi-1/IMG_7876.jpg',
+        '/images/potensi/konveksi-1/IMG_7877.jpg',
+        '/images/potensi/konveksi-1/IMG_7878.jpg',
+      ],
       category: 'konveksi',
       owner: 'Bapak H. Miftah',
       rtRw: 'RT 03/RW 02',
@@ -101,7 +106,13 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Reza Collection',
       description:
         'Usaha konveksi milik Ibu Nur Aini yang memproduksi atasan seragam sekolah, celana anak, dan celana dewasa. Melayani pesanan custom dengan kapasitas 200 pcs per minggu, termasuk penjualan grosir ke Pasar Kliwon.',
-      image: '/images/potensi/konveksi-2.jpg',
+      images: [
+        '/images/potensi/konveksi-2/IMG_7882.jpg',
+        '/images/potensi/konveksi-2/IMG_7883.jpg',
+        '/images/potensi/konveksi-2/IMG_7884.jpg',
+        '/images/potensi/konveksi-2/IMG_7885.jpg',
+        '/images/potensi/konveksi-2/IMG_7887.jpg',
+      ],
       category: 'konveksi',
       owner: 'Ibu Nur Aini',
       rtRw: 'RT 03/RW 02',
@@ -116,7 +127,11 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Mila Collection',
       description:
         'Usaha konveksi milik Hj. Solikin yang memproduksi celana kulot dan celana cewek dengan kapasitas sekitar 500 pcs per minggu. Produk didistribusikan melalui pengiriman.',
-      image: '/images/potensi/konveksi-3.jpg',
+      images: [
+        '/images/potensi/konveksi-3/IMG_7935.jpg',
+        '/images/potensi/konveksi-3/IMG_7936.jpg',
+        '/images/potensi/konveksi-3/IMG_7942.jpg',
+      ],
       category: 'konveksi',
       owner: 'Hj. Solikin',
       rtRw: 'RT 01/RW 01',
@@ -131,7 +146,10 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Mudah Collection',
       description:
         'Usaha konveksi milik Bu Mahmudah yang memproduksi berbagai jenis celana: kulot, pendek, dan panjang. Pemasaran dilakukan melalui TikTok dan melayani pesanan grosir ke Surabaya, Jepara, Demak, dan Kudus.',
-      image: '/images/potensi/konveksi-4.jpg',
+      images: [
+        '/images/potensi/konveksi-4/bce7c4a8-4b28-4538-a83b-dde7f918934b.jpeg',
+        '/images/potensi/konveksi-4/d3e3ca4f-fab8-40c1-ac0e-f4114fde6ec7.jpeg',
+      ],
       category: 'konveksi',
       owner: 'Bu Mahmudah',
       rtRw: 'RT 03/RW 02',
@@ -149,7 +167,15 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Dahlia Jaya Catering',
       description:
         'Usaha catering milik Ibu Dwi Ratna Safitri yang menyediakan nasi box, jajan basah, bento, kue ulang tahun, tumpeng, dan snack. Produk unggulan: nasi box ayam bakar. Melayani hajatan, rapat, acara desa, dan prasmanan.',
-      image: '/images/potensi/umkm-makanan-1.jpg',
+      images: [
+        '/images/potensi/umkm-makanan-1/IMG_7969.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7971.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7972.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7973.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7974.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7976.jpg',
+        '/images/potensi/umkm-makanan-1/IMG_7977.jpg',
+      ],
       category: 'umkm-makanan',
       owner: 'Ibu Dwi Ratna Safitri',
       rtRw: 'RT 05/RW 02',
@@ -168,7 +194,10 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Naning Bakery',
       description:
         'Usaha catering dan bakery milik Ibu Naning yang menyediakan jajan basah, kue, roti, dessert, hingga nasi box savory. Produk unggulan: roti pisang. Menerima pesanan custom untuk hajatan, rapat, dan acara lainnya.',
-      image: '/images/potensi/umkm-makanan-2.jpg',
+      images: [
+        '/images/potensi/umkm-makanan-2/IMG_8013.jpg',
+        '/images/potensi/umkm-makanan-2/IMG_8014.jpg',
+      ],
       category: 'umkm-makanan',
       owner: 'Ibu Naning',
       rtRw: 'RT 04/RW 03',
@@ -185,7 +214,10 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       name: 'Pertanian',
       description:
         'Sektor pertanian merupakan salah satu potensi unggulan di Desa Kuanyar, dengan komoditas utama berupa padi dan jagung. Padi menjadi hasil pertanian yang paling banyak dihasilkan sekaligus menjadi salah satu ciri khas Desa Kuanyar.',
-      image: '/images/potensi/pertanian-1.jpg',
+      images: [
+        '/images/potensi/pertanian-1/IMG_7961.jpg',
+        '/images/potensi/pertanian-1/IMG_7962.jpg',
+      ],
       category: 'pertanian',
       isSector: true,
       sectorData: {

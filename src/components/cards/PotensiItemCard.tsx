@@ -60,6 +60,16 @@ export default function PotensiItemCard({
 
         <Muted className="mb-4 leading-relaxed">{item.description}</Muted>
 
+        {item.images.length > 0 && (
+          <div className="flex gap-3 mb-4 overflow-x-auto">
+            {item.images.map((src) => (
+              <div key={src} className="shrink-0 w-32 h-24 rounded-lg overflow-hidden bg-surface border border-border">
+                <img src={src} alt={item.name} className="w-full h-full object-contain" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        )}
+
         {item.sectorData && (
           <div className="grid sm:grid-cols-3 gap-4 mb-4">
             <div className="bg-surface p-3 rounded-lg">
@@ -99,11 +109,11 @@ export default function PotensiItemCard({
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
         <LazyImage
-          src={item.image}
+          src={item.images[0]}
           alt={item.name}
           width={600}
           height={400}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
         />
         <span className={`absolute top-3 left-3 badge ${categoryMeta.lightColor} ${categoryMeta.color.replace('bg-', 'text-')}`}>
           {categoryMeta.title}
