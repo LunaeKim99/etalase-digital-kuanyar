@@ -27,7 +27,6 @@ export const geography = {
     { label: 'Wilayah', value: 'Dataran rendah dengan aksesibilitas baik' },
     { label: 'Iklim', value: 'Tropical monsoon (Am)' },
     { label: 'Topografi', value: 'Rendah, dekat pusat pemerintahan dan kawasan industri Mayong' },
-    { label: 'Batas wilayah', value: 'Pelang (U), Paren (S), Kalipucang Wetan (B), Tigajuru (T)' },
   ],
 }
 

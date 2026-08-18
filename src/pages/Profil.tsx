@@ -20,13 +20,15 @@ import {
   organization,
   batasWilayah,
   penggunaanLahan,
-  demografiPenduduk,
-  mataPencaharian,
-  potensiDesa,
-  sejarahNaratif,
-  tokohPenerus,
-  periodePemerintahan,
-} from '@/data/profilData'
+   demografiPenduduk,
+   demographyStats,
+   visionMission,
+   mataPencaharian,
+   potensiDesa,
+   sejarahNaratif,
+   tokohPenerus,
+   periodePemerintahan,
+ } from '@/data/profilData'
 
 const iconMap: Record<string, LucideIcon> = {
   ShoppingBasket,
@@ -75,7 +77,7 @@ export default function Profil() {
 
   const infoCards = [
     { icon: Users, label: 'Penduduk', value: `${demografiPenduduk.total.toLocaleString('id-ID')} jiwa`, desc: 'Per Desember 2025' },
-    { icon: Building2, label: 'Dusun', value: '8 Dusun', desc: 'Sebatang, Gedang Gepeng, Kranggan, dll' },
+    { icon: Building2, label: 'Dusun', value: `${demographyStats.find((s) => s.label === 'Dusun')?.value ?? '5'} Dusun`, desc: 'Krajan, Kembang, Makam, Pandak, dll' },
     { icon: Calendar, label: 'Jam Kerja', value: 'Senin - Sabtu', desc: '08.00 - 16.00 WIB' },
     { icon: MapPin, label: 'Kecamatan', value: 'Mayong', desc: 'Kab. Jepara, Jawa Tengah' },
   ]
@@ -239,13 +241,13 @@ export default function Profil() {
             <div>
               <Typography variant="h3" className="mb-4">Visi</Typography>
               <Text className="text-text-muted leading-relaxed">
-                {profile?.vision || 'Terwujudnya Desa Kuanyar yang mandiri, sejahtera, dan berkelanjutan berbasis potensi alam dan sumber daya manusia yang berdaya saing di pasar global.'}
+                {profile?.vision || visionMission.vision}
               </Text>
             </div>
             <div>
               <Typography variant="h3" className="mb-4">Misi</Typography>
               <Text className="text-text-muted leading-relaxed whitespace-pre-line">
-                {profile?.mission || 'Meningkatkan kesejahteraan masyarakat melalui pemberdayaan UMKM lokal.\nMengembangkan sektor pertanian dan perikanan secara berkelanjutan.\nMeningkatkan kualitas sumber daya manusia melalui pendidikan dan pelatihan.\nMembangun infrastruktur desa yang inklusif dan berkelanjutan.\nMewujudkan pemerataan pelayanan publik berbasis digital.\nMelestarikan budaya dan tradisi lokal sebagai kebanggaan desa.'}
+                {profile?.mission || visionMission.mission.join('\n')}
               </Text>
             </div>
           </div>
