@@ -26,15 +26,15 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-surface">
-          <div className="text-center max-w-md p-6">
-            <h1 className="text-4xl font-bold text-text mb-4">Something went wrong</h1>
-            <p className="text-text-muted mb-6">
+        <div className="min-h-screen flex items-center justify-center bg-surface-container-low">
+          <div className="text-center max-w-md p-6 card">
+            <h1 className="text-4xl font-bold text-on-surface mb-4">Something went wrong</h1>
+            <p className="text-on-surface-variant mb-6">
               We apologize for the inconvenience. Please try again later or contact support if the problem persists.
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-hover transition-colors"
+              className="btn btn-primary"
             >
               Reload Page
             </button>

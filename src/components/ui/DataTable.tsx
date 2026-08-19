@@ -29,19 +29,19 @@ export function DataTable<T extends { id: number }>({
 }: DataTableProps<T>) {
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 text-text-muted">
+      <div className="text-center py-12 text-on-surface-variant">
         <p>{emptyMessage}</p>
       </div>
     )
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-surface border-b border-border">
+          <tr className="bg-surface-container-highest border-b border-outline-variant">
             {columns.map((col) => (
-              <th key={col.key} className="text-left px-4 py-3 font-semibold text-text">
+              <th key={col.key} className="text-left px-4 py-3 font-medium text-on-surface text-sm">
                 {col.header}
               </th>
             ))}
@@ -50,7 +50,7 @@ export function DataTable<T extends { id: number }>({
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} className="border-b border-border/50 hover:bg-surface/50 transition-colors">
+            <tr key={row.id} className="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
               {columns.map((col) => (
                 <td key={col.key} className="px-4 py-3 align-top">
                   {col.cell ? col.cell(row) : (row as any)[col.key]}
@@ -64,7 +64,7 @@ export function DataTable<T extends { id: number }>({
                         key={i}
                         onClick={() => action.onClick(row)}
                         title={action.label}
-                        className={cn('p-1 rounded hover:bg-surface transition-colors', action.className)}
+                        className={cn('p-1 rounded hover:bg-surface-container-low transition-colors', action.className)}
                       >
                         <action.icon className="w-4 h-4" />
                       </button>

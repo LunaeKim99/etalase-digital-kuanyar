@@ -22,8 +22,8 @@ export default function WhatsAppButton({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'btn btn-primary bg-[#25D366] hover:bg-[#1ebe5b] text-white flex items-center gap-2',
-        size === 'sm' && 'btn-sm',
+        'inline-flex items-center gap-2 rounded-2xl bg-primary-container text-on-primary-container shadow-lg hover:shadow-xl transition-shadow',
+        size === 'sm' && 'w-10 h-10 p-0 justify-center',
         className
       )}
     >
