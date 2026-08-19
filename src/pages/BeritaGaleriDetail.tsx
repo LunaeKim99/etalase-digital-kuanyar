@@ -58,7 +58,7 @@ export default function BeritaGaleriDetail() {
               <Typography variant="h1" className="mb-4">
                 {post.title}
               </Typography>
-              <div className="flex items-center gap-4 text-sm text-text-muted">
+              <div className="flex items-center gap-4 text-sm text-on-surface-variant">
                 {post.publishedAt && (
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
@@ -66,7 +66,7 @@ export default function BeritaGaleriDetail() {
                   </span>
                 )}
                 {post.category && (
-                  <span className="px-2 py-1 bg-surface rounded-full text-xs font-medium">
+                  <span className="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-medium">
                     {post.category}
                   </span>
                 )}
@@ -74,7 +74,7 @@ export default function BeritaGaleriDetail() {
                   <Share2 className="w-4 h-4" />
                   <span className="sr-only">Bagikan</span>
                 </button>
-                {copied && <span className="text-green-600 text-xs">Tersalin!</span>}
+                {copied && <span className="text-primary text-xs">Tersalin!</span>}
               </div>
             </header>
 
@@ -88,7 +88,7 @@ export default function BeritaGaleriDetail() {
               </div>
             )}
 
-            <div className="prose prose-lg max-w-none text-text-muted">
+            <div className="prose prose-lg max-w-none text-on-surface-variant">
               <Text className="whitespace-pre-line leading-relaxed">{post.content}</Text>
             </div>
 
@@ -113,7 +113,7 @@ export default function BeritaGaleriDetail() {
         </Container>
       </Section>
 
-      <Section className="py-16 bg-surface">
+      <Section className="py-16 bg-surface-container-low">
         <Container>
           <div className="text-center">
             <Typography variant="h3" className="mb-4">

@@ -26,13 +26,13 @@ export default function Kontak() {
 
   return (
     <>
-      <Section className="pt-16 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
+      <Section className="pt-24 pb-12 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
               Hubungi Kami
             </Typography>
-            <Text className="text-lg text-text-muted">
+            <Text className="text-lg text-on-surface-variant">
               Hubungi pemerintah desa atau sampaikan pertanyaan Anda tentang UMKM dan layanan desa
             </Text>
           </div>
@@ -46,13 +46,13 @@ export default function Kontak() {
               <Typography variant="h3" className="mb-6">Informasi Kontak</Typography>
               <div className="space-y-4">
                 {contactItems.map((item, i) => (
-                  <Card key={i} className="p-5 flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                  <Card key={i} variant="filled" className="p-5 flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary-container text-primary flex items-center justify-center flex-shrink-0">
                       <item.icon className="w-5 h-5" />
                     </div>
                     <div>
                       <Typography variant="h6" className="mb-1">{item.label}</Typography>
-                      <Text className="text-text-muted text-sm">{item.value}</Text>
+                      <Text className="text-on-surface-variant text-sm">{item.value}</Text>
                     </div>
                   </Card>
                 ))}
@@ -61,10 +61,10 @@ export default function Kontak() {
 
             <div>
               <Typography variant="h3" className="mb-6">Kirim Pesan</Typography>
-              <Card className="p-8">
+              <Card variant="filled" className="p-8">
                 {submitted ? (
                   <div className="text-center py-12">
-                    <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 rounded-full bg-primary-container text-primary flex items-center justify-center mx-auto mb-4">
                       <Send className="w-8 h-8" />
                     </div>
                     <Typography variant="h4" className="mb-2">Pesan Terkirim</Typography>
@@ -73,7 +73,7 @@ export default function Kontak() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Nama</label>
+                      <label className="block text-sm font-medium mb-2 text-on-surface-variant">Nama</label>
                       <input
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -83,7 +83,7 @@ export default function Kontak() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Email</label>
+                      <label className="block text-sm font-medium mb-2 text-on-surface-variant">Email</label>
                       <input
                         type="email"
                         value={formData.email}
@@ -94,7 +94,7 @@ export default function Kontak() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Pesan</label>
+                      <label className="block text-sm font-medium mb-2 text-on-surface-variant">Pesan</label>
                       <textarea
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
