@@ -70,12 +70,15 @@ async function seed() {
     .catch((e) => console.warn('admin insert skipped:', e.message))
 
   const userRows = [
-    { id: 2, name: 'Sutrisno', email: 'sutrisno@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 3, name: 'Wijaya', email: 'wijaya@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 4, name: 'Rini', email: 'rini@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 5, name: 'Sari', email: 'sari@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 6, name: 'Budi', email: 'budi@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 7, name: 'Maya', email: 'maya@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 2, name: 'H. Miftah', email: 'miftah@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 3, name: 'Nur Aini', email: 'nuraini@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 4, name: 'Hj. Solikin', email: 'solikin@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 5, name: 'Mahmudah', email: 'mahmudah@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 6, name: 'Dwi Ratna Safitri', email: 'dwi.ratna@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 7, name: 'Naning', email: 'naning@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 8, name: 'Iswati', email: 'iswati@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 9, name: 'Pak Anyam', email: 'anyaman@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 10, name: 'Pak Ukir', email: 'ukirjati@kuanyar.desa.id', role: 'umkm_owner' as const },
   ]
 
   for (const u of userRows) {
