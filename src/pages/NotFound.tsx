@@ -9,7 +9,7 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-surface-container-low py-16">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
-          <div className="text-9xl font-bold text-on-surface/20 leading-none mb-4">404</div>
+          <div className="text-7xl md:text-9xl font-bold text-on-surface/20 leading-none mb-4">404</div>
           <Typography variant="h1" className="mb-4">
             Halaman Tidak Ditemukan
           </Typography>

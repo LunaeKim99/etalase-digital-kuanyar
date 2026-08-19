@@ -78,7 +78,7 @@ export default function ProductDetail() {
                     <Package className="w-24 h-24 text-on-surface-variant" />
                   </div>
                 )}
-                <div className="flex items-center gap-2 mt-4">
+                <div className="flex flex-col sm:flex-row items-center gap-2 mt-4">
                   <Button variant="outline" onClick={handleShare} className="flex-1">
                     <Share2 className="w-4 h-4 mr-2" /> Bagikan
                     {copied && <span className="ml-2 text-primary text-xs">Tersalin!</span>}

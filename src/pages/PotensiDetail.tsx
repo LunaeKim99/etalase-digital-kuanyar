@@ -24,7 +24,7 @@ export default function PotensiDetail() {
             <Muted className="mb-6">
               Item potensi yang Anda cari tidak tersedia dalam data observasi.
             </Muted>
-            <Button variant="outlined" asChild>
+            <Button variant="outline" asChild>
               <Link to="/potensi">
                 <ArrowLeft className="w-4 h-4 mr-2" /> Kembali ke Potensi Desa
               </Link>

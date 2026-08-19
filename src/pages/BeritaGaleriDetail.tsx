@@ -58,7 +58,7 @@ export default function BeritaGaleriDetail() {
               <Typography variant="h1" className="mb-4">
                 {post.title}
               </Typography>
-              <div className="flex items-center gap-4 text-sm text-on-surface-variant">
+              <div className="flex flex-wrap items-center gap-3 text-sm text-on-surface-variant">
                 {post.publishedAt && (
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
