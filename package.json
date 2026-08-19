@@ -13,7 +13,12 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "seed": "tsx server/db/seed.ts"
+    "seed": "tsx server/db/seed.ts",
+    "test:auth": "tsx scripts/test-auth.mts",
+    "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"
+  },
+  "allowScripts": {
+    "esbuild": true
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",

@@ -86,7 +86,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-scrim/40 backdrop-blur-sm animate-fade-in"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
@@ -95,13 +95,13 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="bg-background rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
+        className="bg-surface rounded-2xl shadow-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-border bg-background/95 backdrop-blur-sm">
-          <Typography variant="h6" className="text-text-muted">Potensi Desa Kuanyar</Typography>
+        <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-outline-variant bg-surface-container-low">
+          <Typography variant="h6" className="text-on-surface-variant">Potensi Desa Kuanyar</Typography>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-surface-hover transition-colors"
+            className="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-highest transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
             aria-label="Tutup modal"
           >
             <X className="w-5 h-5" />
@@ -125,7 +125,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
             {images.length > 0 && (
               <section>
                 <Typography variant="h4" className="mb-3">Galeri</Typography>
-                <div className="relative aspect-[16/9] bg-surface overflow-hidden rounded-lg">
+                <div className="relative aspect-[16/9] bg-surface-container-low overflow-hidden rounded-lg">
                   <LazyImage
                     src={images[activeImg]}
                     alt={`${item.name} — foto ${activeImg + 1}`}
@@ -135,10 +135,10 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                   />
                   {hasMultiple && (
                     <>
-                      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto sebelumnya">
+                      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" aria-label="Foto sebelumnya">
                         <ChevronLeft className="w-5 h-5" />
                       </button>
-                      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto berikutnya">
+                      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" aria-label="Foto berikutnya">
                         <ChevronRight className="w-5 h-5" />
                       </button>
                     </>
@@ -147,7 +147,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                 {hasMultiple && (
                   <div className="flex gap-2 mt-3 overflow-x-auto">
                     {images.map((src, i) => (
-                      <button key={src} onClick={() => setActiveImg(i)} className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-border'}`} aria-label={`Lihat foto ${i + 1}`}>
+                      <button key={src} onClick={() => setActiveImg(i)} className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-outline-variant'}`} aria-label={`Lihat foto ${i + 1}`}>
                         <img src={src} alt="" className="w-full h-full object-contain" loading="lazy" />
                       </button>
                     ))}
@@ -160,9 +160,9 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
               <>
                 <section>
                   <Typography variant="h4" className="mb-3">Komoditas Unggulan</Typography>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {item.sectorData.komoditas.map((k) => (
-                      <div key={k.nama} className="bg-surface p-4 rounded-lg">
+<div className="grid sm:grid-cols-2 gap-4">
+                      {item.sectorData.komoditas.map((k) => (
+                        <div key={k.nama} className="bg-surface-container-low p-4 rounded-lg">
                         <Typography variant="h5" className="mb-1">{k.nama}</Typography>
                         <Muted className="text-sm">{k.deskripsi}</Muted>
                       </div>
@@ -173,9 +173,9 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                 <section>
                   <Typography variant="h4" className="mb-3">Musim Tanam</Typography>
                   <div className="overflow-x-auto">
-                    <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
-                      <thead className="bg-surface">
-                        <tr className="text-left text-text-muted">
+                    <table className="w-full text-sm border border-outline-variant rounded-lg overflow-hidden">
+                      <thead className="bg-surface-container-highest">
+                        <tr className="text-left text-on-surface-variant">
                           <th className="px-4 py-2 font-medium">Musim</th>
                           <th className="px-4 py-2 font-medium">Lahan Aktif</th>
                           <th className="px-4 py-2 font-medium">Lahan Kosong</th>
@@ -183,7 +183,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                       </thead>
                       <tbody>
                         {item.sectorData.musimTanam.map((m) => (
-                          <tr key={m.musim} className="border-t border-border">
+                          <tr key={m.musim} className="border-t border-outline-variant">
                             <td className="px-4 py-2 font-medium">{m.musim}</td>
                             <td className="px-4 py-2">{m.lahanAktif}</td>
                             <td className="px-4 py-2">{m.lahanKosong}</td>
@@ -203,12 +203,12 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                   </div>
                 </section>
 
-                <section className="bg-primary/5 p-4 rounded-lg">
+                <section className="bg-primary-container/40 p-4 rounded-lg">
                   <Typography variant="h5" className="mb-2">Modernisasi</Typography>
                   <Muted className="text-sm leading-relaxed">{item.sectorData.modernisasi}</Muted>
                 </section>
 
-                <section className="bg-primary/5 p-4 rounded-lg">
+                <section className="bg-primary-container/40 p-4 rounded-lg">
                   <Typography variant="h5" className="mb-2">Pemasaran</Typography>
                   <Muted className="text-sm leading-relaxed">{item.sectorData.pemasaran}</Muted>
                 </section>
@@ -217,7 +217,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
           </div>
         ) : (
           <div>
-            <div className="relative aspect-[16/9] bg-surface overflow-hidden">
+            <div className="relative aspect-[16/9] bg-surface-container-low overflow-hidden">
               <LazyImage
                 src={images[activeImg] ?? images[0]}
                 alt={`${item.name} — foto ${activeImg + 1}`}
@@ -229,14 +229,14 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                 <>
                   <button
                     onClick={prev}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
                     aria-label="Foto sebelumnya"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={next}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
                     aria-label="Foto berikutnya"
                   >
                     <ChevronRight className="w-5 h-5" />
@@ -254,12 +254,12 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
             </div>
 
             {hasMultiple && (
-              <div className="flex gap-2 p-4 overflow-x-auto bg-surface/50">
+              <div className="flex gap-2 p-4 overflow-x-auto bg-surface-container">
                 {images.map((src, i) => (
                   <button
                     key={src}
                     onClick={() => setActiveImg(i)}
-                    className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-border'}`}
+                    className={`shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${i === activeImg ? 'border-primary' : 'border-transparent hover:border-outline-variant'}`}
                     aria-label={`Lihat foto ${i + 1}`}
                   >
                     <img
@@ -279,12 +279,12 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                   {categoryMeta.title}
                 </span>
                 {item.yearFounded && (
-                  <span className="text-sm text-text-muted flex items-center gap-1">
+                  <span className="text-sm text-on-surface-variant flex items-center gap-1">
                     <Calendar className="w-4 h-4" /> Berdiri {item.yearFounded}
                   </span>
                 )}
                 {item.capacity && (
-                  <span className="text-sm text-text-muted flex items-center gap-1">
+                  <span className="text-sm text-on-surface-variant flex items-center gap-1">
                     <Package className="w-4 h-4" /> {item.capacity}
                   </span>
                 )}
@@ -329,7 +329,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
               )}
 
               {item.contact && (
-                <section className="pt-4 border-t border-border">
+                <section className="pt-4 border-t border-outline-variant">
                   <Typography variant="h4" className="mb-3">Kontak</Typography>
                   <div className="flex flex-wrap gap-2">
                     {item.contact.whatsapp && (
@@ -372,7 +372,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                       <span className="badge">{item.contact.marketplace}</span>
                     )}
                     {!item.contact.whatsapp && !item.contact.instagram && !item.contact.tiktok && !item.contact.marketplace && (
-                      <span className="badge bg-surface text-text-muted">Kontak via media sosial</span>
+                      <span className="badge bg-surface-container-low text-on-surface-variant">Kontak via media sosial</span>
                     )}
                   </div>
                 </section>

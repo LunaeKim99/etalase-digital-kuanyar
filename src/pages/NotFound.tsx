@@ -6,17 +6,17 @@ import { Home } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface py-16">
+    <div className="min-h-screen flex items-center justify-center bg-surface-container-low py-16">
       <Container>
         <div className="text-center max-w-2xl mx-auto">
-          <div className="text-9xl font-bold text-primary/20 leading-none mb-4">404</div>
+          <div className="text-7xl md:text-9xl font-bold text-on-surface/20 leading-none mb-4">404</div>
           <Typography variant="h1" className="mb-4">
             Halaman Tidak Ditemukan
           </Typography>
-          <Text className="text-text-muted mb-8 text-lg">
+          <Text className="text-on-surface-variant mb-8 text-lg">
             Maaf, halaman yang Anda cari tidak ada atau telah dipindahkan.
           </Text>
-          <Button asChild size="lg">
+          <Button asChild size="lg" variant="filled">
             <Link to="/">
               <Home className="w-4 h-4 mr-2" /> Kembali ke Beranda
             </Link>

@@ -16,10 +16,10 @@ export default function PotensiDetail() {
   }
 
   return (
-    <Section className="pt-28 pb-16">
+    <Section className="pt-24 pb-16">
       <Container>
         <div className="max-w-md mx-auto text-center">
-          <Card className="p-8">
+          <Card variant="filled" className="p-8 text-center">
             <Typography variant="h3" className="mb-2">Potensi Tidak Ditemukan</Typography>
             <Muted className="mb-6">
               Item potensi yang Anda cari tidak tersedia dalam data observasi.

@@ -1,4 +1,4 @@
-import { db } from '../db/client'
+import { db } from '../db/client.js'
 import {
   users as usersTbl,
   umkm as umkmTbl,
@@ -7,9 +7,9 @@ import {
   postImages as postImagesTbl,
   categories as categoriesTbl,
   villageProfile as villageProfileTbl,
-} from '../db/schema'
+} from '../db/schema.js'
 import { eq, like, and, or, desc, type SQL } from 'drizzle-orm'
-import { verifyPassword } from '../middleware/password'
+import { verifyPassword } from '../middleware/password.js'
 
 const nowISO = () => new Date().toISOString()
 

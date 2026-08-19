@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import type { Context } from 'hono'
-import { logger } from './middleware/logger'
-import api from './routes'
-import catalog from './routes/catalog'
+import { logger } from './middleware/logger.js'
+import api from './routes/index.js'
+import catalog from './routes/catalog.js'
 
 const app = new Hono()
 

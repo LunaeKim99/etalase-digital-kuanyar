@@ -10,8 +10,8 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
   ({ className, variant = 'default', spacing = 'md', children, ...props }, ref) => {
     const variantClasses = {
       default: 'bg-background',
-      gray: 'bg-surface',
-      primary: 'bg-primary text-white',
+      gray: 'bg-surface-container-low',
+      primary: 'bg-primary-container text-on-primary-container',
     }
 
     const spacingClasses = {

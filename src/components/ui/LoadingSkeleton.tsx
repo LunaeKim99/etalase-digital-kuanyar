@@ -22,31 +22,31 @@ export function LoadingSkeleton({ className, count = 1, variant = 'card' }: Skel
         >
           {variant === 'card' && (
             <>
-              <div className="h-48 bg-surface-hover" />
+              <div className="h-48 bg-surface-container-highest" />
               <div className="p-4 space-y-3">
-                <div className="h-4 bg-surface-hover rounded w-3/4" />
-                <div className="h-4 bg-surface-hover rounded w-1/2" />
-                <div className="h-3 bg-surface-hover rounded w-full" />
+                <div className="h-4 bg-surface-container-highest rounded w-3/4" />
+                <div className="h-4 bg-surface-container-highest rounded w-1/2" />
+                <div className="h-3 bg-surface-container-highest rounded w-full" />
               </div>
             </>
           )}
           {variant === 'list' && (
             <>
-              <div className="w-16 h-16 bg-surface-hover rounded" />
+              <div className="w-16 h-16 bg-surface-container-highest rounded" />
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-surface-hover rounded w-3/4" />
-                <div className="h-3 bg-surface-hover rounded w-1/2" />
+                <div className="h-4 bg-surface-container-highest rounded w-3/4" />
+                <div className="h-3 bg-surface-container-highest rounded w-1/2" />
               </div>
             </>
           )}
           {variant === 'text' && (
             <>
-              <div className="h-4 bg-surface-hover rounded w-full" />
-              <div className="h-4 bg-surface-hover rounded w-5/6" />
-              <div className="h-4 bg-surface-hover rounded w-4/6" />
+              <div className="h-4 bg-surface-container-highest rounded w-full" />
+              <div className="h-4 bg-surface-container-highest rounded w-5/6" />
+              <div className="h-4 bg-surface-container-highest rounded w-4/6" />
             </>
           )}
-          {variant === 'image' && <div className="w-full h-full bg-surface-hover" />}
+          {variant === 'image' && <div className="w-full h-full bg-surface-container-highest" />}
         </div>
       ))}
     </>

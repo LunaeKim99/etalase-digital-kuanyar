@@ -19,9 +19,9 @@ const contactInfo = [
 
 export const Footer = memo(function Footer() {
   return (
-    <footer className="bg-surface border-t border-border">
-      <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-surface-container-low border-t border-outline-variant">
+      <div className="container py-12 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <svg
@@ -38,22 +38,22 @@ export const Footer = memo(function Footer() {
                   d="M3 12l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2"
                 />
               </svg>
-              <span className="font-bold text-lg text-text">Desa Kuanyar</span>
+              <span className="font-bold text-lg text-on-surface">Desa Kuanyar</span>
             </div>
-            <p className="text-text-muted text-sm leading-relaxed">
+            <p className="text-on-surface-variant text-sm leading-relaxed">
               Etalase digital desa untuk memajukan potensi lokal, produk, dan wisata
               desa ke seluruh Indonesia.
             </p>
           </div>
 
           <div>
-            <h3 className="font-bold text-text mb-4">Menu</h3>
+            <h3 className="font-bold text-on-surface mb-4">Menu</h3>
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="text-text-muted hover:text-primary transition-colors text-sm"
+                    className="text-on-surface-variant hover:text-primary transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -63,30 +63,30 @@ export const Footer = memo(function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-text mb-4">Potensi Desa</h3>
-            <p className="text-text-muted text-sm">
+            <h3 className="font-bold text-on-surface mb-4">Potensi Desa</h3>
+            <p className="text-on-surface-variant text-sm">
               Dukung potensi lokal Desa Kuanyar — konveksi, UMKM makanan, dan pertanian.
             </p>
           </div>
 
           <div>
-            <h3 className="font-bold text-text mb-4">Kontak</h3>
+            <h3 className="font-bold text-on-surface mb-4">Kontak</h3>
             <ul className="space-y-3 text-sm">
               {contactInfo.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <item.icon className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-text-muted">{item.text}</span>
+                  <span className="text-on-surface-variant">{item.text}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-border py-6 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <span className="text-text-muted text-sm">
+        <div className="border-t border-outline-variant py-6 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <span className="text-on-surface-variant text-sm">
             © {new Date().getFullYear()} Desa Kuanyar. Hak cipta dilindungi.
           </span>
-          <span className="text-text-muted text-sm">
+          <span className="text-on-surface-variant text-sm">
             Dibangun dengan cinta untuk warga Kuanyar
           </span>
         </div>

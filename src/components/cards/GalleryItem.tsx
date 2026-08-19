@@ -1,3 +1,4 @@
+import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'
 
 interface GalleryItemProps {
@@ -7,7 +8,7 @@ interface GalleryItemProps {
 
 export default function GalleryItem({ image, title }: GalleryItemProps) {
   return (
-    <div className="relative aspect-square overflow-hidden rounded-lg group">
+    <Card variant="elevated" className="relative aspect-square overflow-hidden group p-0">
       <img
         src={image}
         alt={title ?? ''}
@@ -15,14 +16,14 @@ export default function GalleryItem({ image, title }: GalleryItemProps) {
         loading="lazy"
         decoding="async"
       />
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
+      <div className="absolute inset-0 group-hover:bg-scrim/40 transition-colors" />
       {title && (
-        <div className="absolute bottom-0 left-0 right-0 p-3">
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-scrim/60 to-transparent">
           <Typography variant="h6" className="text-white">
             {title}
           </Typography>
         </div>
       )}
-    </div>
+    </Card>
   )
 }

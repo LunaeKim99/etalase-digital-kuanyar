@@ -17,7 +17,7 @@ export function PagePlaceholder({ title, description, icon }: PagePlaceholderPro
           {icon && (() => {
             const Icon = icon
             return (
-              <div className="w-16 h-16 rounded-full bg-primary-light flex items-center justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-primary-container flex items-center justify-center mb-6">
                 <Icon className="w-8 h-8 text-primary" />
               </div>
             )
@@ -25,7 +25,7 @@ export function PagePlaceholder({ title, description, icon }: PagePlaceholderPro
           <span className="badge mb-4">Segera Hadir</span>
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{title}</h1>
           {description && (
-            <p className="text-text-muted text-lg mb-8">{description}</p>
+            <p className="text-on-surface-variant text-lg mb-8">{description}</p>
           )}
           <Button variant="outline" asChild>
             <Link to="/">Kembali ke Beranda</Link>

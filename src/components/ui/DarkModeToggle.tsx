@@ -48,7 +48,7 @@ export function DarkModeToggle() {
   return (
     <Button
       variant="ghost"
-      size="sm"
+      size="md"
       onClick={toggle}
       aria-label={dark ? 'Light mode' : 'Dark mode'}
     >

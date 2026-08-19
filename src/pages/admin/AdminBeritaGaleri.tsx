@@ -63,7 +63,7 @@ export default function AdminBeritaGaleri() {
 
   const columns = [
     { key: 'title', header: 'Judul', cell: (row: any) => <span className="font-medium">{row.title}</span> },
-    { key: 'category', header: 'Kategori', cell: (row: any) => <span className="px-2 py-1 bg-surface rounded text-xs">{row.category}</span> },
+    { key: 'category', header: 'Kategori', cell: (row: any) => <span className="badge">{row.category}</span> },
     { key: 'publishedAt', header: 'Diterbitkan', cell: (row: any) => <span>{row.publishedAt ? new Date(row.publishedAt).toLocaleDateString('id-ID') : 'Draft'}</span> },
   ]
 
@@ -77,34 +77,34 @@ export default function AdminBeritaGaleri() {
       </div>
 
       {showForm && (
-        <Card className="p-6">
+        <Card variant="filled" className="p-6">
           <Typography variant="h4" className="mb-4">{editing ? 'Edit Postingan' : 'Tambah Postingan'}</Typography>
           <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
             <div>
-              <label className="block text-sm font-medium mb-1">Judul *</label>
+              <label className="label">Judul *</label>
               <Input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Slug *</label>
+                <label className="label">Slug *</label>
                 <Input value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} required />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Kategori</label>
+                <label className="label">Kategori</label>
                 <Input value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Konten</label>
-              <textarea value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} className="w-full px-3 py-2 border border-border rounded-lg" rows={6} />
+              <label className="label">Konten</label>
+              <textarea value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} className="w-full px-4 py-2 bg-surface-container-highest border border-outline rounded-xl text-on-surface text-sm focus:border-primary focus:outline-none transition-colors resize-y" rows={6} />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Sampul URL</label>
+                <label className="label">Sampul URL</label>
                 <Input value={formData.coverImage} onChange={e => setFormData({...formData, coverImage: e.target.value})} placeholder="https://..." />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Tanggal Terbit</label>
+                <label className="label">Tanggal Terbit</label>
                 <Input type="datetime-local" value={formData.publishedAt} onChange={e => setFormData({...formData, publishedAt: e.target.value})} />
               </div>
             </div>
@@ -121,8 +121,8 @@ export default function AdminBeritaGaleri() {
           data={list.data ?? []}
           columns={columns}
           actions={[
-            { icon: Edit, onClick: handleEdit, label: 'Edit', className: 'text-blue-600 hover:text-blue-800' },
-            { icon: Trash2, onClick: handleDelete, label: 'Hapus', className: 'text-red-600 hover:text-red-800' },
+            { icon: Edit, onClick: handleEdit, label: 'Edit' },
+            { icon: Trash2, onClick: handleDelete, label: 'Hapus' },
           ]}
         />
       </Card>

@@ -1,7 +1,7 @@
-import { db } from './client'
-import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema'
-import { hashPassword } from '../middleware/password'
-import * as mockData from '../data/mockData'
+import { db } from './client.js'
+import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema.js'
+import { hashPassword } from '../middleware/password.js'
+import * as mockData from '../data/mockData.js'
 import { sql } from 'drizzle-orm'
 
 function kebabCase(s: string): string {
@@ -55,11 +55,13 @@ async function seed() {
 
   const now = new Date().toISOString()
 
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
+
   await db.insert(users)
     .values({
       name: 'Administrator',
       email: 'admin@kuanyar.desa.id',
-      passwordHash: hashPassword('admin123'),
+      passwordHash: hashPassword(adminPassword),
       role: 'admin',
       createdAt: now,
       updatedAt: now,
@@ -68,12 +70,15 @@ async function seed() {
     .catch((e) => console.warn('admin insert skipped:', e.message))
 
   const userRows = [
-    { id: 2, name: 'Sutrisno', email: 'sutrisno@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 3, name: 'Wijaya', email: 'wijaya@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 4, name: 'Rini', email: 'rini@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 5, name: 'Sari', email: 'sari@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 6, name: 'Budi', email: 'budi@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 7, name: 'Maya', email: 'maya@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 2, name: 'H. Miftah', email: 'miftah@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 3, name: 'Nur Aini', email: 'nuraini@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 4, name: 'Hj. Solikin', email: 'solikin@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 5, name: 'Mahmudah', email: 'mahmudah@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 6, name: 'Dwi Ratna Safitri', email: 'dwi.ratna@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 7, name: 'Naning', email: 'naning@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 8, name: 'Iswati', email: 'iswati@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 9, name: 'Pak Anyam', email: 'anyaman@kuanyar.desa.id', role: 'umkm_owner' as const },
+    { id: 10, name: 'Pak Ukir', email: 'ukirjati@kuanyar.desa.id', role: 'umkm_owner' as const },
   ]
 
   for (const u of userRows) {
@@ -187,9 +192,7 @@ async function seed() {
   console.log(`  village_profile: ${final.villageProfile}`)
 }
 
-if (import.meta.main) {
-  seed().catch((err) => {
-    console.error('Seed failed:', err)
-    process.exit(1)
-  })
-}
+seed().catch((err) => {
+  console.error('Seed failed:', err)
+  process.exit(1)
+})

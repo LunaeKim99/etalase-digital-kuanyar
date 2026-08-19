@@ -3,7 +3,17 @@ import { Children, cloneElement, isValidElement, type ReactElement } from 'react
 import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost'
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'accent'
+    | 'outline'
+    | 'ghost'
+    | 'elevated'
+    | 'filled'
+    | 'tonal'
+    | 'text'
+    | 'outlined'
   size?: 'sm' | 'md' | 'lg'
   loading?: boolean
   asChild?: boolean
@@ -12,12 +22,20 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, children, disabled, asChild, ...props }, ref) => {
     const baseStyles = 'btn'
-    const variantStyles = {
+    // M3 aliases map to existing CSS classes for backward compatibility.
+    // elevated uses M3 surface-container + shadow instead of a filled background.
+    const variantStyles: Record<string, string> = {
       primary: 'btn-primary',
+      filled: 'btn-primary',
       secondary: 'btn-secondary',
+      tonal: 'btn-secondary',
       accent: 'btn-accent',
       outline: 'btn-outline',
+      outlined: 'btn-outline',
       ghost: 'btn-ghost',
+      text: 'btn-ghost',
+      elevated:
+        'bg-surface-container-low text-primary shadow-md hover:shadow-lg hover:bg-surface-container',
     }
     const sizeStyles = {
       sm: 'btn-sm',
@@ -26,14 +44,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], className)
+    const isDisabled = disabled || loading
+    const ariaProps = loading
+      ? { 'aria-disabled': true, 'aria-busy': true }
+      : {}
 
     if (asChild) {
       const child = Children.only(children) as ReactElement<Record<string, unknown>>
       if (!isValidElement(child)) return null
       return cloneElement(child, {
         className: cn(classes, (child.props as { className?: string }).className),
-        disabled: disabled || loading,
+        disabled: isDisabled,
         ...props,
+        ...ariaProps,
       })
     }
 
@@ -41,8 +64,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={classes}
-        disabled={disabled || loading}
+        disabled={isDisabled}
         {...props}
+        {...ariaProps}
       >
         {loading && (
           <svg

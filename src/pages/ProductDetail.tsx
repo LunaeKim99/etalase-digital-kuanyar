@@ -74,14 +74,14 @@ export default function ProductDetail() {
                     className="w-full rounded-xl shadow-lg object-cover"
                   />
                 ) : (
-                  <div className="w-full aspect-square bg-surface rounded-xl flex items-center justify-center">
-                    <Package className="w-24 h-24 text-text-muted" />
+                  <div className="w-full aspect-square bg-surface-container rounded-xl flex items-center justify-center">
+                    <Package className="w-24 h-24 text-on-surface-variant" />
                   </div>
                 )}
-                <div className="flex items-center gap-2 mt-4">
+                <div className="flex flex-col sm:flex-row items-center gap-2 mt-4">
                   <Button variant="outline" onClick={handleShare} className="flex-1">
                     <Share2 className="w-4 h-4 mr-2" /> Bagikan
-                    {copied && <span className="ml-2 text-green-600 text-xs">Tersalin!</span>}
+                    {copied && <span className="ml-2 text-primary text-xs">Tersalin!</span>}
                   </Button>
                   <a
                     href={MessageCircleUrl}
@@ -89,8 +89,8 @@ export default function ProductDetail() {
                     rel="noopener noreferrer"
                     className="flex-1"
                   >
-                    <Button className="w-full bg-green-600 hover:bg-green-700">
-                      <MessageCircle className="w-4 h-4 mr-2" /> Pesan via MessageCircle
+                    <Button className="w-full bg-primary text-on-primary hover:bg-primary/90">
+                      <MessageCircle className="w-4 h-4 mr-2" /> Pesan via WhatsApp
                     </Button>
                   </a>
                 </div>
@@ -101,14 +101,14 @@ export default function ProductDetail() {
                   <Typography variant="h1" className="mb-2">
                     {product.name}
                   </Typography>
-                  <Typography variant="h4" className="text-primary font-bold mb-4">
+                  <Typography variant="h4" className="text-primary font-medium mb-4">
                     {formatRupiah(product.price)}
                   </Typography>
-                  <div className="flex items-center gap-4 text-sm text-text-muted">
+                  <div className="flex items-center gap-4 text-sm text-on-surface-variant">
                     <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      product.status === 'active' ? 'bg-green-100 text-green-700' :
-                      product.status === 'draft' ? 'bg-surface text-text-muted' :
-                      'bg-red-100 text-red-700'
+                      product.status === 'active' ? 'bg-primary-container text-on-primary-container' :
+                      product.status === 'draft' ? 'bg-surface-container-high text-on-surface-variant' :
+                      'bg-error-container text-on-error-container'
                     }`}>
                       {product.status}
                     </span>
@@ -120,28 +120,28 @@ export default function ProductDetail() {
                 </header>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                  <Card className="p-6">
+                  <Card variant="filled" className="p-6">
                     <Typography variant="h4" className="mb-4">Deskripsi Produk</Typography>
-                    <Text className="text-text-muted leading-relaxed">
+                    <Text className="text-on-surface-variant leading-relaxed">
                       {product.description || 'Belum ada deskripsi produk'}
                     </Text>
                   </Card>
 
-                  <Card className="p-6">
+                  <Card variant="filled" className="p-6">
                     <Typography variant="h4" className="mb-4">Informasi Penjual</Typography>
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
                         <Store className="w-5 h-5 text-primary" />
                         <div>
                           <Typography variant="h6" className="mb-1">UMKM</Typography>
-                          <Text className="text-text-muted">{umkmName}</Text>
+                          <Text className="text-on-surface-variant">{umkmName}</Text>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
                         <MapPin className="w-5 h-5 text-primary mt-0.5" />
                         <div>
                           <Typography variant="h6" className="mb-1">Alamat</Typography>
-                          <Text className="text-text-muted">{umkmAddress}</Text>
+                          <Text className="text-on-surface-variant">{umkmAddress}</Text>
                         </div>
                       </div>
                       <a
@@ -150,10 +150,10 @@ export default function ProductDetail() {
                         rel="noopener noreferrer"
                         className="flex items-center gap-3"
                       >
-                        <MessageCircle className="w-5 h-5 text-green-600" />
+                        <MessageCircle className="w-5 h-5 text-primary" />
                         <div>
-                          <Typography variant="h6" className="mb-1">MessageCircle</Typography>
-                          <Text className="text-text-muted">{umkmMessageCircle}</Text>
+                          <Typography variant="h6" className="mb-1">WhatsApp</Typography>
+                          <Text className="text-on-surface-variant">{umkmMessageCircle}</Text>
                         </div>
                       </a>
                     </div>

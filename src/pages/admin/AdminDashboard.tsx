@@ -10,10 +10,10 @@ export default function AdminDashboard() {
   const { list: catList } = useAdminCategories()
 
   const stats = [
-    { label: 'Total UMKM', value: umkmList.data?.length ?? 0, icon: Store, color: 'text-blue-600' },
-    { label: 'Total Produk', value: prodList.data?.length ?? 0, icon: Package, color: 'text-green-600' },
-    { label: 'Total Berita', value: postList.data?.length ?? 0, icon: FileText, color: 'text-purple-600' },
-    { label: 'Kategori', value: catList.data?.length ?? 0, icon: Tag, color: 'text-orange-600' },
+    { label: 'Total UMKM', value: umkmList.data?.length ?? 0, icon: Store, bg: 'bg-primary-container', text: 'text-on-primary-container' },
+    { label: 'Total Produk', value: prodList.data?.length ?? 0, icon: Package, bg: 'bg-secondary-container', text: 'text-on-secondary-container' },
+    { label: 'Total Berita', value: postList.data?.length ?? 0, icon: FileText, bg: 'bg-tertiary-container', text: 'text-on-tertiary-container' },
+    { label: 'Kategori', value: catList.data?.length ?? 0, icon: Tag, bg: 'bg-surface-container-highest', text: 'text-on-surface' },
   ]
 
   return (
@@ -22,23 +22,23 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, i) => (
-          <Card key={i} className="p-6">
+          <Card key={i} variant="filled" className="p-6">
             <div className="flex items-center gap-3">
-              <div className={`p-3 rounded-lg bg-surface ${stat.color}`}>
+              <div className={`p-3 rounded-2xl ${stat.bg} ${stat.text}`}>
                 <stat.icon className="w-6 h-6" />
               </div>
               <div>
                 <Typography variant="h3" className="text-2xl">{stat.value}</Typography>
-                <Text className="text-sm text-text-muted">{stat.label}</Text>
+                <Text className="text-sm text-on-surface-variant">{stat.label}</Text>
               </div>
             </div>
           </Card>
         ))}
       </div>
 
-      <Card className="p-6">
+      <Card variant="filled" className="p-6">
         <Typography variant="h4" className="mb-4">Aktivitas Terkini</Typography>
-        <div className="space-y-3 text-sm text-text-muted">
+        <div className="space-y-3 text-sm text-on-surface-variant">
           <p>• Sistem siap digunakan</p>
           <p>• Data dimuat dari database SQLite</p>
           <p>• UMKM pending perlu disetujui oleh admin</p>

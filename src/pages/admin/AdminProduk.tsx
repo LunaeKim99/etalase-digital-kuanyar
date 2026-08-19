@@ -84,10 +84,10 @@ export default function AdminProduk() {
     { key: 'price', header: 'Harga', cell: (row: any) => <span className="font-medium">{formatRupiah(row.price)}</span> },
     { key: 'stock', header: 'Stok', cell: (row: any) => <span>{row.stock}</span> },
     { key: 'status', header: 'Status', cell: (row: any) => (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${
-        row.status === 'active' ? 'bg-green-100 text-green-700' :
-        row.status === 'draft' ? 'bg-surface text-text-muted' :
-        'bg-red-100 text-red-700'
+      <span className={`badge ${
+        row.status === 'active' ? '' :
+        row.status === 'draft' ? 'badge-secondary' :
+        'badge-error'
       }`}>{row.status}</span>
     )},
   ]
@@ -102,19 +102,19 @@ export default function AdminProduk() {
       </div>
 
       {showForm && (
-        <Card className="p-6">
+        <Card variant="filled" className="p-6">
           <Typography variant="h4" className="mb-4">{editing ? 'Edit Produk' : 'Tambah Produk'}</Typography>
           <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">UMKM *</label>
-                <select value={formData.umkmId} onChange={e => setFormData({...formData, umkmId: parseInt(e.target.value)})} className="w-full px-3 py-2 border border-border rounded-lg" required>
+                <label className="label">UMKM *</label>
+                <select value={formData.umkmId} onChange={e => setFormData({...formData, umkmId: parseInt(e.target.value)})} className="w-full px-4 h-10 bg-surface-container-highest border border-outline rounded-full text-on-surface text-sm focus:border-primary focus:outline-none transition-colors" required>
                   {umkmList.data?.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
-                <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value as any})} className="w-full px-3 py-2 border border-border rounded-lg">
+                <label className="label">Status</label>
+                <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value as any})} className="w-full px-4 h-10 bg-surface-container-highest border border-outline rounded-full text-on-surface text-sm focus:border-primary focus:outline-none transition-colors">
                   <option value="active">Aktif</option>
                   <option value="draft">Draft</option>
                   <option value="inactive">Nonaktif</option>
@@ -122,24 +122,24 @@ export default function AdminProduk() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Nama Produk *</label>
+              <label className="label">Nama Produk *</label>
               <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Deskripsi</label>
-              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 border border-border rounded-lg" rows={3} />
+              <label className="label">Deskripsi</label>
+              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 bg-surface-container-highest border border-outline rounded-xl text-on-surface text-sm focus:border-primary focus:outline-none transition-colors resize-y" rows={3} />
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Harga (Rp) *</label>
+                <label className="label">Harga (Rp) *</label>
                 <Input type="number" value={formData.price} onChange={e => setFormData({...formData, price: parseInt(e.target.value) || 0})} required />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Stok</label>
+                <label className="label">Stok</label>
                 <Input type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value) || 0})} />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Gambar URL</label>
+                <label className="label">Gambar URL</label>
                 <Input value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} placeholder="https://..." />
               </div>
             </div>
@@ -156,8 +156,8 @@ export default function AdminProduk() {
           data={list.data ?? []}
           columns={columns}
           actions={[
-            { icon: Edit, onClick: handleEdit, label: 'Edit', className: 'text-blue-600 hover:text-blue-800' },
-            { icon: Trash2, onClick: handleDelete, label: 'Hapus', className: 'text-red-600 hover:text-red-800' },
+            { icon: Edit, onClick: handleEdit, label: 'Edit' },
+            { icon: Trash2, onClick: handleDelete, label: 'Hapus' },
           ]}
         />
       </Card>
