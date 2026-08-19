@@ -1,41 +1,30 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import {
-  LayoutDashboard,
-  Store,
-  Package,
-  FileText,
-  Settings,
-  Menu,
-  X,
-  LogOut,
-} from 'lucide-react'
+import { LayoutDashboard, Store, Package, Menu, X, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 
-const adminNavItems = [
-  { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-  { label: 'UMKM', href: '/admin/umkm', icon: Store },
-  { label: 'Produk', href: '/admin/produk', icon: Package },
-  { label: 'Berita & Galeri', href: '/admin/berita-galeri', icon: FileText },
-  { label: 'Profil Desa', href: '/admin/profil', icon: Settings },
+const ownerNavItems = [
+  { label: 'Dashboard', href: '/owner/dashboard', icon: LayoutDashboard },
+  { label: 'UMKM Saya', href: '/owner/umkm', icon: Store },
+  { label: 'Produk', href: '/owner/produk', icon: Package },
 ]
 
-export default function AdminLayout() {
+export default function OwnerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
     logout()
-    navigate('/admin/login')
+    navigate('/owner/login')
   }
 
   const drawerContent = (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between px-4 h-16 border-b border-outline-variant">
         <span className="font-heading font-semibold text-base text-on-surface truncate">
-          Desa Kuanyar
+          UMKM Dashboard
         </span>
         <Button
           variant="ghost"
@@ -48,8 +37,8 @@ export default function AdminLayout() {
         </Button>
       </div>
 
-      <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" aria-label="Admin navigation">
-        {adminNavItems.map((item) => {
+      <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" aria-label="Owner navigation">
+        {ownerNavItems.map((item) => {
           const Icon = item.icon
           return (
             <NavLink
@@ -97,14 +86,14 @@ export default function AdminLayout() {
         className={`fixed top-0 left-0 h-screen w-72 bg-surface-container-low z-50 transform transition-transform duration-300 md:hidden ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
-        aria-label="Admin navigation drawer"
+        aria-label="Owner navigation drawer"
       >
         {drawerContent}
       </aside>
 
       <aside
         className="hidden md:flex md:flex-col md:w-72 md:fixed md:top-0 md:left-0 md:h-screen bg-surface-container-low border-r border-outline-variant"
-        aria-label="Admin navigation"
+        aria-label="Owner navigation"
       >
         {drawerContent}
       </aside>
@@ -122,17 +111,12 @@ export default function AdminLayout() {
               <Menu className="w-5 h-5" />
             </Button>
             <h1 className="font-heading font-semibold text-base md:text-lg text-on-surface truncate">
-              Dashboard Admin
+              Dashboard UMKM
             </h1>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-sm text-on-surface-variant">
-              {user?.name}
-            </span>
-            <span className="sm:hidden text-sm text-on-surface-variant truncate max-w-[120px]">
-              {user?.name}
-            </span>
-          </div>
+          <span className="hidden sm:inline text-sm text-on-surface-variant">
+            {user?.name}
+          </span>
         </header>
 
         <main className="flex-1 p-4 md:p-6">

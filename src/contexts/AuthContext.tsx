@@ -1,54 +1,169 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import type { ReactNode } from 'react'
-import { logout } from '@/services/admin'
+import { setOnUnauthorized } from '@/services/admin'
 
-interface User {
+export interface User {
   id: number
   name: string
   email: string
   role: 'admin' | 'umkm_owner'
 }
 
-interface AuthState {
+export type AuthStatus = 'initializing' | 'authenticated' | 'unauthenticated'
+
+interface AuthContextValue {
+  status: AuthStatus
   token: string | null
   user: User | null
-}
-
-interface AuthContextValue extends AuthState {
   login: (token: string, user: User) => void
   logout: () => void
+  refresh: () => Promise<void>
+}
+
+const TOKEN_KEY = 'auth_token'
+const USER_KEY = 'auth_user'
+
+function safeReadUser(): User | null {
+  try {
+    const raw = localStorage.getItem(USER_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      typeof parsed.id === 'number' &&
+      typeof parsed.email === 'string' &&
+      (parsed.role === 'admin' || parsed.role === 'umkm_owner')
+    ) {
+      return parsed as User
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
+function readToken(): string | null {
+  try {
+    const t = localStorage.getItem(TOKEN_KEY)
+    return t && t.length > 0 ? t : null
+  } catch {
+    return null
+  }
+}
+
+function clearStorage() {
+  try {
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
+  } catch {}
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
+async function fetchMe(token: string): Promise<User | null> {
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    if (!res.ok) return null
+    const body = await res.json().catch(() => null)
+    if (!body?.success || !body.user) return null
+    const u = body.user
+    if (
+      typeof u.id === 'number' &&
+      typeof u.email === 'string' &&
+      (u.role === 'admin' || u.role === 'umkm_owner')
+    ) {
+      return { id: u.id, name: String(u.name ?? ''), email: u.email, role: u.role }
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [status, setStatus] = useState<AuthStatus>('initializing')
   const [token, setToken] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
+  const initRan = useRef(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem('auth_token')
-    const savedUser = localStorage.getItem('auth_user')
-    if (saved && savedUser) {
-      setToken(saved)
-      setUser(JSON.parse(savedUser) as User)
+    setOnUnauthorized(() => {
+      setToken(null)
+      setUser(null)
+      setStatus('unauthenticated')
+    })
+    return () => { setOnUnauthorized(null) }
+  }, [])
+
+  useEffect(() => {
+    if (initRan.current) return
+    initRan.current = true
+
+    const savedToken = readToken()
+    const savedUser = safeReadUser()
+
+    if (!savedToken || !savedUser) {
+      clearStorage()
+      setStatus('unauthenticated')
+      return
     }
+
+    setToken(savedToken)
+    setUser(savedUser)
+
+    fetchMe(savedToken).then((authoritative) => {
+      if (authoritative) {
+        setUser(authoritative)
+        setStatus('authenticated')
+      } else {
+        clearStorage()
+        setToken(null)
+        setUser(null)
+        setStatus('unauthenticated')
+      }
+    })
   }, [])
 
   const login = useCallback((newToken: string, newUser: User) => {
-    localStorage.setItem('auth_user', JSON.stringify(newUser))
+    try {
+      localStorage.setItem(TOKEN_KEY, newToken)
+      localStorage.setItem(USER_KEY, JSON.stringify(newUser))
+    } catch {}
     setToken(newToken)
     setUser(newUser)
+    setStatus('authenticated')
   }, [])
 
-  const doLogout = useCallback(() => {
-    logout()
-    localStorage.removeItem('auth_user')
+  const logout = useCallback(() => {
+    clearStorage()
     setToken(null)
     setUser(null)
+    setStatus('unauthenticated')
   }, [])
 
+  const refresh = useCallback(async () => {
+    const t = readToken()
+    if (!t) {
+      logout()
+      return
+    }
+    const authoritative = await fetchMe(t)
+    if (authoritative) {
+      setUser(authoritative)
+      setStatus('authenticated')
+    } else {
+      clearStorage()
+      setToken(null)
+      setUser(null)
+      setStatus('unauthenticated')
+    }
+  }, [logout])
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout: doLogout }}>
+    <AuthContext.Provider value={{ status, token, user, login, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   )

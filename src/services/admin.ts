@@ -1,13 +1,34 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Umkm, Product, Post, PostImage, VillageProfile } from '@/types/catalog'
 
-function getToken(): string | null {
-  try { return localStorage.getItem('auth_token') } catch { return null }
+const TOKEN_KEY = 'auth_token'
+
+export function getToken(): string | null {
+  try {
+    const t = localStorage.getItem(TOKEN_KEY)
+    return t && t.length > 0 ? t : null
+  } catch {
+    return null
+  }
 }
 
-function setToken(t: string | null) {
-  if (t) localStorage.setItem('auth_token', t)
-  else localStorage.removeItem('auth_token')
+function clearToken() {
+  try { localStorage.removeItem(TOKEN_KEY) } catch {}
+}
+
+export class ApiError extends Error {
+  status: number
+  constructor(message: string, status: number) {
+    super(message)
+    this.status = status
+    this.name = 'ApiError'
+  }
+}
+
+let onUnauthorized: (() => void) | null = null
+
+export function setOnUnauthorized(handler: (() => void) | null) {
+  onUnauthorized = handler
 }
 
 async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T> {
@@ -20,9 +41,23 @@ async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T
     },
     body: body ? JSON.stringify(body) : undefined,
   })
+  if (res.status === 401) {
+    clearToken()
+    if (onUnauthorized) onUnauthorized()
+    let msg = 'Sesi telah berakhir, silakan login ulang'
+    try {
+      const j = await res.json()
+      if (j?.error) msg = j.error
+    } catch {}
+    throw new ApiError(msg, 401)
+  }
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }))
-    throw new Error(err.error ?? `HTTP ${res.status}`)
+    let msg = `HTTP ${res.status}`
+    try {
+      const j = await res.json()
+      if (j?.error) msg = j.error
+    } catch {}
+    throw new ApiError(msg, res.status)
   }
   return res.json()
 }
@@ -30,24 +65,25 @@ async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T
 export function useLogin() {
   return useMutation({
     mutationFn: async (creds: { email: string; password: string }) => {
-      const res = await apiReq<{ token: string; user: { id: number; name: string; email: string; role: string } }>(
-        '/api/auth/login', 'POST', creds
+      const res = await apiReq<{ success: boolean; token: string; user: { id: number; name: string; email: string; role: string } }>(
+        '/api/auth/login', 'POST', creds,
       )
-      setToken(res.token)
       return res
     },
   })
 }
 
-export function logout() {
-  setToken(null)
+export function useRegister() {
+  return useMutation({
+    mutationFn: async (data: { name: string; email: string; password: string }) => {
+      const res = await apiReq<{ success: boolean; token: string; user: { id: number; name: string; email: string; role: string } }>(
+        '/api/auth/register', 'POST', data,
+      )
+      return res
+    },
+  })
 }
 
-export function useIsLoggedIn() {
-  return !!getToken()
-}
-
-// Generic CRUD hooks
 function useAdminList<T>(key: string, endpoint: string) {
   return useQuery({
     queryKey: [key],
