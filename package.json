@@ -15,7 +15,7 @@
     "db:studio": "drizzle-kit studio",
     "seed": "tsx server/db/seed.ts",
     "test:auth": "tsx scripts/test-auth.mts",
-    "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"</oldString>
+    "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
