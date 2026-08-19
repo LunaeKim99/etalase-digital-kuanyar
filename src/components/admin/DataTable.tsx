@@ -32,28 +32,28 @@ export function DataTable<T extends { id: number }>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="overflow-x-auto rounded-xl border border-outline-variant">
       <table className="w-full bg-background text-sm">
-        <thead className="bg-surface border-b border-border">
+        <thead className="bg-surface-container-highest border-b border-outline-variant">
           <tr>
             {columns.map((col) => (
-              <th key={col.header} className="px-4 py-3 text-left font-semibold text-text">
+              <th key={col.header} className="px-4 py-3 text-left font-medium text-sm text-on-surface">
                 {col.header}
               </th>
             ))}
-            <th className="px-4 py-3 text-center font-semibold text-text">Aksi</th>
+            <th className="px-4 py-3 text-center font-medium text-sm text-on-surface">Aksi</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} className="border-b border-border last:border-0">
+            <tr key={row.id} className="border-b border-outline-variant last:border-0 hover:bg-surface-container-low transition-colors">
               {columns.map((col) => {
                 const value =
                   typeof col.accessor === 'function'
                     ? col.accessor(row)
                     : (row[col.accessor] as unknown)
                 return (
-                  <td key={col.header} className="px-4 py-3">
+                  <td key={col.header} className="px-4 py-3 text-on-surface">
                     {value !== undefined && value !== null ? String(value) : '-'}
                   </td>
                 )
