@@ -1,9 +1,21 @@
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect, memo, useSyncExternalStore } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Home, Users, Image, Sparkles, Phone } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { prefetchRoute } from '@/lib/prefetch'
 import { DarkModeToggle } from '@/components/ui/DarkModeToggle'
+
+function useDarkMode() {
+  return useSyncExternalStore(
+    (callback) => {
+      const observer = new MutationObserver(callback)
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+      return () => observer.disconnect()
+    },
+    () => document.documentElement.classList.contains('dark'),
+    () => false
+  )
+}
 
 const navItems = [
   { label: 'Beranda', href: '/', icon: Home },
@@ -16,9 +28,11 @@ const navItems = [
 export const Navbar = memo(function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const isDark = useDarkMode()
   const location = useLocation()
 
   const isFloating = isScrolled
+  const floatingLight = isFloating && !isDark
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +54,9 @@ export const Navbar = memo(function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           isFloating
-            ? 'bg-gradient-to-b from-scrim/20 via-scrim/10 to-transparent backdrop-blur-sm'
+            ? floatingLight
+              ? 'bg-gradient-to-b from-white/70 via-white/40 to-transparent backdrop-blur-sm'
+              : 'bg-gradient-to-b from-scrim/30 via-scrim/15 to-transparent backdrop-blur-sm'
             : 'bg-surface shadow-sm border-b border-outline-variant'
         )}
       >
@@ -48,11 +64,15 @@ export const Navbar = memo(function Navbar() {
           <div className="flex items-center justify-between h-16">
             <Link to="/" className={cn(
               "flex items-center gap-2 font-heading font-semibold text-lg",
-              isFloating ? 'text-white' : 'text-on-surface'
+              isFloating ? (floatingLight ? 'text-on-surface' : 'text-white') : 'text-on-surface'
             )} aria-label="Desa Kuanyar - Home">
               <span className={cn(
                 "flex items-center justify-center w-7 h-7 rounded-full",
-                isFloating ? 'bg-white/20 text-white' : 'text-primary'
+                isFloating
+                  ? floatingLight
+                    ? 'bg-primary/15 text-primary'
+                    : 'bg-white/20 text-white'
+                  : 'text-primary'
               )}>
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill="none"/>
@@ -71,11 +91,15 @@ export const Navbar = memo(function Navbar() {
                   className={cn(
                     'px-4 py-2 rounded-full text-sm font-medium transition-colors',
                     isActive(item.href)
-                      ? isFloating
-                        ? 'bg-white/15 text-white'
-                        : 'bg-primary-container text-on-primary-container'
+                      ? floatingLight
+                        ? 'bg-primary-container text-on-primary-container'
+                        : isFloating
+                          ? 'bg-white/15 text-white'
+                          : 'bg-primary-container text-on-primary-container'
                       : isFloating
-                        ? 'text-white/80 hover:bg-white/10 hover:text-white'
+                        ? floatingLight
+                          ? 'text-on-surface-variant hover:bg-on-surface/5 hover:text-on-surface'
+                          : 'text-white/80 hover:bg-white/10 hover:text-white'
                         : 'text-on-surface-variant hover:bg-on-surface/5 hover:text-on-surface'
                   )}
                   aria-current={isActive(item.href) ? 'page' : undefined}
@@ -87,13 +111,17 @@ export const Navbar = memo(function Navbar() {
 
             <div className={cn(
               "flex items-center gap-2",
-              isFloating && "[&_button]:text-white [&_button]:hover:bg-white/10"
+              isFloating && !floatingLight && "[&_button]:text-white [&_button]:hover:bg-white/10"
             )}>
               <DarkModeToggle />
               <button
                 className={cn(
                   "md:hidden p-2 rounded-full transition-colors",
-                  isFloating ? 'text-white hover:bg-white/10' : 'text-on-surface hover:bg-on-surface/5'
+                  isFloating
+                    ? floatingLight
+                      ? 'text-on-surface hover:bg-on-surface/5'
+                      : 'text-white hover:bg-white/10'
+                    : 'text-on-surface hover:bg-on-surface/5'
                 )}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-expanded={isMobileMenuOpen}
@@ -111,7 +139,11 @@ export const Navbar = memo(function Navbar() {
         id="mobile-menu"
         className={cn(
           'md:hidden fixed top-16 left-0 right-0 z-40 border-b border-outline-variant overflow-hidden transition-all duration-300 ease-in-out',
-          isFloating ? 'bg-gradient-to-b from-scrim/30 to-transparent backdrop-blur-md' : 'bg-surface',
+          isFloating
+            ? floatingLight
+              ? 'bg-white/70 backdrop-blur-md'
+              : 'bg-gradient-to-b from-scrim/40 to-transparent backdrop-blur-md'
+            : 'bg-surface',
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         )}
       >
@@ -129,7 +161,9 @@ export const Navbar = memo(function Navbar() {
                   isActive(item.href)
                     ? 'bg-primary-container text-on-primary-container'
                     : isFloating
-                      ? 'text-white hover:bg-white/10'
+                      ? floatingLight
+                        ? 'text-on-surface hover:bg-on-surface/5'
+                        : 'text-white hover:bg-white/10'
                       : 'text-on-surface hover:bg-on-surface/5'
                 )}
                 aria-current={isActive(item.href) ? 'page' : undefined}
