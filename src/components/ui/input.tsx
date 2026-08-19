@@ -6,18 +6,21 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, error, ...props }, ref) => (
+  ({ className, error, id, ...props }, ref) => (
     <div>
       <input
         ref={ref}
+        id={id}
+        aria-invalid={!!error}
+        aria-describedby={error && id ? `${id}-error` : undefined}
         className={cn(
           'input',
-          error && 'border-error focus:border-error focus:ring-error/20',
+          error && 'border-b-error border-b-2 bg-error/5',
           className
         )}
         {...props}
       />
-      {error && <p className="mt-1 text-sm text-error">{error}</p>}
+      {error && <p id={id ? `${id}-error` : undefined} className="mt-1 text-sm text-error">{error}</p>}
     </div>
   )
 )
