@@ -86,7 +86,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-scrim/40 backdrop-blur-sm animate-fade-in"
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
@@ -101,7 +101,7 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
           <Typography variant="h6" className="text-on-surface-variant">Potensi Desa Kuanyar</Typography>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-highest transition-colors"
+            className="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-highest transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
             aria-label="Tutup modal"
           >
             <X className="w-5 h-5" />
@@ -135,10 +135,10 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                   />
                   {hasMultiple && (
                     <>
-                      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto sebelumnya">
+                      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" aria-label="Foto sebelumnya">
                         <ChevronLeft className="w-5 h-5" />
                       </button>
-                      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors" aria-label="Foto berikutnya">
+                      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" aria-label="Foto berikutnya">
                         <ChevronRight className="w-5 h-5" />
                       </button>
                     </>
@@ -229,14 +229,14 @@ export default function PotensiModal({ item, categoryMeta, isOpen, onClose }: Po
                 <>
                   <button
                     onClick={prev}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
                     aria-label="Foto sebelumnya"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={next}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-scrim/40 text-white hover:bg-scrim/60 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
                     aria-label="Foto berikutnya"
                   >
                     <ChevronRight className="w-5 h-5" />

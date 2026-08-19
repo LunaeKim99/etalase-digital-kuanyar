@@ -24,11 +24,11 @@ export default function ProductCard({ image, name, price, unit, slug }: ProductC
           <Muted className="text-xs inline">{unit}</Muted>
         </div>
         {slug ? (
-          <Button variant="outlined" className="w-full mt-3" asChild>
+          <Button variant="outline" className="w-full mt-3" asChild>
             <Link to={`/produk/${slug}`}>Lihat Detail</Link>
           </Button>
         ) : (
-          <Button variant="outlined" className="w-full mt-3" disabled>
+          <Button variant="outline" className="w-full mt-3" disabled>
             Lihat Detail
           </Button>
         )}

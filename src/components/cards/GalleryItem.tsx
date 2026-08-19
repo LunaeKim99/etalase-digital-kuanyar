@@ -16,9 +16,9 @@ export default function GalleryItem({ image, title }: GalleryItemProps) {
         loading="lazy"
         decoding="async"
       />
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
+      <div className="absolute inset-0 group-hover:bg-scrim/40 transition-colors" />
       {title && (
-        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-scrim/60 to-transparent">
           <Typography variant="h6" className="text-white">
             {title}
           </Typography>

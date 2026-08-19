@@ -35,7 +35,7 @@ export function SEO({
       <html lang="id" />
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="theme-color" content="#166534" />
+      <meta name="theme-color" content="#2563eb" />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />

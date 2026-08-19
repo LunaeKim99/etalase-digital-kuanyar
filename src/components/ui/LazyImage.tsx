@@ -17,7 +17,7 @@ export default function LazyImage({ src, alt, className, width, height, loading 
   if (error) {
     return (
       <div
-        className={cn('bg-surface border border-border rounded-lg flex items-center justify-center text-text-muted', className)}
+        className={cn('bg-surface border border-border rounded-lg flex items-center justify-center text-on-surface-variant', className)}
         style={width && height ? { aspectRatio: width / height } : undefined}
       >
         Gambar tidak tersedia

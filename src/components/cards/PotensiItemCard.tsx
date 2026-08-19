@@ -42,7 +42,7 @@ export default function PotensiItemCard({
         tabIndex={0}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
-        className="cursor-pointer group p-6 hover:shadow-lg transition-all"
+        className="cursor-pointer group p-6 hover:shadow-lg transition-all focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
         aria-label={`Lihat detail ${item.name}`}
       >
         <div className="flex items-start gap-4 mb-4">
@@ -105,7 +105,7 @@ export default function PotensiItemCard({
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className="cursor-pointer group h-full overflow-hidden hover:shadow-lg hover:border-primary transition-all"
+      className="cursor-pointer group h-full overflow-hidden hover:shadow-lg hover:border-primary transition-all focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
       aria-label={`Lihat detail ${item.name}`}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
@@ -129,7 +129,7 @@ export default function PotensiItemCard({
         {(item.rtRw || item.dusun) && (
           <Muted className="text-xs">{[item.rtRw, item.dusun].filter(Boolean).join(' · ')}</Muted>
         )}
-        <Text className="text-sm text-text-muted line-clamp-2 mt-2">{item.description}</Text>
+        <Text className="text-sm text-on-surface-variant line-clamp-2 mt-2">{item.description}</Text>
 
         {item.features && item.features.length > 0 && (
           <div className="flex flex-wrap gap-1 pt-2">
