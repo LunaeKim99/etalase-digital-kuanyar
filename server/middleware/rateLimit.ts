@@ -41,4 +41,4 @@ setInterval(() => {
   for (const [key, bucket] of buckets) {
     if (now >= bucket.resetAt) buckets.delete(key)
   }
-}, 300_000).unref?.()
+}, 300_000).unref()

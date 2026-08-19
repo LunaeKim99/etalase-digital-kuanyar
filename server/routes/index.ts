@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
-import { hashPassword } from '../middleware/password'
-import { authenticateUser, createUser, getUserById } from '../services/catalog'
-import { generateToken, verifyToken } from '../middleware/auth'
-import { checkRateLimit, getClientIp } from '../middleware/rateLimit'
+import { hashPassword } from '../middleware/password.js'
+import { authenticateUser, createUser, getUserById } from '../services/catalog.js'
+import { generateToken, verifyToken } from '../middleware/auth.js'
+import { checkRateLimit, getClientIp } from '../middleware/rateLimit.js'
 
 const publicRoutes = new Hono()
 

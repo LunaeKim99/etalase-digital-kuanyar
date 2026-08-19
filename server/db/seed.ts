@@ -1,7 +1,7 @@
-import { db } from './client'
-import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema'
-import { hashPassword } from '../middleware/password'
-import * as mockData from '../data/mockData'
+import { db } from './client.js'
+import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema.js'
+import { hashPassword } from '../middleware/password.js'
+import * as mockData from '../data/mockData.js'
 import { sql } from 'drizzle-orm'
 
 function kebabCase(s: string): string {
@@ -189,9 +189,7 @@ async function seed() {
   console.log(`  village_profile: ${final.villageProfile}`)
 }
 
-if (import.meta.main) {
-  seed().catch((err) => {
-    console.error('Seed failed:', err)
-    process.exit(1)
-  })
-}
+seed().catch((err) => {
+  console.error('Seed failed:', err)
+  process.exit(1)
+})

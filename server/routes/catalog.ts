@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import type { ContextVariables } from '../middleware/auth'
-import { safeJson } from '../middleware/safe'
+import type { ContextVariables } from '../middleware/auth.js'
+import { safeJson } from '../middleware/safe.js'
 import {
   listUmkms,
   getUmkm,
@@ -25,8 +25,8 @@ import {
   deleteCategory,
   getVillageProfile,
   upsertVillageProfile,
-} from '../services/catalog'
-import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth'
+} from '../services/catalog.js'
+import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
 
