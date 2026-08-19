@@ -13,15 +13,12 @@ const navItems = [
   { label: 'Kontak', href: '/kontak', icon: Phone },
 ]
 
-const heroRoutes = new Set(['/', '/profil', '/potensi', '/berita-galeri', '/kontak'])
-
 export const Navbar = memo(function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const location = useLocation()
-  
-  const isHeroPage = heroRoutes.has(location.pathname)
-  const isTransparent = !isScrolled && isHeroPage
+
+  const isFloating = isScrolled
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,20 +39,20 @@ export const Navbar = memo(function Navbar() {
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          isTransparent
+          isFloating
             ? 'bg-gradient-to-b from-scrim/20 via-scrim/10 to-transparent backdrop-blur-sm'
-            : 'bg-surface/95 backdrop-blur-md shadow-sm border-b border-outline-variant'
+            : 'bg-surface shadow-sm border-b border-outline-variant'
         )}
       >
         <nav className="container" aria-label="Main navigation">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className={cn(
               "flex items-center gap-2 font-heading font-semibold text-lg",
-              isTransparent ? 'text-white' : 'text-on-surface'
+              isFloating ? 'text-white' : 'text-on-surface'
             )} aria-label="Desa Kuanyar - Home">
               <span className={cn(
                 "flex items-center justify-center w-7 h-7 rounded-full",
-                isTransparent ? 'bg-white/20 text-white' : 'text-primary'
+                isFloating ? 'bg-white/20 text-white' : 'text-primary'
               )}>
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill="none"/>
@@ -74,10 +71,10 @@ export const Navbar = memo(function Navbar() {
                   className={cn(
                     'px-4 py-2 rounded-full text-sm font-medium transition-colors',
                     isActive(item.href)
-                      ? isTransparent
+                      ? isFloating
                         ? 'bg-white/15 text-white'
                         : 'bg-primary-container text-on-primary-container'
-                      : isTransparent
+                      : isFloating
                         ? 'text-white/80 hover:bg-white/10 hover:text-white'
                         : 'text-on-surface-variant hover:bg-on-surface/5 hover:text-on-surface'
                   )}
@@ -90,13 +87,13 @@ export const Navbar = memo(function Navbar() {
 
             <div className={cn(
               "flex items-center gap-2",
-              isTransparent && "[&_button]:text-white [&_button]:hover:bg-white/10"
+              isFloating && "[&_button]:text-white [&_button]:hover:bg-white/10"
             )}>
               <DarkModeToggle />
               <button
                 className={cn(
                   "md:hidden p-2 rounded-full transition-colors",
-                  isTransparent ? 'text-white hover:bg-white/10' : 'text-on-surface hover:bg-on-surface/5'
+                  isFloating ? 'text-white hover:bg-white/10' : 'text-on-surface hover:bg-on-surface/5'
                 )}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-expanded={isMobileMenuOpen}
@@ -114,7 +111,7 @@ export const Navbar = memo(function Navbar() {
         id="mobile-menu"
         className={cn(
           'md:hidden fixed top-16 left-0 right-0 z-40 border-b border-outline-variant overflow-hidden transition-all duration-300 ease-in-out',
-          isTransparent ? 'bg-surface-container/95 backdrop-blur-md' : 'bg-surface',
+          isFloating ? 'bg-gradient-to-b from-scrim/30 to-transparent backdrop-blur-md' : 'bg-surface',
           isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         )}
       >
@@ -131,7 +128,9 @@ export const Navbar = memo(function Navbar() {
                   'flex items-center gap-3 px-4 py-3 rounded-full text-sm font-medium transition-colors',
                   isActive(item.href)
                     ? 'bg-primary-container text-on-primary-container'
-                    : 'text-on-surface hover:bg-on-surface/5'
+                    : isFloating
+                      ? 'text-white hover:bg-white/10'
+                      : 'text-on-surface hover:bg-on-surface/5'
                 )}
                 aria-current={isActive(item.href) ? 'page' : undefined}
               >
