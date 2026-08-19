@@ -46,26 +46,36 @@ export default function Home() {
 
   return (
     <>
-      <Section className="pt-24 md:pt-32 pb-12 md:pb-20 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
-        <Container>
+      <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-24 bg-hero-gradient text-white">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
+        </div>
+
+        <Container className="relative">
           <div className="max-w-3xl">
-            <Typography variant="h1" className="mb-4">
+            <h1 className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl leading-tight text-white mb-6 text-balance animate-slide-up">
               Selamat Datang di {profile?.name || 'Desa Kuanyar'}
-            </Typography>
-            <Text className="text-lg text-text-muted mb-8">
+            </h1>
+            <p className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed animate-slide-up">
               {profile?.overview || 'Etalase digital desa untuk memajukan potensi lokal, UMKM, produk, dan wisata desa ke seluruh Indonesia.'}
-            </Text>
-            <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg">
+            </p>
+            <div className="flex flex-wrap gap-4 animate-slide-up">
+              <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
                 <Link to="/potensi">Lihat Potensi Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button
+                asChild
+                size="lg"
+                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm font-semibold"
+              >
                 <Link to="/profil">Profil Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
               </Button>
             </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
       <Section className="py-20 bg-background">
         <Container>

@@ -26,18 +26,24 @@ export default function Kontak() {
 
   return (
     <>
-      <Section className="pt-24 pb-12 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
-        <Container>
+      <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-24 bg-hero-gradient text-white">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
+        </div>
+
+        <Container className="relative">
           <div className="max-w-3xl">
-            <Typography variant="h1" className="mb-4">
+            <Typography variant="h1" className="mb-4 text-white">
               Hubungi Kami
             </Typography>
-            <Text className="text-lg text-on-surface-variant">
+            <p className="text-lg text-white/85">
               Hubungi pemerintah desa atau sampaikan pertanyaan Anda tentang UMKM dan layanan desa
-            </Text>
+            </p>
           </div>
         </Container>
-      </Section>
+      </section>
 
       <Section className="py-16">
         <Container>

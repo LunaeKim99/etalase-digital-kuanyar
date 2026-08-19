@@ -5,48 +5,59 @@
    ============================================================ */
 
 @theme {
-  /* --- M3 Light Theme (default) -------------------------------- */
+  /* --- M3 Light Theme (default) — Blue / Indigo / Cyan ---------- */
 
-  --color-primary: #1a7a4c;
+  --color-primary: #2563eb;
   --color-on-primary: #ffffff;
-  --color-primary-container: #a4f2c6;
-  --color-on-primary-container: #002112;
+  --color-primary-container: #d9e3ff;
+  --color-on-primary-container: #001a41;
 
-  --color-secondary: #4d6356;
+  --color-secondary: #4a90e2;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #d0e8d7;
-  --color-on-secondary-container: #0b1f15;
+  --color-secondary-container: #d6ebff;
+  --color-on-secondary-container: #001e2d;
 
-  --color-tertiary: #3d6373;
+  --color-tertiary: #6366f1;
   --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #c1e8fb;
-  --color-on-tertiary-container: #001f2b;
+  --color-tertiary-container: #e1e0ff;
+  --color-on-tertiary-container: #18106b;
 
   --color-error: #ba1a1a;
   --color-on-error: #ffffff;
   --color-error-container: #ffdad6;
   --color-on-error-container: #410002;
 
-  --color-background: #fbfdf7;
-  --color-on-background: #191c1a;
-  --color-surface: #fbfdf7;
-  --color-on-surface: #191c1a;
-  --color-on-surface-variant: #404943;
+  --color-background: #f8fafc;
+  --color-on-background: #0f172a;
+  --color-surface: #f8fafc;
+  --color-on-surface: #0f172a;
+  --color-on-surface-variant: #42536a;
 
-  --color-surface-dim: #d9dbd7;
-  --color-surface-bright: #fbfdf7;
+  --color-surface-dim: #d7dde8;
+  --color-surface-bright: #f8fafc;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f3f5f1;
-  --color-surface-container: #edefe9;
-  --color-surface-container-high: #e7eae4;
-  --color-surface-container-highest: #e2e4df;
+  --color-surface-container-low: #f1f5fb;
+  --color-surface-container: #ebf0f8;
+  --color-surface-container-high: #e2e8f2;
+  --color-surface-container-highest: #d9e0ec;
 
-  --color-outline: #707972;
-  --color-outline-variant: #c0c9c0;
+  --color-outline: #717e99;
+  --color-outline-variant: #bfc6d6;
 
-  --color-inverse-surface: #2e312e;
-  --color-inverse-on-surface: #eff1ed;
-  --color-inverse-primary: #88d5ab;
+  --color-inverse-surface: #1e2330;
+  --color-inverse-on-surface: #e5eaf3;
+  --color-inverse-primary: #abc7ff;
+
+  /* --- Brand gradient stops (referenced by .bg-hero-gradient etc.) */
+  --color-brand-900: #1e3a8a;
+  --color-brand-800: #1e40af;
+  --color-brand-700: #1d4ed8;
+  --color-brand-600: #2563eb;
+  --color-brand-500: #3b82f6;
+  --color-accent-600: #4f46e5;
+  --color-accent-500: #6366f1;
+  --color-cyan-500: #0ea5e9;
+  --color-cyan-400: #38bdf8;
 
   /* --- Legacy aliases ------------------------------------------- */
 
@@ -102,48 +113,46 @@
    M3 Dark Theme
    ============================================================ */
 .dark {
-  --color-primary: #88d5ab;
-  --color-on-primary: #003920;
-  --color-primary-container: #005233;
-  --color-on-primary-container: #a4f2c6;
+  --color-primary: #abc7ff;
+  --color-on-primary: #003065;
+  --color-primary-container: #0e4596;
+  --color-on-primary-container: #d9e3ff;
 
-  --color-secondary: #b4ccb9;
-  --color-on-secondary: #22352a;
-  --color-secondary-container: #354b3f;
-  --color-on-secondary-container: #d0e8d7;
+  --color-secondary: #8fcbff;
+  --color-on-secondary: #003049;
+  --color-secondary-container: #00507a;
+  --color-on-secondary-container: #d6ebff;
 
-  --color-tertiary: #a5cce0;
-  --color-on-tertiary: #073543;
-  --color-tertiary-container: #244c5b;
-  --color-on-tertiary-container: #c1e8fb;
+  --color-tertiary: #c2c0ff;
+  --color-on-tertiary: #22157d;
+  --color-tertiary-container: #3d359e;
+  --color-on-tertiary-container: #e1e0ff;
 
   --color-error: #ffb4ab;
   --color-on-error: #690005;
   --color-error-container: #93000a;
   --color-on-error-container: #ffdad6;
 
-  --color-background: #111413;
-  --color-on-background: #e1e3df;
-  --color-surface: #111413;
-  --color-on-surface: #e1e3df;
-  --color-on-surface-variant: #c0c9c0;
+  --color-background: #0b1019;
+  --color-on-background: #dde3f0;
+  --color-surface: #0b1019;
+  --color-on-surface: #dde3f0;
+  --color-on-surface-variant: #8892a8;
 
-  --color-surface-dim: #111413;
-  --color-surface-bright: #373936;
-  --color-surface-container-lowest: #0c0f0d;
-  --color-surface-container-low: #191c1a;
-  --color-surface-container: #1d201d;
-  --color-surface-container-high: #272a28;
-  --color-surface-container-highest: #323532;
+  --color-surface-dim: #0b1019;
+  --color-surface-bright: #2a3142;
+  --color-surface-container-lowest: #060a12;
+  --color-surface-container-low: #131a28;
+  --color-surface-container: #171e2d;
+  --color-surface-container-high: #212837;
+  --color-surface-container-highest: #2b3243;
 
-  --color-outline: #8a9388;
-  --color-outline-variant: #404943;
+  --color-outline: #5a6580;
+  --color-outline-variant: #2d3548;
 
-  --color-inverse-surface: #e1e3df;
-  --color-inverse-on-surface: #2e312e;
-  --color-inverse-primary: #1a7a4c;
-
-  /* Legacy aliases resolve via M3 tokens — no per-alias overrides needed */
+  --color-inverse-surface: #dde3f0;
+  --color-inverse-on-surface: #1e2330;
+  --color-inverse-primary: #2563eb;
 }
 
 /* ============================================================
@@ -603,6 +612,28 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  /* --- Brand Gradient Utilities ----------------------------------- */
+
+  .bg-hero-gradient {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #2563eb 50%, #4f46e5 75%, #0ea5e9 100%);
+  }
+
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #4f46e5 100%);
+  }
+
+  .bg-cta-gradient {
+    background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+  }
+
+  .bg-hero-gradient-soft {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #d9e3ff 100%);
+  }
+
+  .dark .bg-hero-gradient-soft {
+    background: linear-gradient(135deg, #0e4596 0%, #1e40af 40%, #0b1019 100%);
   }
 }
 

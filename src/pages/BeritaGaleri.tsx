@@ -16,27 +16,33 @@ export default function BeritaGaleri() {
 
   return (
     <>
-      <Section className="pt-24 pb-12 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
-        <Container>
+      <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-24 bg-hero-gradient text-white">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
+        </div>
+
+        <Container className="relative">
           <div className="max-w-3xl">
-            <Typography variant="h1" className="mb-4">
+            <Typography variant="h1" className="mb-4 text-white">
               Berita & Galeri
             </Typography>
-            <Text className="text-lg text-on-surface-variant mb-8">
+            <p className="text-lg text-white/85 mb-8">
               Informasi terkini dan dokumentasi kegiatan Desa Kuanyar
-            </Text>
+            </p>
             <div className="relative max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60 pointer-events-none" />
               <Input
                 placeholder="Cari berita..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 py-3"
+                className="pl-10 py-3 bg-white/15 border-white/30 text-white placeholder:text-white/60 focus:border-white focus:bg-white/20"
               />
             </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
       <Section className="py-16">
         <Container>

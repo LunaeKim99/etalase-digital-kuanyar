@@ -49,12 +49,12 @@ export default function Profil() {
   if (isLoading) {
     return (
       <>
-        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-container via-background to-surface-container-low">
+        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-hero-gradient">
           <Container>
             <div className="max-w-3xl space-y-4">
-              <div className="h-12 w-3/4 bg-surface-container-high rounded animate-pulse" />
-              <div className="h-6 w-full bg-surface-container-high rounded animate-pulse" />
-              <div className="h-6 w-2/3 bg-surface-container-high rounded animate-pulse" />
+              <div className="h-12 w-3/4 bg-white/20 rounded animate-pulse" />
+              <div className="h-6 w-full bg-white/15 rounded animate-pulse" />
+              <div className="h-6 w-2/3 bg-white/15 rounded animate-pulse" />
             </div>
           </Container>
         </Section>
@@ -85,21 +85,27 @@ export default function Profil() {
   return (
     <>
       {/* 1. Hero */}
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-container via-background to-surface-container-low">
-        <Container>
+      <section className="relative overflow-hidden pt-28 md:pt-32 lg:pt-36 pb-12 bg-hero-gradient text-white">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
+        </div>
+
+        <Container className="relative">
           <div className="max-w-3xl">
-            <Typography variant="h1" className="mb-4">
+            <Typography variant="h1" className="mb-4 text-white">
               Profil {villageName}
             </Typography>
-            <Text className="text-lg text-on-surface-variant mb-8">
+            <Text className="text-lg text-white/85 mb-8">
               {profile?.overview || profilHero.subtitle}
             </Text>
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
               <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
             </Button>
           </div>
         </Container>
-      </Section>
+      </section>
 
       {/* 2. Stat Cards */}
       <Section className="py-16">
