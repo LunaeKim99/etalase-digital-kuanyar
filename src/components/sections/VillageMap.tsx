@@ -36,9 +36,9 @@ export default function VillageMap({
       />
       <Marker position={CENTER}>
         <Popup>
-          <div className="text-center">
-            <Typography variant="h5">Balai Desa Kuanyar</Typography>
-            <Muted className="text-sm">{contactInfo}</Muted>
+          <div className="text-center p-1">
+            <Typography variant="h6" className="text-on-surface mb-1">Balai Desa Kuanyar</Typography>
+            <Muted className="text-xs text-on-surface-variant">{contactInfo}</Muted>
           </div>
         </Popup>
       </Marker>

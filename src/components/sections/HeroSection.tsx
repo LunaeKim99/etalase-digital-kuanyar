@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ title, subtitle, ctaPrimary, ctaSecondary }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen pt-28 md:pt-32 lg:pt-36 flex items-center bg-linear-to-br from-primary-light via-background to-surface dark:from-primary-light/20 dark:via-background dark:to-surface">
+    <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
       <Container>
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-slide-up">
@@ -30,9 +30,9 @@ export default function HeroSection({ title, subtitle, ctaPrimary, ctaSecondary 
             </div>
           </div>
           <div className="relative w-full aspect-square lg:aspect-[4/3]">
-            <div className="absolute w-64 h-64 rounded-full blur-3xl opacity-30 bg-primary/40 top-6 left-6" />
-            <div className="absolute w-48 h-48 rounded-full blur-3xl opacity-30 bg-accent/30 bottom-10 right-8" />
-            <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-30 bg-secondary/20 top-1/2 left-1/3" />
+            <div className="absolute w-64 h-64 rounded-full blur-3xl opacity-20 bg-primary-container top-6 left-6" />
+            <div className="absolute w-48 h-48 rounded-full blur-3xl opacity-15 bg-tertiary-container bottom-10 right-8" />
+            <div className="absolute w-72 h-72 rounded-full blur-3xl opacity-15 bg-secondary-container top-1/2 left-1/3" />
           </div>
         </div>
       </Container>
