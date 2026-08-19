@@ -17,6 +17,9 @@
     "test:auth": "tsx scripts/test-auth.mts",
     "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"
   },
+  "allowScripts": {
+    "esbuild": true
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
     "@libsql/client": "^0.17.4",
