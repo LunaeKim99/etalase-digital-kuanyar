@@ -43,61 +43,120 @@ export default function AdminLayout() {
   const isAdmin = user.role === 'admin'
   const navItems = isAdmin ? adminNavItems : ownerNavItems
 
-  return (
-    <div className="flex min-h-screen bg-surface">
-      <aside
-        className={`fixed top-0 left-0 h-screen w-64 bg-background border-r border-border transform transition-transform duration-300 z-50 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <span className="font-heading font-bold text-xl text-primary">
-            {isAdmin ? 'Desa Kuanyar - Admin' : 'UMKM Dashboard'}
-          </span>
-          <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setSidebarOpen(false)}>
-            <X className="w-5 h-5" />
-          </Button>
-        </div>
-        <nav className="py-4 space-y-1">
-          {navItems.map((item) => (
+  const drawerContent = (
+    <div className="flex flex-col h-full">
+      {/* Drawer Header */}
+      <div className="flex items-center justify-between px-4 h-16 border-b border-outline-variant">
+        <span className="font-heading font-semibold text-base text-on-surface truncate">
+          {isAdmin ? 'Desa Kuanyar' : 'UMKM Dashboard'}
+        </span>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Tutup drawer"
+        >
+          <X className="w-5 h-5" />
+        </Button>
+      </div>
+
+      {/* Nav Items */}
+      <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto" aria-label="Admin navigation">
+        {navItems.map((item) => {
+          const Icon = item.icon
+          return (
             <NavLink
               key={item.href}
               to={item.href}
+              onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-lg mx-2 text-sm font-medium transition-colors ${
+                `flex items-center gap-3 px-4 py-2.5 rounded-full text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-primary text-white'
-                    : 'text-text-muted hover:text-primary hover:bg-surface'
+                    ? 'bg-primary-container text-on-primary-container'
+                    : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`
               }
             >
-              <item.icon className="w-5 h-5" />
+              <Icon className="w-5 h-5 shrink-0" />
               {item.label}
             </NavLink>
-          ))}
-          <button
-            onClick={logout}
-            className="w-full flex items-center gap-3 px-4 py-3 mx-2 mt-8 rounded-lg text-sm font-medium text-text-muted hover:text-primary hover:bg-surface transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            Keluar
-          </button>
-        </nav>
+          )
+        })}
+      </nav>
+
+      {/* Logout at bottom */}
+      <div className="p-2 border-t border-outline-variant">
+        <button
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm font-medium text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          Keluar
+        </button>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="flex min-h-screen bg-surface-container-lowest">
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile drawer */}
+      <aside
+        className={`fixed top-0 left-0 h-screen w-72 bg-surface-container-low z-50 transform transition-transform duration-300 md:hidden ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        aria-label="Admin navigation drawer"
+      >
+        {drawerContent}
       </aside>
 
-      <div className="flex-1 md:ml-64">
-        <header className="bg-background border-b border-border px-6 py-4 flex items-center justify-between">
-          <h1 className="font-heading font-bold text-xl text-primary">
-            {isAdmin ? 'Dashboard Admin' : 'Dashboard UMKM'}
-          </h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-text-muted">
-              {user.name} ({user.role === 'admin' ? 'Administrator' : 'Pemilik UMKM'})
-            </span>
-            <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setSidebarOpen(true)}>
+      {/* Desktop permanent drawer */}
+      <aside
+        className="hidden md:flex md:flex-col md:w-72 md:fixed md:top-0 md:left-0 md:h-screen bg-surface-container-low border-r border-outline-variant"
+        aria-label="Admin navigation"
+      >
+        {drawerContent}
+      </aside>
+
+      {/* Main content area */}
+      <div className="flex-1 md:ml-72 flex flex-col min-h-screen">
+        {/* Top App Bar */}
+        <header className="sticky top-0 z-30 h-16 bg-surface border-b border-outline-variant px-4 md:px-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Buka menu"
+            >
               <Menu className="w-5 h-5" />
             </Button>
+            <h1 className="font-heading font-semibold text-base md:text-lg text-on-surface truncate">
+              {isAdmin ? 'Dashboard Admin' : 'Dashboard UMKM'}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline text-sm text-on-surface-variant">
+              {user.name} ({user.role === 'admin' ? 'Administrator' : 'Pemilik UMKM'})
+            </span>
+            <span className="sm:hidden text-sm text-on-surface-variant truncate max-w-[120px]">
+              {user.name}
+            </span>
           </div>
         </header>
-        <main className="p-6">
+
+        {/* Page content */}
+        <main className="flex-1 p-4 md:p-6">
           <Outlet />
         </main>
       </div>
