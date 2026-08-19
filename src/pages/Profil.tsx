@@ -14,6 +14,7 @@ import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import MapLazy from '@/components/sections/MapLazy'
 import OrganizationChart from '@/components/sections/OrganizationChart'
 import { DataTable, type Column } from '@/components/ui/DataTable'
+import { PageHero } from '@/components/sections/PageHero'
 import {
   profilHero,
   geography,
@@ -49,15 +50,9 @@ export default function Profil() {
   if (isLoading) {
     return (
       <>
-        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-hero-gradient">
-          <Container>
-            <div className="max-w-3xl space-y-4">
-              <div className="h-12 w-3/4 bg-white/20 rounded animate-pulse" />
-              <div className="h-6 w-full bg-white/15 rounded animate-pulse" />
-              <div className="h-6 w-2/3 bg-white/15 rounded animate-pulse" />
-            </div>
-          </Container>
-        </Section>
+        <PageHero title={`Profil ${villageName}`} subtitle="Memuat...">
+          <div className="h-10 w-40 bg-white/20 rounded-full animate-pulse" />
+        </PageHero>
         <Section className="py-16">
           <Container>
             <LoadingSkeleton variant="card" count={4} />
@@ -85,27 +80,11 @@ export default function Profil() {
   return (
     <>
       {/* 1. Hero */}
-      <section className="relative overflow-hidden pt-28 md:pt-32 lg:pt-36 pb-12 bg-hero-gradient text-white">
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
-          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
-        </div>
-
-        <Container className="relative">
-          <div className="max-w-3xl">
-            <Typography variant="h1" className="mb-4 text-white">
-              Profil {villageName}
-            </Typography>
-            <Text className="text-lg text-white/85 mb-8">
-              {profile?.overview || profilHero.subtitle}
-            </Text>
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
-              <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
-            </Button>
-          </div>
-        </Container>
-      </section>
+      <PageHero title={`Profil ${villageName}`} subtitle={profile?.overview || profilHero.subtitle}>
+        <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
+          <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
+        </Button>
+      </PageHero>
 
       {/* 2. Stat Cards */}
       <Section className="py-16">

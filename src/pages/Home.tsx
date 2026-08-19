@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/section'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Typography, Text, Muted } from '@/components/ui/typography'
+import { PageHero } from '@/components/sections/PageHero'
 import { ArrowRight, Users, Store, Image, Wheat } from 'lucide-react'
 import { getAllItems, getCategoryMeta } from '@/data/potensiData'
 
@@ -46,36 +47,22 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-24 bg-hero-gradient text-white">
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-cyan-400/20 blur-3xl" />
-          <div className="absolute top-1/3 right-1/3 w-72 h-72 rounded-full bg-indigo-400/20 blur-3xl" />
-        </div>
-
-        <Container className="relative">
-          <div className="max-w-3xl">
-            <h1 className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl leading-tight text-white mb-6 text-balance animate-slide-up">
-              Selamat Datang di {profile?.name || 'Desa Kuanyar'}
-            </h1>
-            <p className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed animate-slide-up">
-              {profile?.overview || 'Etalase digital desa untuk memajukan potensi lokal, UMKM, produk, dan wisata desa ke seluruh Indonesia.'}
-            </p>
-            <div className="flex flex-wrap gap-4 animate-slide-up">
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
-                <Link to="/potensi">Lihat Potensi Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                className="bg-white/10 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm font-semibold"
-              >
-                <Link to="/profil">Profil Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        animated
+        title={`Selamat Datang di ${profile?.name || 'Desa Kuanyar'}`}
+        subtitle={profile?.overview || 'Etalase digital desa untuk memajukan potensi lokal, UMKM, produk, dan wisata desa ke seluruh Indonesia.'}
+      >
+        <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
+          <Link to="/potensi">Lihat Potensi Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
+        </Button>
+        <Button
+          asChild
+          size="lg"
+          className="bg-white/10 text-white border border-white/30 hover:bg-white/20 backdrop-blur-sm font-semibold"
+        >
+          <Link to="/profil">Profil Desa <ArrowRight className="w-4 h-4 ml-2" /></Link>
+        </Button>
+      </PageHero>
 
       <Section className="py-20 bg-background">
         <Container>
@@ -83,15 +70,15 @@ export default function Home() {
             <Typography variant="h2" className="mb-4">
               Statistik Desa
             </Typography>
-            <Text className="text-text-muted max-w-2xl mx-auto">
+            <Text className="text-on-surface-variant max-w-2xl mx-auto">
               Data terkini potensi ekonomi dan kreatif Desa Kuanyar
             </Text>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statCards.map((stat, i) => (
-              <Card key={i} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className={`${stat.bg} ${stat.text} w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4`}>
-                  <stat.icon className="w-7 h-7" />
+              <Card key={i} className="p-4 sm:p-6 text-center hover:shadow-lg transition-shadow">
+                <div className={`${stat.bg} ${stat.text} w-10 h-10 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                  <stat.icon className="w-5 h-5 sm:w-7 sm:h-7" />
                 </div>
                 <Typography variant="h3" className="mb-1">
                   {stat.value}
@@ -109,7 +96,7 @@ export default function Home() {
             <Typography variant="h2" className="mb-4">
               Potensi Unggulan
             </Typography>
-            <Text className="text-text-muted max-w-2xl mx-auto">
+            <Text className="text-on-surface-variant max-w-2xl mx-auto">
               Hasil observasi lapangan: UMKM dan konveksi yang menjadi penggerak ekonomi Desa Kuanyar
             </Text>
           </div>
@@ -137,7 +124,7 @@ export default function Home() {
                         {item.name}
                       </Typography>
                       {item.owner && <Muted className="text-sm">{item.owner}</Muted>}
-                      <Text className="text-sm text-text-muted line-clamp-2 mt-1">
+                      <Text className="text-sm text-on-surface-variant line-clamp-2 mt-1">
                         {item.description}
                       </Text>
                     </div>
@@ -160,7 +147,7 @@ export default function Home() {
             <Typography variant="h2" className="mb-4">
               Berita & Kegiatan Terbaru
             </Typography>
-            <Text className="text-text-muted max-w-2xl mx-auto">
+            <Text className="text-on-surface-variant max-w-2xl mx-auto">
               Ikuti perkembangan terbaru kegiatan dan pembangunan di Desa Kuanyar
             </Text>
           </div>
@@ -209,7 +196,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <Image className="w-12 h-12 text-text-muted mx-auto mb-3" />
+              <Image className="w-12 h-12 text-on-surface-variant mx-auto mb-3" />
               <Muted>Belum ada berita terbaru.</Muted>
             </div>
           )}
