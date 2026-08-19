@@ -31,34 +31,34 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface p-4">
+    <div className="min-h-screen flex items-center justify-center bg-surface-container-low p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" fill="none"/>
             </svg>
-            <span className="font-heading font-bold text-xl text-text">Desa Kuanyar</span>
+            <span className="font-heading font-bold text-xl text-on-surface">Desa Kuanyar</span>
           </div>
           <Typography variant="h4">Masuk ke Dashboard</Typography>
-          <p className="text-text-muted mt-2 text-sm">
+          <p className="text-on-surface-variant mt-2 text-sm">
             Masuk untuk mengelola konten dan UMKM desa
           </p>
         </div>
 
-        <Card className="p-8">
+        <Card variant="elevated" className="p-8">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
+            <div className="mb-4 p-3 bg-error-container text-on-error-container rounded-2xl flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
               <span className="text-sm">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="label">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant pointer-events-none" />
                 <Input
                   type="email"
                   placeholder="admin@kuanyar.desa.id"
@@ -71,9 +71,9 @@ export default function AdminLogin() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="label">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant pointer-events-none" />
                 <Input
                   type="password"
                   placeholder="••••••••"
@@ -93,13 +93,13 @@ export default function AdminLogin() {
               {mutation.isPending ? 'Memproses...' : 'Masuk'}
             </Button>
 
-            <p className="text-center text-sm text-text-muted mt-4">
+            <p className="text-center text-sm text-on-surface-variant mt-4">
               Akun demo: admin@kuanyar.desa.id / admin123
             </p>
           </form>
         </Card>
 
-        <div className="text-center mt-6 text-sm text-text-muted">
+        <div className="text-center mt-6 text-sm text-on-surface-variant">
           <Link to="/" className="hover:text-primary transition-colors">
             Kembali ke Beranda
           </Link>

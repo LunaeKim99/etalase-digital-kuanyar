@@ -77,10 +77,10 @@ export default function AdminUmkm() {
     { key: 'address', header: 'Alamat', cell: (row: any) => <span className="truncate max-w-xs">{row.address}</span> },
     { key: 'whatsapp', header: 'WhatsApp', cell: (row: any) => <span>{row.whatsapp}</span> },
     { key: 'status', header: 'Status', cell: (row: any) => (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${
-        row.status === 'approved' ? 'bg-green-100 text-green-700' :
-        row.status === 'rejected' ? 'bg-red-100 text-red-700' :
-        'bg-yellow-100 text-yellow-700'
+      <span className={`badge ${
+        row.status === 'approved' ? '' :
+        row.status === 'rejected' ? 'badge-error' :
+        'badge-secondary'
       }`}>{row.status}</span>
     )},
   ]
@@ -95,17 +95,17 @@ export default function AdminUmkm() {
       </div>
 
       {showForm && (
-        <Card className="p-6">
+        <Card variant="filled" className="p-6">
           <Typography variant="h4" className="mb-4">{editing ? 'Edit UMKM' : 'Tambah UMKM'}</Typography>
           <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Pemilik ID *</label>
+                <label className="label">Pemilik ID *</label>
                 <Input type="number" value={formData.ownerId} onChange={e => setFormData({...formData, ownerId: parseInt(e.target.value)})} required />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
-                <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value as any})} className="w-full px-3 py-2 border border-border rounded-lg">
+                <label className="label">Status</label>
+                <select value={formData.status} onChange={e => setFormData({...formData, status: e.target.value as any})} className="w-full px-4 h-10 bg-surface-container-highest border border-outline rounded-full text-on-surface text-sm focus:border-primary focus:outline-none transition-colors">
                   <option value="pending">Pending</option>
                   <option value="approved">Disetujui</option>
                   <option value="rejected">Ditolak</option>
@@ -113,25 +113,25 @@ export default function AdminUmkm() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Nama UMKM *</label>
+              <label className="label">Nama UMKM *</label>
               <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Deskripsi</label>
-              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 border border-border rounded-lg" rows={3} />
+              <label className="label">Deskripsi</label>
+              <textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 bg-surface-container-highest border border-outline rounded-xl text-on-surface text-sm focus:border-primary focus:outline-none transition-colors resize-y" rows={3} />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Alamat</label>
+                <label className="label">Alamat</label>
                 <Input value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">WhatsApp</label>
+                <label className="label">WhatsApp</label>
                 <Input value={formData.whatsapp} onChange={e => setFormData({...formData, whatsapp: e.target.value})} placeholder="628xxxxxxxxxx" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Logo URL</label>
+              <label className="label">Logo URL</label>
               <Input value={formData.logo} onChange={e => setFormData({...formData, logo: e.target.value})} placeholder="https://..." />
             </div>
             <div className="flex gap-2">
@@ -147,8 +147,8 @@ export default function AdminUmkm() {
           data={list.data ?? []}
           columns={columns}
           actions={[
-            { icon: Edit, onClick: handleEdit, label: 'Edit', className: 'text-blue-600 hover:text-blue-800' },
-            { icon: Trash2, onClick: handleDelete, label: 'Hapus', className: 'text-red-600 hover:text-red-800' },
+            { icon: Edit, onClick: handleEdit, label: 'Edit' },
+            { icon: Trash2, onClick: handleDelete, label: 'Hapus' },
           ]}
         />
       </Card>
