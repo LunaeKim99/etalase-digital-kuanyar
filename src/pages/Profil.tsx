@@ -49,12 +49,12 @@ export default function Profil() {
   if (isLoading) {
     return (
       <>
-        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
+        <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-container via-background to-surface-container-low">
           <Container>
             <div className="max-w-3xl space-y-4">
-              <div className="h-12 w-3/4 bg-surface-hover rounded animate-pulse" />
-              <div className="h-6 w-full bg-surface-hover rounded animate-pulse" />
-              <div className="h-6 w-2/3 bg-surface-hover rounded animate-pulse" />
+              <div className="h-12 w-3/4 bg-surface-container-high rounded animate-pulse" />
+              <div className="h-6 w-full bg-surface-container-high rounded animate-pulse" />
+              <div className="h-6 w-2/3 bg-surface-container-high rounded animate-pulse" />
             </div>
           </Container>
         </Section>
@@ -85,13 +85,13 @@ export default function Profil() {
   return (
     <>
       {/* 1. Hero */}
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
+      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-container via-background to-surface-container-low">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
               Profil {villageName}
             </Typography>
-            <Text className="text-lg text-text-muted mb-8">
+            <Text className="text-lg text-on-surface-variant mb-8">
               {profile?.overview || profilHero.subtitle}
             </Text>
             <Button asChild size="lg">
@@ -106,9 +106,9 @@ export default function Profil() {
         <Container>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {infoCards.map((card, i) => (
-              <Card key={i} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
-                  <card.icon className="w-7 h-7" />
+              <Card key={i} variant="filled" className="p-6 text-center hover:shadow-lg transition-shadow">
+                <div className="w-14 h-14 rounded-2xl bg-primary-container flex items-center justify-center mx-auto mb-4">
+                  <card.icon className="w-7 h-7 text-primary" />
                 </div>
                 <Typography variant="h3" className="mb-1">{card.value}</Typography>
                 <Typography variant="h5" className="text-primary mb-1">{card.label}</Typography>
@@ -120,13 +120,13 @@ export default function Profil() {
       </Section>
 
       {/* 3. Lokasi & Batas Wilayah */}
-      <Section className="py-16 bg-surface">
+      <Section className="py-16 bg-surface-container-low">
         <Container>
           <Typography variant="h2" className="mb-8">Lokasi & Batas Wilayah</Typography>
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
               <Typography variant="h3" className="mb-4">Peta Desa Kuanyar</Typography>
-              <div className="rounded-xl overflow-hidden shadow-lg border border-border">
+              <div className="rounded-xl overflow-hidden shadow-lg border border-outline-variant">
                 <MapLazy villageName={villageName} contactInfo={contactInfo} />
               </div>
               <div className="mt-4">
@@ -145,11 +145,11 @@ export default function Profil() {
             <div className="space-y-6">
               <div>
                 <Typography variant="h4" className="mb-3">Geografis</Typography>
-                <ul className="space-y-2 text-sm">
+                <ul className="text-sm">
                   {geography.items.map((g) => (
-                    <li key={g.label} className="flex justify-between gap-4">
-                      <span className="text-text-muted shrink-0">{g.label}</span>
-                      <span className="text-text text-right">{g.value}</span>
+                    <li key={g.label} className="flex justify-between gap-4 py-2 border-b border-outline-variant last:border-0">
+                      <span className="text-on-surface-variant shrink-0">{g.label}</span>
+                      <span className="text-on-surface text-right">{g.value}</span>
                     </li>
                   ))}
                 </ul>
@@ -158,7 +158,7 @@ export default function Profil() {
                 <Typography variant="h4" className="mb-3">Batas Wilayah</Typography>
                 <div className="grid grid-cols-2 gap-3">
                   {batasWilayah.map((b) => (
-                    <Card key={b.arah} className="p-4 text-center">
+                    <Card key={b.arah} variant="filled" className="p-4 text-center">
                       <Typography variant="h6" className="mb-1">{b.arah}</Typography>
                       <Muted className="text-sm">{b.desa}</Muted>
                     </Card>
@@ -176,9 +176,9 @@ export default function Profil() {
           <Typography variant="h2" className="mb-8">Penggunaan Lahan</Typography>
           <div className="grid md:grid-cols-3 gap-6">
             {penggunaanLahan.map((p) => (
-              <Card key={p.kategori} className="p-6">
+              <Card key={p.kategori} variant="filled" className="p-6">
                 <Typography variant="h4" className="mb-2">{p.kategori}</Typography>
-                <Text className="text-sm text-text-muted">{p.deskripsi}</Text>
+                <Text className="text-sm text-on-surface-variant">{p.deskripsi}</Text>
               </Card>
             ))}
           </div>
@@ -186,12 +186,12 @@ export default function Profil() {
       </Section>
 
       {/* 5. Sejarah Desa */}
-      <Section className="py-16 bg-surface">
+      <Section className="py-16 bg-surface-container-low">
         <Container>
           <Typography variant="h2" className="mb-8">Sejarah Desa Kuanyar</Typography>
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <Text className="text-text-muted leading-relaxed">{sejarahNaratif}</Text>
+              <Text className="text-on-surface-variant leading-relaxed">{sejarahNaratif}</Text>
               <div className="mt-6">
                 <Typography variant="h4" className="mb-3">Tokoh Penerus</Typography>
                 <div className="space-y-3">
@@ -211,19 +211,19 @@ export default function Profil() {
             </div>
             <div>
               <Typography variant="h4" className="mb-3">Periode Pemerintahan Desa</Typography>
-              <div className="overflow-x-auto rounded-lg border border-border">
+              <div className="overflow-x-auto rounded-xl border border-outline-variant">
                 <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-surface border-b border-border">
-                      <th className="text-left px-4 py-2 font-semibold text-text">Nama</th>
-                      <th className="text-left px-4 py-2 font-semibold text-text">Periode</th>
+                  <thead className="bg-surface-container-highest">
+                    <tr className="border-b border-outline-variant">
+                      <th className="text-left px-4 py-3 font-medium text-on-surface text-sm">Nama</th>
+                      <th className="text-left px-4 py-3 font-medium text-on-surface text-sm">Periode</th>
                     </tr>
                   </thead>
                   <tbody>
                     {periodePemerintahan.map((p) => (
-                      <tr key={p.nama + p.periode} className="border-b border-border/50">
-                        <td className="px-4 py-2 text-text">{p.nama}</td>
-                        <td className="px-4 py-2 text-text-muted">{p.periode}</td>
+                      <tr key={p.nama + p.periode} className="border-b border-outline-variant last:border-0 hover:bg-surface-container-low transition-colors">
+                        <td className="px-4 py-3 text-on-surface">{p.nama}</td>
+                        <td className="px-4 py-3 text-on-surface-variant">{p.periode}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -240,13 +240,13 @@ export default function Profil() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <Typography variant="h3" className="mb-4">Visi</Typography>
-              <Text className="text-text-muted leading-relaxed">
+              <Text className="text-on-surface-variant leading-relaxed">
                 {profile?.vision || visionMission.vision}
               </Text>
             </div>
             <div>
               <Typography variant="h3" className="mb-4">Misi</Typography>
-              <Text className="text-text-muted leading-relaxed whitespace-pre-line">
+              <Text className="text-on-surface-variant leading-relaxed whitespace-pre-line">
                 {profile?.mission || visionMission.mission.join('\n')}
               </Text>
             </div>
@@ -255,21 +255,21 @@ export default function Profil() {
       </Section>
 
       {/* 7. Demografi & Mata Pencaharian */}
-      <Section className="py-16 bg-surface">
+      <Section className="py-16 bg-surface-container-low">
         <Container>
           <Typography variant="h2" className="mb-8">Demografi & Mata Pencaharian</Typography>
           <div className="grid sm:grid-cols-3 gap-6 mb-8">
-            <Card className="p-6 text-center">
+            <Card variant="filled" className="p-6 text-center">
               <Users className="w-8 h-8 text-primary mx-auto mb-2" />
               <Typography variant="h3" className="mb-1">{demografiPenduduk.total.toLocaleString('id-ID')}</Typography>
               <Muted>Total Jiwa</Muted>
             </Card>
-            <Card className="p-6 text-center">
+            <Card variant="filled" className="p-6 text-center">
               <Users className="w-8 h-8 text-primary mx-auto mb-2" />
               <Typography variant="h3" className="mb-1">{demografiPenduduk.laki.toLocaleString('id-ID')}</Typography>
               <Muted>Laki-laki</Muted>
             </Card>
-            <Card className="p-6 text-center">
+            <Card variant="filled" className="p-6 text-center">
               <Users className="w-8 h-8 text-primary mx-auto mb-2" />
               <Typography variant="h3" className="mb-1">{demografiPenduduk.perempuan.toLocaleString('id-ID')}</Typography>
               <Muted>Perempuan</Muted>
@@ -291,11 +291,11 @@ export default function Profil() {
       </Section>
 
       {/* 9. Potensi Desa */}
-      <Section className="py-16 bg-surface">
+      <Section className="py-16 bg-surface-container-low">
         <Container>
           <div className="flex items-end justify-between mb-8">
             <Typography variant="h2">Potensi Desa</Typography>
-            <Link to="/potensi" className="text-primary hover:text-primary-hover font-medium text-sm">
+            <Link to="/potensi" className="text-primary hover:text-on-primary-container font-medium text-sm transition-colors">
               Lihat Semua Potensi →
             </Link>
           </div>
@@ -303,20 +303,20 @@ export default function Profil() {
             {potensiDesa.map((p) => {
               const Icon = iconMap[p.ikon] ?? Wheat
               return (
-                <Card key={p.kategori} className="p-6">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    <Icon className="w-7 h-7" />
+                <Card key={p.kategori} variant="filled" className="p-6">
+                  <div className="w-14 h-14 rounded-2xl bg-primary-container flex items-center justify-center mb-4">
+                    <Icon className="w-7 h-7 text-primary" />
                   </div>
                   <Typography variant="h4" className="mb-4">{p.judul}</Typography>
                   <div className="space-y-3 mb-6">
                     {p.items.map((item) => (
                       <div key={item.judul}>
                         <Typography variant="h6" className="mb-1">{item.judul}</Typography>
-                        <Text className="text-sm text-text-muted">{item.deskripsi}</Text>
+                        <Text className="text-sm text-on-surface-variant">{item.deskripsi}</Text>
                       </div>
                     ))}
                   </div>
-                  <Link to={p.link.href} className="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-medium text-sm">
+                  <Link to={p.link.href} className="inline-flex items-center gap-1 text-primary hover:text-on-primary-container font-medium text-sm transition-colors">
                     {p.link.label} <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Card>
@@ -332,13 +332,13 @@ export default function Profil() {
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
               <Typography variant="h3" className="mb-4">Fasilitas Umum</Typography>
-              <Text className="text-text-muted leading-relaxed">
+              <Text className="text-on-surface-variant leading-relaxed">
                 {profile?.facilities || 'Balai Desa, Kantor Pemerintah Desa, Puskesmas Pembantu (Pustu), Sekolah Dasar, TK, Masjid, Lapangan Olahraga, dan Pasar Desa.'}
               </Text>
               {profile?.adminInfo && (
                 <>
                   <Typography variant="h3" className="mb-4 mt-8">Informasi Administrasi</Typography>
-                  <Text className="text-text-muted leading-relaxed">{profile.adminInfo}</Text>
+                  <Text className="text-on-surface-variant leading-relaxed">{profile.adminInfo}</Text>
                 </>
               )}
             </div>
@@ -347,19 +347,19 @@ export default function Profil() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-primary" />
-                  <span className="text-text-muted">{contactInfo}</span>
+                  <span className="text-on-surface-variant">{contactInfo}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-primary" />
-                  <span className="text-text-muted">+62 812-3456-7890</span>
+                  <span className="text-on-surface-variant">+62 812-3456-7890</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-primary" />
-                  <span className="text-text-muted">info@kuanyar.desa.id</span>
+                  <span className="text-on-surface-variant">info@kuanyar.desa.id</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-primary" />
-                  <span className="text-text-muted">Senin - Sabtu, 08.00 - 16.00 WIB</span>
+                  <span className="text-on-surface-variant">Senin - Sabtu, 08.00 - 16.00 WIB</span>
                 </div>
               </div>
             </div>
