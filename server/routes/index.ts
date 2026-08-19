@@ -2,16 +2,30 @@ import { Hono } from 'hono'
 import { hashPassword } from '../middleware/password'
 import { authenticateUser, createUser, getUserById } from '../services/catalog'
 import { generateToken, verifyToken } from '../middleware/auth'
+import { checkRateLimit, getClientIp } from '../middleware/rateLimit'
 
 const publicRoutes = new Hono()
 
 publicRoutes.post('/auth/login', async (c) => {
+  const ipKey = `login:ip:${getClientIp(c)}`
+  const ipLimit = checkRateLimit(ipKey)
+  if (!ipLimit.allowed) {
+    c.header('Retry-After', String(ipLimit.retryAfterSec))
+    return c.json({ success: false, error: 'Terlalu banyak percobaan, coba lagi nanti' }, 429)
+  }
+
   try {
     const body = await c.req.json().catch(() => ({}))
     const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
     const password = typeof body.password === 'string' ? body.password : ''
     if (!email || !password) return c.json({ success: false, error: 'Email atau password salah' }, 400)
     if (password.length > 200) return c.json({ success: false, error: 'Email atau password salah' }, 400)
+
+    const emailLimit = checkRateLimit(`login:email:${email}`)
+    if (!emailLimit.allowed) {
+      c.header('Retry-After', String(emailLimit.retryAfterSec))
+      return c.json({ success: false, error: 'Terlalu banyak percobaan, coba lagi nanti' }, 429)
+    }
     const user = await authenticateUser(email, password)
     if (!user) return c.json({ success: false, error: 'Email atau password salah' }, 401)
     const token = await generateToken({ id: user.id, name: user.name, email: user.email, role: user.role as 'admin' | 'umkm_owner' })
@@ -27,6 +41,13 @@ publicRoutes.post('/auth/login', async (c) => {
 })
 
 publicRoutes.post('/auth/register', async (c) => {
+  const ipKey = `register:ip:${getClientIp(c)}`
+  const ipLimit = checkRateLimit(ipKey)
+  if (!ipLimit.allowed) {
+    c.header('Retry-After', String(ipLimit.retryAfterSec))
+    return c.json({ success: false, error: 'Terlalu banyak percobaan, coba lagi nanti' }, 429)
+  }
+
   try {
     const body = await c.req.json().catch(() => ({}))
     const name = typeof body.name === 'string' ? body.name.trim() : ''

@@ -55,11 +55,13 @@ async function seed() {
 
   const now = new Date().toISOString()
 
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
+
   await db.insert(users)
     .values({
       name: 'Administrator',
       email: 'admin@kuanyar.desa.id',
-      passwordHash: hashPassword('admin123'),
+      passwordHash: hashPassword(adminPassword),
       role: 'admin',
       createdAt: now,
       updatedAt: now,
