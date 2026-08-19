@@ -56,7 +56,7 @@ export default function Potensi() {
 
   return (
     <>
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-12 bg-linear-to-br from-primary-light via-background to-surface">
+      <Section className="pt-24 md:pt-32 pb-12 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -81,7 +81,12 @@ export default function Potensi() {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value as FilterValue)}
-                className="input py-3 sm:max-w-[200px]"
+                className="w-full sm:max-w-[200px] px-4 h-10 bg-surface-container-highest border border-outline rounded-full text-on-surface text-sm focus:border-primary focus:outline-none transition-colors appearance-none bg-no-repeat bg-right pr-10"
+                style={{
+                  backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")",
+                  backgroundPosition: "right 0.75rem center",
+                  backgroundSize: "1rem",
+                }}
                 aria-label="Filter kategori potensi"
               >
                 <option value="all">Semua Kategori</option>
@@ -124,7 +129,7 @@ export default function Potensi() {
               })}
             </div>
           ) : (
-            <div className="text-center py-16">
+            <div className="text-center py-16 bg-surface-container-low rounded-2xl">
               <Search className="w-16 h-16 text-text-muted mx-auto mb-4" />
               <Typography variant="h4" className="mb-2">
                 Tidak Ada Potensi
@@ -140,7 +145,7 @@ export default function Potensi() {
           <div className="mt-12 text-center">
             <Link
               to="/kontak"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium"
+              className="inline-flex items-center gap-2 text-primary hover:text-on-primary-container font-medium transition-colors"
             >
               Ingin potensi Anda tampil di sini? Hubungi kami →
             </Link>

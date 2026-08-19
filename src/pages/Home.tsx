@@ -38,15 +38,15 @@ export default function Home() {
   const featuredPotensi = allPotensi.slice(0, 3)
 
   const statCards = [
-    { icon: Store, label: 'Potensi Desa', value: allPotensi.length, color: 'text-blue-600', bg: 'bg-blue-100' },
-    { icon: Wheat, label: 'Sektor Pertanian', value: 1, color: 'text-amber-600', bg: 'bg-amber-100' },
-    { icon: Image, label: 'Berita & Galeri', value: posts.length, color: 'text-purple-600', bg: 'bg-purple-100' },
-    { icon: Users, label: 'Pengunjung Bulanan', value: '1.2K+', color: 'text-orange-600', bg: 'bg-orange-100' },
+    { icon: Store, label: 'Potensi Desa', value: allPotensi.length, bg: 'bg-primary-container', text: 'text-on-primary-container' },
+    { icon: Wheat, label: 'Sektor Pertanian', value: 1, bg: 'bg-secondary-container', text: 'text-on-secondary-container' },
+    { icon: Image, label: 'Berita & Galeri', value: posts.length, bg: 'bg-tertiary-container', text: 'text-on-tertiary-container' },
+    { icon: Users, label: 'Pengunjung Bulanan', value: '1.2K+', bg: 'bg-surface-container-high', text: 'text-on-surface' },
   ]
 
   return (
     <>
-      <Section className="pt-28 md:pt-32 lg:pt-36 pb-20 bg-linear-to-br from-primary-light via-background to-surface">
+      <Section className="pt-24 md:pt-32 pb-12 md:pb-20 bg-gradient-to-br from-primary-container via-background to-surface-container-low">
         <Container>
           <div className="max-w-3xl">
             <Typography variant="h1" className="mb-4">
@@ -80,7 +80,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statCards.map((stat, i) => (
               <Card key={i} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className={`${stat.bg} ${stat.color} w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                <div className={`${stat.bg} ${stat.text} w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4`}>
                   <stat.icon className="w-7 h-7" />
                 </div>
                 <Typography variant="h3" className="mb-1">
@@ -93,7 +93,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="py-20 bg-surface">
+      <Section className="py-20 bg-surface-container-low">
         <Container>
           <div className="text-center mb-12">
             <Typography variant="h2" className="mb-4">
@@ -117,7 +117,7 @@ export default function Home() {
                         loading="lazy"
                       />
                       {meta && (
-                        <span className={`absolute top-3 left-3 badge ${meta.lightColor} ${meta.color.replace('bg-', 'text-')}`}>
+                        <span className={`absolute top-3 left-3 badge ${meta.lightColor}`}>
                           {meta.title}
                         </span>
                       )}
@@ -211,7 +211,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="py-20 bg-primary text-white">
+      <Section className="py-20 bg-primary-container text-on-primary-container">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <Typography variant="h2" className="mb-4">
@@ -220,7 +220,7 @@ export default function Home() {
             <Text className="mb-8 opacity-90">
               Daftarkan potensi Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
             </Text>
-            <Button asChild size="lg" className="bg-background text-primary hover:bg-surface">
+            <Button asChild size="lg" className="bg-primary text-on-primary hover:bg-primary/90">
               <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
             </Button>
           </div>
