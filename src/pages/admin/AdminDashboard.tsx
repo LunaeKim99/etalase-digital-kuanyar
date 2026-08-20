@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/card'
 import { Typography, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import {
   Store,
   Package,
@@ -30,6 +31,7 @@ export default function AdminDashboard() {
   const { list: postQuery } = useAdminPosts()
   const { list: catQuery } = useAdminCategories()
 
+  const isLoading = umkmQuery.isLoading || prodQuery.isLoading || postQuery.isLoading || catQuery.isLoading
   const umkms = umkmQuery.data ?? []
   const products = prodQuery.data ?? []
   const posts = postQuery.data ?? []
@@ -135,8 +137,27 @@ export default function AdminDashboard() {
         </div>
       </Card>
 
+      {/* Loading State */}
+      {isLoading && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} variant="filled" className="p-6">
+                <div className="flex items-center gap-3 animate-pulse">
+                  <div className="w-12 h-12 bg-surface-container-highest rounded-2xl" />
+                  <div className="space-y-2 flex-1">
+                    <div className="h-6 bg-surface-container-highest rounded w-16" />
+                    <div className="h-4 bg-surface-container-highest rounded w-24" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Summary Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {!isLoading && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryMetrics.map((metric, i) => (
           <Card key={i} variant="filled" className="p-6 hover:shadow-md transition-shadow cursor-pointer">
             <Link to={metric.href} className="block">

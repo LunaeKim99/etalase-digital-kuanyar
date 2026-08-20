@@ -323,6 +323,9 @@ export default function AdminBeritaGaleri() {
                   <DataTable
                     data={postsList.data ?? []}
                     columns={beritaColumns}
+                    loading={postsList.isLoading}
+                    error={postsList.isError ? 'Gagal memuat data berita' : null}
+                    onRetry={() => postsList.refetch()}
                     actions={[
                       { icon: Edit, onClick: handleBeritaEdit, label: 'Edit' },
                       { icon: Trash2, onClick: (post) => setDeletePostId(post.id), label: 'Hapus', className: 'text-error' },

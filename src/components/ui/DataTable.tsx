@@ -1,5 +1,7 @@
 import type { ReactNode, ComponentType } from 'react'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { AlertCircle, Loader2 } from 'lucide-react'
 
 export interface Column<T> {
   key: string
@@ -19,6 +21,9 @@ export interface DataTableProps<T> {
   columns: Column<T>[]
   actions?: Action<T>[]
   emptyMessage?: string
+  loading?: boolean
+  error?: string | null
+  onRetry?: () => void
 }
 
 export function DataTable<T extends { id: number }>({
@@ -26,7 +31,38 @@ export function DataTable<T extends { id: number }>({
   columns,
   actions,
   emptyMessage = 'Tidak ada data',
+  loading,
+  error,
+  onRetry,
 }: DataTableProps<T>) {
+  if (loading) {
+    return (
+      <div className="py-8 space-y-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex gap-4 animate-pulse">
+            <div className="h-4 bg-surface-container-highest rounded flex-1" />
+            <div className="h-4 bg-surface-container-highest rounded w-24" />
+            <div className="h-4 bg-surface-container-highest rounded w-16" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <AlertCircle className="w-8 h-8 text-error mx-auto mb-3" />
+        <p className="text-error mb-4">Gagal memuat data</p>
+        {onRetry && (
+          <Button variant="outline" size="sm" onClick={onRetry}>
+            Coba lagi
+          </Button>
+        )}
+      </div>
+    )
+  }
+
   if (!data || data.length === 0) {
     return (
       <div className="text-center py-12 text-on-surface-variant">

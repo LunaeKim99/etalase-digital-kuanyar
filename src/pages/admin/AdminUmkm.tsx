@@ -181,6 +181,9 @@ export default function AdminUmkm() {
         <DataTable
           data={filteredData}
           columns={columns}
+          loading={list.isLoading}
+          error={list.isError ? 'Gagal memuat data UMKM' : null}
+          onRetry={() => list.refetch()}
           actions={[
             { icon: Edit, onClick: openEditDialog, label: 'Edit' },
             { icon: Trash2, onClick: openDeleteDialog, label: 'Hapus' },

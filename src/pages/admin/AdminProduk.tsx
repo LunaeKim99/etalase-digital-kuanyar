@@ -291,6 +291,9 @@ export default function AdminProduk() {
         <DataTable
           data={filteredProducts}
           columns={columns}
+          loading={list.isLoading}
+          error={list.isError ? 'Gagal memuat data produk' : null}
+          onRetry={() => list.refetch()}
           actions={[
             { icon: Edit, onClick: handleOpenEdit, label: 'Edit' },
             { icon: Trash2, onClick: handleDeleteClick, label: 'Hapus', className: 'text-error hover:bg-error/10' },
