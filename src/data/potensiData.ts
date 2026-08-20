@@ -207,6 +207,23 @@ export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
       features: ['Roti pisang (unggulan)', 'Jajan basah, kue, roti, dessert', 'Nasi box savory'],
       contact: { whatsapp: '6285701601135' },
     },
+    {
+      id: 'umkm-makanan-3',
+      name: 'Zakya Stik Cumi & Kuping Gajah',
+      description:
+        'Usaha camilan rumahan milik Bu Iswati yang memproduksi Stik Cumi-cumi sebagai produk unggulan dan Kuping Gajah. Menerima pesanan termasuk permintaan khusus dari pelanggan untuk kebutuhan grosir. Pemasaran melalui rekomendasi mulut ke mulut dan WhatsApp.',
+      images: [
+        '/images/umkm/umkm-stik-cumi-dan-kuping-gajah.jpg',
+        '/images/umkm/umkm-stik-cumi.jpg',
+      ],
+      category: 'umkm-makanan',
+      owner: 'Bu Iswati',
+      rtRw: 'RT 03/RW 01',
+      dusun: 'Mayong, Kuanyar',
+      capacity: 'Pesanan custom & grosir',
+      features: ['Stik Cumi-cumi (unggulan)', 'Kuping Gajah', 'Terima pesanan grosir'],
+      contact: { whatsapp: '6289518557169' },
+    },
   ],
   pertanian: [
     {
