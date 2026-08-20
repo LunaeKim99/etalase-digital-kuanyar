@@ -17,7 +17,7 @@ app.get('/health', (c) => c.text('OK'))
 // Global error handler — always JSON, never HTML/text error pages
 app.onError((err: Error, c: Context) => {
   console.error('[onError]', c.req.method, c.req.url, err?.message)
-  return c.json({ success: false, error: 'Internal server error', details: err?.message ?? 'Unknown error' }, 500)
+  return c.json({ success: false, error: 'Terjadi kesalahan pada server' }, 500)
 })
 
 // Not found — JSON for /api/*, fall through to Vercel for the rest (handled by rewrites)
