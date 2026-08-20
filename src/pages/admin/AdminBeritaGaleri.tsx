@@ -320,18 +320,34 @@ export default function AdminBeritaGaleri() {
 
                 {/* Berita DataTable */}
                 <Card>
-                  <DataTable
-                    data={postsList.data ?? []}
-                    columns={beritaColumns}
-                    loading={postsList.isLoading}
-                    error={postsList.isError ? 'Gagal memuat data berita' : null}
-                    onRetry={() => postsList.refetch()}
-                    actions={[
-                      { icon: Edit, onClick: handleBeritaEdit, label: 'Edit' },
-                      { icon: Trash2, onClick: (post) => setDeletePostId(post.id), label: 'Hapus', className: 'text-error' },
-                    ]}
-                    emptyMessage="Belum ada berita"
-                  />
+                  {!postsList.isLoading && (postsList.data ?? []).length === 0 ? (
+                    <div className="text-center py-12">
+                      <p className="text-on-surface-variant mb-4">Belum ada berita</p>
+                      <p className="text-on-surface-variant mb-4">Tulis berita pertama untuk memulai</p>
+                      <Button
+                        onClick={() => {
+                          setEditingPost(null)
+                          setBeritaFormData({ title: '', slug: '', content: '', category: '', coverImage: '', publishedAt: '' })
+                          setBeritaDialogOpen(true)
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-2" /> Tulis Berita Pertama
+                      </Button>
+                    </div>
+                  ) : (
+                    <DataTable
+                      data={postsList.data ?? []}
+                      columns={beritaColumns}
+                      loading={postsList.isLoading}
+                      error={postsList.isError ? 'Gagal memuat data berita' : null}
+                      onRetry={() => postsList.refetch()}
+                      actions={[
+                        { icon: Edit, onClick: handleBeritaEdit, label: 'Edit' },
+                        { icon: Trash2, onClick: (post) => setDeletePostId(post.id), label: 'Hapus', className: 'text-error' },
+                      ]}
+                      emptyMessage="Belum ada berita"
+                    />
+                  )}
                 </Card>
               </div>
             )}

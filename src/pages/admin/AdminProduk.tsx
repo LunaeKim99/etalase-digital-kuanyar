@@ -288,18 +288,34 @@ export default function AdminProduk() {
       </Card>
 
       <Card>
-        <DataTable
-          data={filteredProducts}
-          columns={columns}
-          loading={list.isLoading}
-          error={list.isError ? 'Gagal memuat data produk' : null}
-          onRetry={() => list.refetch()}
-          actions={[
-            { icon: Edit, onClick: handleOpenEdit, label: 'Edit' },
-            { icon: Trash2, onClick: handleDeleteClick, label: 'Hapus', className: 'text-error hover:bg-error/10' },
-          ]}
-          emptyMessage={search || statusFilter !== 'all' ? 'Tidak ada produk yang cocok' : 'Belum ada produk'}
-        />
+        {!list.isLoading && filteredProducts.length === 0 ? (
+          <div className="text-center py-12">
+            {search || statusFilter !== 'all' ? (
+              <p className="text-on-surface-variant mb-4">Tidak ada produk yang cocok</p>
+            ) : (
+              <>
+                <p className="text-on-surface-variant mb-4">Belum ada produk</p>
+                <p className="text-on-surface-variant mb-4">Tambahkan produk pertama untuk memulai</p>
+                <Button onClick={handleOpenCreate}>
+                  <Plus className="w-4 h-4 mr-2" /> Tambah Produk
+                </Button>
+              </>
+            )}
+          </div>
+        ) : (
+          <DataTable
+            data={filteredProducts}
+            columns={columns}
+            loading={list.isLoading}
+            error={list.isError ? 'Gagal memuat data produk' : null}
+            onRetry={() => list.refetch()}
+            actions={[
+              { icon: Edit, onClick: handleOpenEdit, label: 'Edit' },
+              { icon: Trash2, onClick: handleDeleteClick, label: 'Hapus', className: 'text-error hover:bg-error/10' },
+            ]}
+            emptyMessage={search || statusFilter !== 'all' ? 'Tidak ada produk yang cocok' : 'Belum ada produk'}
+          />
+        )}
       </Card>
 
       <Dialog
