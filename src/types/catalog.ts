@@ -78,3 +78,62 @@ export interface UmkmWithProducts extends Umkm {
   products: Product[]
   ownerName: string
 }
+
+// Potensi Desa types
+export interface PotensiContact {
+  whatsapp?: string
+  instagram?: string
+  tiktok?: string
+  marketplace?: string
+}
+
+export interface PotensiKomoditas {
+  nama: string
+  deskripsi: string
+}
+
+export interface PotensiMusimTanam {
+  musim: string
+  lahanAktif: string
+  lahanKosong: string
+}
+
+export interface PotensiSectorData {
+  komoditas: PotensiKomoditas[]
+  musimTanam: PotensiMusimTanam[]
+  kelompokTani: string[]
+  pemasaran: string
+  modernisasi: string
+}
+
+export interface PotensiCategory {
+  id: number
+  slug: string
+  title: string
+  description: string | null
+  icon: string | null
+  color: string | null
+  lightColor: string | null
+  sortOrder: number
+}
+
+export interface PotensiItem {
+  id: number
+  categoryId: number
+  name: string
+  description: string | null
+  owner: string | null
+  rtRw: string | null
+  dusun: string | null
+  yearFounded: number | null
+  capacity: string | null
+  contact: PotensiContact | null
+  isSector: boolean
+  sectorData: PotensiSectorData | null
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+  category: string
+  images: string[]
+  features: string[]
+}

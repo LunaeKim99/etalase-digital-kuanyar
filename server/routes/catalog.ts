@@ -27,6 +27,19 @@ import {
   deleteCategory,
   getVillageProfile,
   upsertVillageProfile,
+  listPotensiCategories,
+  listPotensiItems,
+  getPotensiItem,
+  createPotensiCategory,
+  updatePotensiCategory,
+  deletePotensiCategory,
+  createPotensiItem,
+  updatePotensiItem,
+  deletePotensiItem,
+  addPotensiImage,
+  deletePotensiImage,
+  addPotensiFeature,
+  deletePotensiFeature,
 } from '../services/catalog.js'
 import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth.js'
 import { categorySchema, umkmSchema, productSchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
@@ -56,6 +69,23 @@ app.get('/posts/:slug', (c) => safeJson(c, async () => {
 }))
 
 app.get('/categories', (c) => safeJson(c, () => listCategories()))
+
+// Public: Potensi Desa
+app.get('/potensi/categories', (c) => safeJson(c, () => listPotensiCategories()))
+
+app.get('/potensi/items', (c) => safeJson(c, async () => {
+  const search = c.req.query('search')
+  const category = c.req.query('category')
+  return await listPotensiItems(search, category)
+}))
+
+app.get('/potensi/items/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const data = await getPotensiItem(id)
+  if (!data) return c.json({ error: 'Not found' }, 404)
+  return data
+}))
 
 // Public: UMKM + products
 app.get('/umkm', (c) => safeJson(c, async () => {
@@ -211,6 +241,77 @@ admin.put('/village-profile', (c) => safeJson(c, async () => {
   const result = await validateBody(c, villageProfileSchema)
   if (result.error) return result.error
   return await upsertVillageProfile(result.data)
+}))
+
+// Admin: Potensi Desa
+admin.get('/potensi/categories', (c) => safeJson(c, () => listPotensiCategories()))
+
+admin.post('/potensi/categories', (c) => safeJson(c, async () => {
+  const body = await c.req.json()
+  return await createPotensiCategory(body)
+}))
+
+admin.put('/potensi/categories/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const body = await c.req.json()
+  return await updatePotensiCategory(id, body)
+}))
+
+admin.delete('/potensi/categories/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  return await deletePotensiCategory(id)
+}))
+
+admin.get('/potensi/items', (c) => safeJson(c, async () => {
+  const search = c.req.query('search')
+  const category = c.req.query('category')
+  return await listPotensiItems(search, category)
+}))
+
+admin.post('/potensi/items', (c) => safeJson(c, async () => {
+  const body = await c.req.json()
+  return await createPotensiItem(body)
+}))
+
+admin.put('/potensi/items/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const body = await c.req.json()
+  return await updatePotensiItem(id, body)
+}))
+
+admin.delete('/potensi/items/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  return await deletePotensiItem(id)
+}))
+
+admin.post('/potensi/items/:id/images', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const body = await c.req.json()
+  return await addPotensiImage({ ...body, itemId: id })
+}))
+
+admin.delete('/potensi/images/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  return await deletePotensiImage(id)
+}))
+
+admin.post('/potensi/items/:id/features', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const body = await c.req.json()
+  return await addPotensiFeature({ ...body, itemId: id })
+}))
+
+admin.delete('/potensi/features/:id', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  return await deletePotensiFeature(id)
 }))
 
 // Mount protected routers

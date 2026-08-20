@@ -3,12 +3,21 @@ import type { LucideIcon } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Text, Typography, Muted } from '@/components/ui/typography'
 import LazyImage from '@/components/ui/LazyImage'
-import type { PotensiItem, PotensiCategoryMeta } from '@/data/potensiData'
+import type { PotensiItem, PotensiCategory } from '@/types/catalog'
 import { cn } from '@/lib/utils'
+
+interface CategoryMeta {
+  slug: PotensiCategory['slug']
+  title: string
+  description: string
+  icon: string
+  color: string
+  lightColor: string
+}
 
 interface PotensiItemCardProps {
   item: PotensiItem
-  categoryMeta: PotensiCategoryMeta
+  categoryMeta: CategoryMeta
   onClick: (item: PotensiItem) => void
   variant?: 'default' | 'sector'
 }

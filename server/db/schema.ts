@@ -78,3 +78,47 @@ export const villageProfile = sqliteTable('village_profile', {
   lng: real('lng'),
   updatedAt: text('updated_at').notNull(),
 })
+
+// Potensi Desa (Village Potential)
+export const potensiCategories = sqliteTable('potensi_categories', {
+  id: integer('id').primaryKey(),
+  slug: text('slug').unique().notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  icon: text('icon'),
+  color: text('color'),
+  lightColor: text('light_color'),
+  sortOrder: integer('sort_order').notNull().default(0),
+})
+
+export const potensiItems = sqliteTable('potensi_items', {
+  id: integer('id').primaryKey(),
+  categoryId: integer('category_id').references(() => potensiCategories.id).notNull(),
+  name: text('name').notNull(),
+  description: text('description'),
+  owner: text('owner'),
+  rtRw: text('rt_rw'),
+  dusun: text('dusun'),
+  yearFounded: integer('year_founded'),
+  capacity: text('capacity'),
+  contact: text('contact', { mode: 'json' }),
+  isSector: integer('is_sector', { mode: 'boolean' }).notNull().default(false),
+  sectorData: text('sector_data', { mode: 'json' }),
+  sortOrder: integer('sort_order').notNull().default(0),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const potensiImages = sqliteTable('potensi_images', {
+  id: integer('id').primaryKey(),
+  itemId: integer('item_id').references(() => potensiItems.id, { onDelete: 'cascade' }).notNull(),
+  imageUrl: text('image_url').notNull(),
+  sortOrder: integer('sort_order').notNull().default(0),
+})
+
+export const potensiFeatures = sqliteTable('potensi_features', {
+  id: integer('id').primaryKey(),
+  itemId: integer('item_id').references(() => potensiItems.id, { onDelete: 'cascade' }).notNull(),
+  feature: text('feature').notNull(),
+  sortOrder: integer('sort_order').notNull().default(0),
+})
