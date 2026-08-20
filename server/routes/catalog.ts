@@ -20,6 +20,7 @@ import {
   deletePost,
   addPostImage,
   deletePostImage,
+  listPostImages,
   listCategories,
   createCategory,
   deleteCategory,
@@ -182,6 +183,10 @@ admin.post('/posts/:id/images', (c) => safeJson(c, async () => {
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   const body = await c.req.json().catch(() => ({}))
   return await addPostImage({ ...body, postId: id })
+}))
+
+admin.get('/images', (c) => safeJson(c, async () => {
+  return await listPostImages()
 }))
 
 admin.delete('/images/:id', (c) => safeJson(c, async () => {

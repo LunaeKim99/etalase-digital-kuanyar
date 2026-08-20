@@ -146,6 +146,11 @@ export async function addPostImage(data: typeof postImagesTbl.$inferInsert) {
   return { data: rows[0] }
 }
 
+export async function listPostImages() {
+  const rows = await db.select().from(postImagesTbl).orderBy(postImagesTbl.sortOrder)
+  return { data: rows }
+}
+
 export async function deletePostImage(id: number) {
   const rows = await db.delete(postImagesTbl).where(eq(postImagesTbl.id, id)).returning()
   return rows[0] ? { data: rows[0] } : null
