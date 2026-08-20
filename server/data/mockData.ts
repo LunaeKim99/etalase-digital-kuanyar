@@ -375,76 +375,21 @@ export interface SeedPost {
 export const posts: SeedPost[] = [
   {
     id: 1,
-    title: 'Potensi Konveksi Desa Kuanyar',
-    slug: 'potensi-konveksi-desa-kuanyar',
+    title: 'Peringatan Maulid Nabi Muhammad SAW oleh Ibu-Ibu Fatayat Ranting Kuanyar',
+    slug: 'peringatan-maulid-nabi-ibu-ibu-fatayat-ranting-kuanyar',
     content:
-      'Desa Kuanyar memiliki potensi konveksi yang kuat dengan empat usaha konveksi utama: MYG Collection, Reza Collection, Mila Collection, dan Mudah Collection. Keempat usaha ini memproduksi berbagai jenis celana dan pakaian dengan kapasitas produksi yang signifikan. MYG Collection memproduksi celana cewek dan cowok dengan kapasitas 1.000 pcs per bulan. Reza Collection memproduksi atasan seragam sekolah, celana anak, dan celana dewasa dengan kapasitas 200 pcs per minggu. Mila Collection memproduksi celana kulot dan celana cewek dengan kapasitas 500 pcs per minggu. Mudah Collection memproduksi berbagai jenis celana dengan pemasaran melalui TikTok dan media sosial.',
-    category: 'UMKM',
-    publishedAt: '2026-07-20T08:00:00.000Z',
+      'Ibu-ibu Fatayat NU Ranting Kuanyar menggelar peringatan Maulid Nabi Muhammad SAW dengan penuh khidmat. Acara ini menjadi salah satu wujud kecintaan warga Desa Kuanyar terhadap kelahiran Rasulullah SAW sekaligus mempererat tali silaturahmi antarwarga.\n\nFatayat NU Ranting Kuanyar merupakan organisasi perempuan muda Nahdlatul Ulama yang berdiri pada 10 April 2018. Saat ini, organisasi ini dipimpin oleh Sahabat Yasalil Sairoh sebagai ketua dan Sahabat Siti Sofiatun sebagai wakil ketua, dengan jumlah sekitar 40 anggota aktif.\n\nDalam kegiatan keagamaan, Fatayat NU aktif melaksanakan Al-Barzanji/Dziba\'iyah, pembacaan Al-Waqi\'ah, istighosah, khataman binnadhor, yasinan, serta manaqib yang dilaksanakan secara rutin di mushola maupun rumah-rumah pengurus.\n\nPeringatan Maulid Nabi pada kesempatan kali ini diisi dengan pembacaan sholawat, tausiyah, serta doa bersama yang dihadiri ibu-ibu Fatayat dan warga sekitar. Kegiatan semacam ini menjadi wadah penguatan keimanan dan kebersamaan masyarakat Desa Kuanyar.',
+    category: 'Kegiatan',
+    publishedAt: '2026-09-15T08:00:00.000Z',
     authorId: 1,
-    coverImage: '/images/umkm/konveksi-bp-h-mif.png',
+    coverImage: '/images/berita/maulid-nabi-fatayat/aa37489a-25b2-4133-ae7b-c8e66e925bdd.jpg',
      images: [
-      { imageUrl: '/images/umkm/konveksi-ibu-mudah.png', caption: 'Produksi celana di Mudah Collection', sortOrder: 0 },
-      { imageUrl: '/images/umkm/konveksi-ibu-aini.png', caption: 'Mesin jahit Reza Collection', sortOrder: 1 },
-    ],
-  },
-  {
-    id: 2,
-    title: 'UMKM Kuliner Desa Kuanyar',
-    slug: 'umkm-kuliner-desa-kuanyar',
-    content:
-      'Desa Kuanyar juga memiliki potensi kuliner yang beragam. Dahlia Jaya Catering menyediakan nasi box, jajan basah, bento, kue ulang tahun, tumpeng, dan snack dengan produk unggulan nasi box ayam bakar. Naning Bakery menyediakan jajan basah, kue, roti, dessert, dan nasi box savory dengan produk unggulan roti pisang. Zakya memproduksi Stik Cumi-cumi dan Kuping Gajah sebagai camilan khas desa.',
-    category: 'UMKM',
-    publishedAt: '2026-07-15T08:00:00.000Z',
-    authorId: 1,
-    coverImage: '/images/umkm/dahlia-jaya-catering.jpg',
-     images: [
-      { imageUrl: '/images/umkm/dahlia-jaya-catering.jpg', caption: 'Nasi box ayam bakar Dahlia Jaya', sortOrder: 0 },
-      { imageUrl: '/images/umkm/naning-catering.jpg', caption: 'Roti pisang Naning Bakery', sortOrder: 1 },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Potensi Pertanian Desa Kuanyar',
-    slug: 'potensi-pertanian-desa-kuanyar',
-    content:
-      'Sektor pertanian merupakan salah satu potensi unggulan di Desa Kuanyar, dengan komoditas utama berupa padi dan jagung. Padi menjadi hasil pertanian yang paling banyak dihasilkan. Dalam Musim Tanam 1 (MT1), sekitar 80% lahan dapat ditanami, sedangkan pada Musim Tanam 2 (MT2) sekitar 90% lahan dapat ditanami. Pada Musim Tanam 3 (MT3), tanaman jagung dapat dihasilkan sekitar 20%. Potensi pertanian dikembangkan melalui empat kelompok tani: Karya Bhakti 1, Karya Bhakti 2, Mudi Rejeki, dan Bhakti Jaya. Hasil pertanian dimanfaatkan untuk kebutuhan pribadi dan dijual kepada pengkulak.',
-    category: 'Pertanian',
-    publishedAt: '2026-06-10T08:00:00.000Z',
-    authorId: 1,
-    coverImage: 'https://picsum.photos/seed/kuanyar-pertanian/800/450',
-    images: [
-      { imageUrl: 'https://picsum.photos/seed/pertanian1/800/450', caption: 'Sawah padi di Desa Kuanyar', sortOrder: 0 },
-      { imageUrl: 'https://picsum.photos/seed/pertanian2/800/450', caption: 'Petani sedang bekerja', sortOrder: 1 },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Pembangunan Jalan Desa Kuanyar Rampung',
-    slug: 'pembangunan-jalan-desa-kuanyar-rampung',
-    content:
-      'Pembangunan jalan desa Kuanyar sepanjang 1,5 kilometer telah resmi rampung dan diresmikan oleh Kepala Desa. Jalan ini menghubungkan Dusun Krajan dengan Dusun Kembang, mempermudah akses transportasi warga dan distribusi hasil panen.',
-    category: 'Pembangunan',
-    publishedAt: '2026-05-30T08:00:00.000Z',
-    authorId: 1,
-    coverImage: 'https://picsum.photos/seed/kuanyar-jalan/800/450',
-    images: [
-      { imageUrl: 'https://picsum.photos/seed/jalan1/800/450', caption: 'Peresmian jalan desa', sortOrder: 0 },
-      { imageUrl: 'https://picsum.photos/seed/jalan2/800/450', caption: 'Kondisi jalan setelah pembangunan', sortOrder: 1 },
-    ],
-  },
-  {
-    id: 5,
-    title: 'Pelatihan UMKM Digitalisasi Produk',
-    slug: 'pelatihan-umkm-digitalisasi-produk',
-    content:
-      'Pemerintah Desa Kuanyar bersama Dinas Koperasi dan UMKM mengadakan pelatihan digitalisasi produk bagi pelaku UMKM. Pelatihan ini mencakup fotografi produk, pengelolaan marketplace, dan strategi pemasaran digital.',
-    category: 'Pemberdayaan',
-    publishedAt: '2026-05-15T08:00:00.000Z',
-    authorId: 1,
-    coverImage: 'https://picsum.photos/seed/kuanyar-pelatihan/800/450',
-    images: [
-      { imageUrl: 'https://picsum.photos/seed/pelatihan1/800/450', caption: 'Sesi fotografi produk', sortOrder: 0 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/aa37489a-25b2-4133-ae7b-c8e66e925bdd.jpg', caption: 'Ibu-ibu Fatayat mengikuti peringatan Maulid Nabi', sortOrder: 0 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/1b9711bb-4809-45dc-867e-8f7e00146c73.jpg', caption: 'Pembacaan sholawat bersama', sortOrder: 1 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/IMG_3162.PNG', caption: 'Suasana peringatan Maulid Nabi', sortOrder: 2 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/IMG_3163.PNG', caption: 'Tausiyah Maulid Nabi', sortOrder: 3 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/IMG_3164.PNG', caption: 'Dokumentasi bersama ibu-ibu Fatayat', sortOrder: 4 },
+      { imageUrl: '/images/berita/maulid-nabi-fatayat/IMG_3165.PNG', caption: 'Kegiatan Fatayat NU Ranting Kuanyar', sortOrder: 5 },
     ],
   },
 ]
