@@ -30,8 +30,8 @@ export function checkRateLimit(key: string): { allowed: boolean; retryAfterSec: 
 
 export function getClientIp(c: any): string {
   return (
-    c.req.header('x-forwarded-for')?.split(',')[0]?.trim() ||
     c.req.header('x-real-ip') ||
+    c.req.header('x-forwarded-for')?.split(',')[0]?.trim() ||
     'unknown'
   )
 }
