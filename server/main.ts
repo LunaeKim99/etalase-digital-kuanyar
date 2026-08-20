@@ -1,5 +1,8 @@
+import { config } from 'dotenv'
+config()
 import { serve } from '@hono/node-server'
-import app from './index.js'
+
+const app = (await import('./index.js')).default
 
 const port = Number(process.env.PORT) || 4000
 
