@@ -305,7 +305,7 @@ export default function AdminProduk() {
         title={editing ? 'Edit Produk' : 'Tambah Produk'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">UMKM *</label>
               <Select
@@ -353,7 +353,7 @@ export default function AdminProduk() {
             />
           </div>
 
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="label">Harga (Rp) *</label>
               <Input
@@ -388,7 +388,7 @@ export default function AdminProduk() {
               <img
                 src={formData.image}
                 alt="Preview"
-                className="w-full h-32 object-cover rounded-lg border border-outline-variant"
+                className="max-w-full h-32 object-cover rounded-lg border border-outline-variant"
               />
             </div>
           )}

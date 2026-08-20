@@ -101,18 +101,18 @@ export default function AdminProfil() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {activeTab === 'identitas' && (
                 <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="label">Nama Desa *</label>
                       <Input value={formData.name} onChange={e => setName(e.target.value)} required />
                     </div>
-                    <div className="md:col-span-2">
+                    <div className="sm:col-span-2">
                       <label className="label">Ringkasan Desa *</label>
                       <Textarea value={formData.overview} onChange={e => setOverview(e.target.value)} rows={3} />
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="label">Info Administrasi</label>
                       <Textarea value={formData.adminInfo} onChange={e => setAdminInfo(e.target.value)} rows={4} />
@@ -133,7 +133,7 @@ export default function AdminProfil() {
               )}
 
               {activeTab === 'visi-misi' && (
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Visi</label>
                     <Textarea value={formData.vision} onChange={e => setVision(e.target.value)} rows={6} placeholder="Tulis visi desa di sini..." />
@@ -153,7 +153,7 @@ export default function AdminProfil() {
               )}
 
               {activeTab === 'geografis' && (
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="label">Koordinat Peta (Lat, Lng)</label>
                     <div className="flex gap-2">

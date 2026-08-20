@@ -36,7 +36,7 @@ export function Toast({ id, type, message, onClose }: ToastProps) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg animate-slide-up min-w-[280px]',
+        'flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg animate-slide-up min-w-[280px] max-w-[90vw]',
         typeClasses[type]
       )}
       role="alert"

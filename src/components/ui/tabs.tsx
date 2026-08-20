@@ -19,7 +19,7 @@ export function Tabs({ tabs, defaultTab, children, className }: TabsProps) {
 
   return (
     <div className={className}>
-      <div className="flex border-b border-outline-variant" role="tablist">
+      <div className="flex border-b border-outline-variant overflow-x-auto" role="tablist">
         {tabs.map((tab) => (
           <button
             key={tab.id}

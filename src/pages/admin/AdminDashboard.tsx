@@ -136,7 +136,7 @@ export default function AdminDashboard() {
       </Card>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryMetrics.map((metric, i) => (
           <Card key={i} variant="filled" className="p-6 hover:shadow-md transition-shadow cursor-pointer">
             <Link to={metric.href} className="block">
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
             <AlertCircle className="w-5 h-5 text-warning" />
             <Typography variant="h5">Perlu Perhatian</Typography>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {alerts.map((alert, i) => (
               <Link key={i} to={alert.href} className="block">
                 <div className={`p-4 rounded-xl border border-outline-variant hover:bg-surface-container-lowest transition-colors`}>
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
       {/* Quick Actions Section */}
       <Card variant="filled" className="p-6">
         <Typography variant="h5" className="mb-4">Aksi Cepat</Typography>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {quickActions.map((action, i) => (
             <Link key={i} to={action.href}>
               <Button

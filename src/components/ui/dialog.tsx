@@ -42,7 +42,7 @@ export function Dialog({ open, onClose, title, children, className }: DialogProp
       />
       <div
         className={cn(
-          'relative z-10 w-full max-w-lg rounded-2xl bg-surface-container-low p-6 shadow-xl animate-scale-in',
+          'relative z-10 w-full max-w-[90vw] max-w-lg rounded-2xl bg-surface-container-low p-4 sm:p-6 shadow-xl animate-scale-in',
           className
         )}
         role="dialog"

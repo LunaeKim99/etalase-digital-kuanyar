@@ -60,7 +60,7 @@ export default function AdminLogin() {
           </p>
         </div>
 
-        <Card variant="elevated" className="p-8">
+        <Card variant="elevated" className="p-6 sm:p-8">
           {error && (
             <div className="mb-4 flex items-center gap-3 rounded-lg bg-error-container p-4" role="alert">
               <AlertCircle className="h-5 w-5 flex-shrink-0 text-on-error-container" />

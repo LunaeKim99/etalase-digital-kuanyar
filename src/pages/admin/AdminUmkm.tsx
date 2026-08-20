@@ -194,7 +194,7 @@ export default function AdminUmkm() {
         title={editing ? 'Edit UMKM' : 'Tambah UMKM'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Pemilik ID *</label>
               <Input
@@ -232,7 +232,7 @@ export default function AdminUmkm() {
               rows={3}
             />
           </div>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Alamat</label>
               <Input

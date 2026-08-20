@@ -420,7 +420,7 @@ export default function AdminBeritaGaleri() {
                               <img
                                 src={image.imageUrl}
                                 alt={image.caption || 'Galeri'}
-                                className="w-full h-full object-cover transition-transform hover:scale-105"
+                                className="max-w-full w-full h-full object-cover transition-transform hover:scale-105"
                               />
                             </div>
                             <div className="p-3 flex-1 flex flex-col">
