@@ -69,8 +69,20 @@
   --color-surface-hover: var(--color-surface-container-high);
   --color-primary-light: var(--color-primary-container);
   --color-accent: var(--color-tertiary);
-  --color-success: var(--color-primary);
-  --color-warning: var(--color-tertiary);
+
+  /* --- Semantic color roles (success / warning / info) ---------- */
+  --color-success: #2e7d32;
+  --color-on-success: #ffffff;
+  --color-success-container: #c8e6c9;
+  --color-on-success-container: #1b5e20;
+  --color-warning: #f57c00;
+  --color-on-warning: #ffffff;
+  --color-warning-container: #ffe0b2;
+  --color-on-warning-container: #e65100;
+  --color-info: #1976d2;
+  --color-on-info: #ffffff;
+  --color-info-container: #bbdefb;
+  --color-on-info-container: #0d47a1;
 
   /* --- Typography ----------------------------------------------- */
 
@@ -160,6 +172,20 @@
   --color-cyan-500: #00507a;
 
   --color-scrim: #000000;
+
+  /* --- Semantic color roles (success / warning / info) ---------- */
+  --color-success: #81c784;
+  --color-on-success: #1b5e20;
+  --color-success-container: #2e7d32;
+  --color-on-success-container: #c8e6c9;
+  --color-warning: #ffb74d;
+  --color-on-warning: #e65100;
+  --color-warning-container: #f57c00;
+  --color-on-warning-container: #ffe0b2;
+  --color-info: #64b5f6;
+  --color-on-info: #0d47a1;
+  --color-info-container: #1976d2;
+  --color-on-info-container: #bbdefb;
 }
 
 /* ============================================================

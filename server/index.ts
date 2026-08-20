@@ -1,3 +1,5 @@
+import { config } from 'dotenv'
+config()
 import { Hono } from 'hono'
 import type { Context } from 'hono'
 import { logger } from './middleware/logger.js'

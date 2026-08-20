@@ -25,6 +25,8 @@ const AdminUmkm = lazy(() => import('@/pages/admin/AdminUmkm'))
 const AdminProduk = lazy(() => import('@/pages/admin/AdminProduk'))
 const AdminBeritaGaleri = lazy(() => import('@/pages/admin/AdminBeritaGaleri'))
 const AdminProfil = lazy(() => import('@/pages/admin/AdminProfil'))
+const AdminTampilan = lazy(() => import('@/pages/admin/AdminTampilan'))
+const AdminSettings = lazy(() => import('@/pages/admin/AdminSettings'))
 
 const OwnerLogin = lazy(() => import('@/pages/owner/OwnerLogin'))
 const OwnerUnauthorized = lazy(() => import('@/pages/owner/OwnerUnauthorized'))
@@ -83,6 +85,8 @@ export const router = createBrowserRouter([
           { path: 'produk', element: <LazyWrapper><AdminProduk /></LazyWrapper> },
           { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
           { path: 'profil', element: <LazyWrapper><AdminProfil /></LazyWrapper> },
+          { path: 'tampilan', element: <LazyWrapper><AdminTampilan /></LazyWrapper> },
+          { path: 'pengaturan', element: <LazyWrapper><AdminSettings /></LazyWrapper> },
         ],
       },
       // Owner routes — accessible to umkm_owner and admin roles (via OwnerGuard)
