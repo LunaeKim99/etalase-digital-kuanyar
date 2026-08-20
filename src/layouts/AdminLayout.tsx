@@ -71,9 +71,7 @@ export default function AdminLayout() {
   const sidebarContent = (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between px-4 h-16 border-b border-outline-variant">
-        <span className="font-heading font-semibold text-base text-on-surface truncate">
-          Desa Kuanyar
-        </span>
+        <img src="/navbar-icon.png" alt="Desa Kuanyar" className="h-16 w-auto" />
         <Button
           variant="ghost"
           size="sm"
