@@ -103,7 +103,7 @@ export default function Potensi() {
                 aria-label="Cari potensi desa"
               />
             </div>
-            <select disabled className="w-full sm:max-w-[200px] px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
+            <select disabled className="w-full sm:max-w-50 px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
               <option value="all">Semua Kategori</option>
             </select>
           </div>
@@ -134,7 +134,7 @@ export default function Potensi() {
                 aria-label="Cari potensi desa"
               />
             </div>
-            <select disabled className="w-full sm:max-w-[200px] px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
+            <select disabled className="w-full sm:max-w-50 px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
               <option value="all">Semua Kategori</option>
             </select>
           </div>
@@ -176,7 +176,7 @@ export default function Potensi() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterValue)}
-            className="w-full sm:max-w-[200px] px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm focus:border-white focus:outline-none transition-colors appearance-none bg-no-repeat bg-right pr-10"
+            className="w-full sm:max-w-50 px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm focus:border-white focus:outline-none transition-colors appearance-none bg-no-repeat bg-right pr-10"
             style={{
               backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")",
               backgroundPosition: "right 0.75rem center",
@@ -198,7 +198,7 @@ export default function Potensi() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="aspect-[4/3] bg-surface-container-low rounded-lg" />
+                  <div className="aspect-4/3 bg-surface-container-low rounded-lg" />
                   <div className="mt-3 space-y-2">
                     <div className="h-4 bg-surface-container-low rounded w-3/4" />
                     <div className="h-3 bg-surface-container-low rounded w-1/2" />
