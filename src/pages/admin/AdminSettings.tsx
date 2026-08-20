@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Tabs } from '@/components/ui/tabs'
 import { Input, Label } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
@@ -27,6 +27,29 @@ export default function AdminSettings() {
   // Tampilan form state
   const [themeMode, setThemeMode] = useState<'terang' | 'gelap' | 'sistem'>('sistem')
 
+  useEffect(() => {
+    const saved = localStorage.getItem('theme')
+    if (saved === 'dark') setThemeMode('gelap')
+    else if (saved === 'light') setThemeMode('terang')
+    else setThemeMode('sistem')
+  }, [])
+
+  const applyTheme = (mode: 'terang' | 'gelap' | 'sistem') => {
+    const root = document.documentElement
+    if (mode === 'gelap') {
+      root.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else if (mode === 'terang') {
+      root.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    } else {
+      root.classList.remove('dark')
+      localStorage.removeItem('theme')
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      if (prefersDark) root.classList.add('dark')
+    }
+  }
+
   const handleSaveUmum = () => {
     // Placeholder for save action - no actual persistence
     console.log('Simpan pengaturan umum:', { websiteName, contactEmail, whatsapp, facebook, instagram })
@@ -34,9 +57,9 @@ export default function AdminSettings() {
   }
 
   const handleThemeChange = (value: string) => {
-    setThemeMode(value as 'terang' | 'gelap' | 'sistem')
-    // In real implementation, this would apply theme to document.documentElement
-    console.log('Mode tema diubah:', value)
+    const mode = value as 'terang' | 'gelap' | 'sistem'
+    setThemeMode(mode)
+    applyTheme(mode)
   }
 
   return (
