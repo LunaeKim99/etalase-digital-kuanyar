@@ -62,9 +62,9 @@ export default function AdminLogin() {
 
         <Card variant="elevated" className="p-8">
           {error && (
-            <div className="mb-4 p-3 bg-error-container text-on-error-container rounded-2xl flex items-center gap-2" role="alert">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span className="text-sm">{error}</span>
+            <div className="mb-4 flex items-center gap-3 rounded-lg bg-error-container p-4" role="alert">
+              <AlertCircle className="h-5 w-5 flex-shrink-0 text-on-error-container" />
+              <p className="text-sm font-medium text-on-error-container">{error}</p>
             </div>
           )}
 
@@ -115,9 +115,9 @@ export default function AdminLogin() {
             <Button
               type="submit"
               className="w-full"
-              disabled={mutation.isPending}
+              loading={mutation.isPending}
             >
-              {mutation.isPending ? 'Memproses...' : 'Masuk'}
+              Masuk
             </Button>
           </form>
         </Card>
