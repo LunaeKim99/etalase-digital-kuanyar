@@ -78,3 +78,57 @@ export const villageProfile = sqliteTable('village_profile', {
   lng: real('lng'),
   updatedAt: text('updated_at').notNull(),
 })
+
+export const potensiCategories = sqliteTable('potensi_categories', {
+  id: integer('id').primaryKey(),
+  slug: text('slug').unique().notNull(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  icon: text('icon').notNull(),
+  color: text('color').notNull(),
+  lightColor: text('light_color').notNull(),
+})
+
+export const potensiItems = sqliteTable('potensi_items', {
+  id: integer('id').primaryKey(),
+  name: text('name').notNull(),
+  description: text('description').notNull(),
+  category: text('category').notNull(),
+  owner: text('owner'),
+  rtRw: text('rt_rw'),
+  dusun: text('dusun'),
+  yearFounded: integer('year_founded'),
+  capacity: text('capacity'),
+  whatsapp: text('whatsapp'),
+  instagram: text('instagram'),
+  tiktok: text('tiktok'),
+  marketplace: text('marketplace'),
+  isSector: integer('is_sector').notNull().default(0),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+})
+
+export const potensiImages = sqliteTable('potensi_images', {
+  id: integer('id').primaryKey(),
+  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
+  imageUrl: text('image_url').notNull(),
+  caption: text('caption'),
+  sortOrder: integer('sort_order').notNull().default(0),
+})
+
+export const potensiFeatures = sqliteTable('potensi_features', {
+  id: integer('id').primaryKey(),
+  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
+  feature: text('feature').notNull(),
+  sortOrder: integer('sort_order').notNull().default(0),
+})
+
+export const potensiSectorData = sqliteTable('potensi_sector_data', {
+  id: integer('id').primaryKey(),
+  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
+  komoditas: text('komoditas').notNull(),
+  musimTanam: text('musim_tanam').notNull(),
+  kelompokTani: text('kelompok_tani').notNull(),
+  pemasaran: text('pemasaran').notNull(),
+  modernisasi: text('modernisasi').notNull(),
+})

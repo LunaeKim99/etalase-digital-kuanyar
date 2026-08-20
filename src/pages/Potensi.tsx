@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Search } from 'lucide-react'
 import {
@@ -23,8 +23,29 @@ export default function Potensi() {
   const [filter, setFilter] = useState<FilterValue>('all')
   const [selectedItem, setSelectedItem] = useState<PotensiItem | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<PotensiCategoryMeta | null>(null)
+  const [allItems, setAllItems] = useState<PotensiItem[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const allItems = useMemo(() => getAllItems(), [])
+  useEffect(() => {
+    let cancelled = false
+    const load = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const data = await getAllItems()
+        if (!cancelled) {
+          setAllItems(data)
+        }
+      } catch {
+        if (!cancelled) setError('Gagal memuat data potensi')
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
+    }
+    load()
+    return () => { cancelled = true }
+  }, [])
 
   const filteredItems = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -94,7 +115,27 @@ export default function Potensi() {
 
       <Section className="py-16">
         <Container>
-          {filteredItems.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-[4/3] bg-surface-container-low rounded-lg" />
+                  <div className="mt-3 space-y-2">
+                    <div className="h-4 bg-surface-container-low rounded w-3/4" />
+                    <div className="h-3 bg-surface-container-low rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-center py-16 bg-surface-container-low rounded-2xl">
+              <Search className="w-16 h-16 text-on-surface-variant mx-auto mb-4" />
+              <Typography variant="h4" className="mb-2">
+                Gagal Memuat Data
+              </Typography>
+              <Muted>{error}</Muted>
+            </div>
+          ) : filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item) => {
                 const categoryMeta = getCategoryMeta(item.category)
@@ -117,7 +158,7 @@ export default function Potensi() {
                     item={item}
                     categoryMeta={categoryMeta}
                     onClick={handleCardClick}
-                />
+                  />
                 )
               })}
             </div>

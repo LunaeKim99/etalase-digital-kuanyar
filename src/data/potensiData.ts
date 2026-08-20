@@ -27,7 +27,7 @@ export interface PotensiSectorData {
 }
 
 export interface PotensiItem {
-  id: string
+  id: number
   name: string
   description: string
   images: string[]
@@ -79,203 +79,65 @@ export const categories: PotensiCategoryMeta[] = [
   },
 ]
 
-export const categoryItems: Record<PotensiCategory, PotensiItem[]> = {
-  konveksi: [
-    {
-      id: 'konveksi-1',
-      name: 'MYG Collection',
-      description:
-        'Usaha konveksi milik Bapak H. Miftah yang memproduksi celana cewek dan cowok dengan kapasitas sekitar 1.000 pcs per bulan. MYG Collection menerima pesanan custom sesuai permintaan pelanggan.',
-      images: [
-        '/images/potensi/konveksi-1/IMG_7875.jpg',
-        '/images/potensi/konveksi-1/IMG_7876.jpg',
-        '/images/potensi/konveksi-1/IMG_7877.jpg',
-        '/images/potensi/konveksi-1/IMG_7878.jpg',
-      ],
-      category: 'konveksi',
-      owner: 'Bapak H. Miftah',
-      rtRw: 'RT 03/RW 02',
-      dusun: 'Mayong, Kuanyar',
-      yearFounded: 2015,
-      capacity: '1.000 pcs/bulan',
-      features: ['Celana cewek & cowok', 'Pesanan custom', 'Distribusi via sales & agen'],
-      contact: { whatsapp: '628708530076' },
-    },
-    {
-      id: 'konveksi-2',
-      name: 'Reza Collection',
-      description:
-        'Usaha konveksi milik Ibu Nur Aini yang memproduksi atasan seragam sekolah, celana anak, dan celana dewasa. Melayani pesanan custom dengan kapasitas 200 pcs per minggu, termasuk penjualan grosir ke Pasar Kliwon.',
-      images: [
-        '/images/potensi/konveksi-2/IMG_7882.jpg',
-        '/images/potensi/konveksi-2/IMG_7883.jpg',
-        '/images/potensi/konveksi-2/IMG_7884.jpg',
-        '/images/potensi/konveksi-2/IMG_7885.jpg',
-        '/images/potensi/konveksi-2/IMG_7887.jpg',
-      ],
-      category: 'konveksi',
-      owner: 'Ibu Nur Aini',
-      rtRw: 'RT 03/RW 02',
-      dusun: 'Mayong, Kuanyar',
-      yearFounded: 1997,
-      capacity: '200 pcs/minggu',
-      features: ['Atasan seragam sekolah', 'Celana anak & dewasa', 'Grosir ke Pasar Kliwon'],
-      contact: { whatsapp: '6281227110647' },
-    },
-    {
-      id: 'konveksi-3',
-      name: 'Mila Collection',
-      description:
-        'Usaha konveksi milik Hj. Solikin yang memproduksi celana kulot dan celana cewek dengan kapasitas sekitar 500 pcs per minggu. Produk didistribusikan melalui pengiriman.',
-      images: [
-        '/images/potensi/konveksi-3/IMG_7935.jpg',
-        '/images/potensi/konveksi-3/IMG_7936.jpg',
-        '/images/potensi/konveksi-3/IMG_7942.jpg',
-      ],
-      category: 'konveksi',
-      owner: 'Hj. Solikin',
-      rtRw: 'RT 01/RW 01',
-      dusun: 'Mayong, Kuanyar',
-      yearFounded: 2004,
-      capacity: '500 pcs/minggu',
-      features: ['Celana kulot & cewek', 'Distribusi via pengiriman', 'Kapasitas 500 pcs/minggu'],
-      contact: { marketplace: 'Pemesanan via WhatsApp' },
-    },
-    {
-      id: 'konveksi-4',
-      name: 'Mudah Collection',
-      description:
-        'Usaha konveksi milik Bu Mahmudah yang memproduksi berbagai jenis celana: kulot, pendek, dan panjang. Pemasaran dilakukan melalui TikTok dan melayani pesanan grosir ke Surabaya, Jepara, Demak, dan Kudus.',
-      images: [
-        '/images/potensi/konveksi-4/bce7c4a8-4b28-4538-a83b-dde7f918934b.jpeg',
-        '/images/potensi/konveksi-4/d3e3ca4f-fab8-40c1-ac0e-f4114fde6ec7.jpeg',
-      ],
-      category: 'konveksi',
-      owner: 'Bu Mahmudah',
-      rtRw: 'RT 03/RW 02',
-      dusun: 'Mayong, Kuanyar',
-      features: ['Celana kulot, pendek, panjang', 'Jualan via TikTok', 'Grosir ke Surabaya/Jepara/Demak/Kudus'],
-      contact: {
-        tiktok: 'Mudah Collection',
-        marketplace: 'Grosir ke Surabaya, Jepara, Demak, Kudus',
-      },
-    },
-  ],
-  'umkm-makanan': [
-    {
-      id: 'umkm-makanan-1',
-      name: 'Dahlia Jaya Catering',
-      description:
-        'Usaha catering milik Ibu Dwi Ratna Safitri yang menyediakan nasi box, jajan basah, bento, kue ulang tahun, tumpeng, dan snack. Produk unggulan: nasi box ayam bakar. Melayani hajatan, rapat, acara desa, dan prasmanan.',
-      images: [
-        '/images/potensi/umkm-makanan-1/IMG_7969.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7971.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7972.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7973.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7974.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7976.jpg',
-        '/images/potensi/umkm-makanan-1/IMG_7977.jpg',
-      ],
-      category: 'umkm-makanan',
-      owner: 'Ibu Dwi Ratna Safitri',
-      rtRw: 'RT 05/RW 02',
-      dusun: 'Mayong, Kuanyar',
-      yearFounded: 2016,
-      capacity: '~30 pelanggan/bulan',
-      features: ['Nasi box ayam bakar (unggulan)', 'Jajan basah, bento, tumpeng, snack', 'Catering hajatan & rapat'],
-      contact: {
-        whatsapp: '6282224311491',
-        instagram: 'dahliajayacatering',
-        tiktok: 'Dahlia Jaya 1',
-      },
-    },
-    {
-      id: 'umkm-makanan-2',
-      name: 'Naning Bakery',
-      description:
-        'Usaha catering dan bakery milik Ibu Naning yang menyediakan jajan basah, kue, roti, dessert, hingga nasi box savory. Produk unggulan: roti pisang. Menerima pesanan custom untuk hajatan, rapat, dan acara lainnya.',
-      images: [
-        '/images/potensi/umkm-makanan-2/IMG_8013.jpg',
-        '/images/potensi/umkm-makanan-2/IMG_8014.jpg',
-      ],
-      category: 'umkm-makanan',
-      owner: 'Ibu Naning',
-      rtRw: 'RT 04/RW 03',
-      dusun: 'Mayong, Kuanyar',
-      yearFounded: 2014,
-      capacity: '~100 pesanan/bulan',
-      features: ['Roti pisang (unggulan)', 'Jajan basah, kue, roti, dessert', 'Nasi box savory'],
-      contact: { whatsapp: '6285701601135' },
-    },
-    {
-      id: 'umkm-makanan-3',
-      name: 'Zakya Stik Cumi & Kuping Gajah',
-      description:
-        'Usaha camilan rumahan milik Bu Iswati yang memproduksi Stik Cumi-cumi sebagai produk unggulan dan Kuping Gajah. Menerima pesanan termasuk permintaan khusus dari pelanggan untuk kebutuhan grosir. Pemasaran melalui rekomendasi mulut ke mulut dan WhatsApp.',
-      images: [
-        '/images/umkm/umkm-stik-cumi-dan-kuping-gajah.jpg',
-        '/images/umkm/umkm-stik-cumi.jpg',
-      ],
-      category: 'umkm-makanan',
-      owner: 'Bu Iswati',
-      rtRw: 'RT 03/RW 01',
-      dusun: 'Mayong, Kuanyar',
-      capacity: 'Pesanan custom & grosir',
-      features: ['Stik Cumi-cumi (unggulan)', 'Kuping Gajah', 'Terima pesanan grosir'],
-      contact: { whatsapp: '6289518557169' },
-    },
-  ],
-  pertanian: [
-    {
-      id: 'pertanian-1',
-      name: 'Pertanian',
-      description:
-        'Sektor pertanian merupakan salah satu potensi unggulan di Desa Kuanyar, dengan komoditas utama berupa padi dan jagung. Padi menjadi hasil pertanian yang paling banyak dihasilkan sekaligus menjadi salah satu ciri khas Desa Kuanyar.',
-      images: [
-        '/images/potensi/pertanian-1/IMG_7961.jpg',
-        '/images/potensi/pertanian-1/IMG_7962.jpg',
-      ],
-      category: 'pertanian',
-      isSector: true,
-      sectorData: {
-        komoditas: [
-          {
-            nama: 'Padi',
-            deskripsi: 'Hasil pertanian terbanyak sekaligus menjadi ciri khas Desa Kuanyar.',
-          },
-          {
-            nama: 'Jagung',
-            deskripsi: 'Ditanam pada Musim Tanam 3 (MT3), diolah menjadi nto-nto maupun digunakan sebagai bahan campuran produk catering.',
-          },
-        ],
-        musimTanam: [
-          { musim: 'MT1', lahanAktif: '80%', lahanKosong: '20%' },
-          { musim: 'MT2', lahanAktif: '90%', lahanKosong: '10%' },
-          { musim: 'MT3', lahanAktif: '20% (jagung)', lahanKosong: '80%' },
-        ],
-        kelompokTani: ['Karya Bhakti 1', 'Karya Bhakti 2', 'Mudi Rejeki', 'Bhakti Jaya'],
-        pemasaran:
-          'Hasil umumnya untuk kebutuhan pribadi dan dijual ke pengkulak. MT1 lebih sering dijual karena kendala penjemuran padi. MT2 dijual ketika harga dianggap menguntungkan, bahkan dapat disimpan hingga musim tanam berikutnya. Sebagian hasil juga diolah menjadi produk turunan seperti nto-nto dari jagung.',
-        modernisasi:
-          'Pemerintah Desa Kuanyar mendorong modernisasi pertanian melalui penggunaan bibit unggul serta pemanfaatan alsintan (alat dan mesin pertanian).',
-      },
-    },
-  ],
+interface PotensiItemResponse {
+  id: number
+  name: string
+  description: string
+  category: PotensiCategory
+  owner: string | null
+  rtRw: string | null
+  dusun: string | null
+  yearFounded: number | null
+  capacity: string | null
+  whatsapp: string | null
+  instagram: string | null
+  tiktok: string | null
+  marketplace: string | null
+  isSector: boolean
+  images: { imageUrl: string; caption: string | null; sortOrder: number }[]
+  features: string[]
+  sectorData: PotensiSectorData | null
 }
 
-export function getItemsByCategory(category: PotensiCategory): PotensiItem[] {
-  return categoryItems[category] ?? []
+function mapItem(raw: PotensiItemResponse): PotensiItem {
+  const contact: PotensiContact = {}
+  if (raw.whatsapp) contact.whatsapp = raw.whatsapp
+  if (raw.instagram) contact.instagram = raw.instagram
+  if (raw.tiktok) contact.tiktok = raw.tiktok
+  if (raw.marketplace) contact.marketplace = raw.marketplace
+
+  const item: PotensiItem = {
+    id: raw.id,
+    name: raw.name,
+    description: raw.description,
+    images: raw.images.map((img) => img.imageUrl),
+    category: raw.category,
+    isSector: raw.isSector,
+  }
+  if (raw.features.length) item.features = raw.features
+  if (raw.owner) item.owner = raw.owner
+  if (raw.rtRw) item.rtRw = raw.rtRw
+  if (raw.dusun) item.dusun = raw.dusun
+  if (raw.yearFounded) item.yearFounded = raw.yearFounded
+  if (raw.capacity) item.capacity = raw.capacity
+  if (Object.keys(contact).length > 0) item.contact = contact
+  if (raw.sectorData) item.sectorData = raw.sectorData
+
+  return item
 }
 
-export function getAllItems(): PotensiItem[] {
-  return [...categoryItems.konveksi, ...categoryItems['umkm-makanan'], ...categoryItems.pertanian]
+export async function getAllItems(): Promise<PotensiItem[]> {
+  const res = await fetch('/api/potensi/items')
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const json = await res.json()
+  return (json.data ?? []).map(mapItem)
 }
 
-export function getItemById(id: string): PotensiItem | undefined {
-  return getAllItems().find((item) => item.id === id)
+export async function getItemById(id: number): Promise<PotensiItem | undefined> {
+  const items = await getAllItems()
+  return items.find((item) => item.id === id)
 }
 
 export function getCategoryMeta(slug: PotensiCategory): PotensiCategoryMeta | undefined {
   return categories.find((cat) => cat.slug === slug)
 }
-
