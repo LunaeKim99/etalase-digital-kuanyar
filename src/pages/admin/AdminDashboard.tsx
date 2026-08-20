@@ -36,9 +36,9 @@ export default function AdminDashboard() {
 
   const summaryMetrics = useMemo(() => [
     { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/umkm', color: 'primary' },
-    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/products', color: 'secondary' },
-    { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/posts', color: 'tertiary' },
-    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/categories', color: 'neutral' },
+    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/produk', color: 'secondary' },
+    { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/berita-galeri', color: 'tertiary' },
+    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/berita-galeri', color: 'neutral' },
   ], [umkms.length, products.length, posts.length, catQuery.data?.length])
 
   const alerts = useMemo(() => {
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
         bgColor: 'secondary',
         badgeVariant: 'secondary',
         icon: AlertCircle,
-        href: '/admin/posts',
+        href: '/admin/berita-galeri',
         description: 'Berita yang belum dipublikasikan',
       })
     }
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
         bgColor: 'error',
         badgeVariant: 'error',
         icon: AlertCircle,
-        href: '/admin/products',
+        href: '/admin/produk',
         description: 'Produk yang belum memiliki gambar',
       })
     }
@@ -101,10 +101,10 @@ export default function AdminDashboard() {
   }, [umkms, products, posts])
 
   const quickActions = [
-    { label: 'Tambah UMKM', href: '/admin/umkm/create', icon: Plus, description: 'Daftarkan UMKM baru' },
-    { label: 'Tambah Produk', href: '/admin/products/create', icon: Plus, description: 'Tambah produk ke UMKM' },
-    { label: 'Tulis Berita', href: '/admin/posts/create', icon: FileText, description: 'Buat artikel berita baru' },
-    { label: 'Upload Galeri', href: '/admin/gallery', icon: Image, description: 'Kelola galeri foto desa' },
+    { label: 'Tambah UMKM', href: '/admin/umkm', icon: Plus, description: 'Daftarkan UMKM baru' },
+    { label: 'Tambah Produk', href: '/admin/produk', icon: Plus, description: 'Tambah produk ke UMKM' },
+    { label: 'Tulis Berita', href: '/admin/berita-galeri', icon: FileText, description: 'Buat artikel berita baru' },
+    { label: 'Upload Galeri', href: '/admin/berita-galeri', icon: Image, description: 'Kelola galeri foto desa' },
   ]
 
   const formatDate = (date: Date) => {
