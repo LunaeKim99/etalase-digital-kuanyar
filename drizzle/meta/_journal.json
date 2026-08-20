@@ -8,6 +8,13 @@
       "when": 1785922534988,
       "tag": "0000_wakeful_bloodstorm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1787228746399,
+      "tag": "0001_wild_spot",
+      "breakpoints": true
     }
   ]
 }

@@ -14,6 +14,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx server/db/seed.ts",
+    "seed:potensi": "tsx server/db/seed-potensi.ts",
+    "seed:berita": "tsx server/db/seed-berita.ts",
     "test:auth": "tsx scripts/test-auth.mts",
     "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"
   },
@@ -29,6 +31,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.0",

@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { db } from './client.js'
 import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile } from './schema.js'
 import { hashPassword } from '../middleware/password.js'

@@ -26,6 +26,11 @@ import {
   getVillageProfile,
   upsertVillageProfile,
 } from '../services/catalog.js'
+import {
+  listPotensiItems,
+  getPotensiItemById,
+  listPotensiCategories,
+} from '../services/potensi.js'
 import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
@@ -53,6 +58,27 @@ app.get('/posts/:slug', (c) => safeJson(c, async () => {
 }))
 
 app.get('/categories', (c) => safeJson(c, () => listCategories()))
+
+// Public: Potensi
+app.get('/potensi/categories', (c) => safeJson(c, () => listPotensiCategories()))
+
+app.get('/potensi/items', (c) =>
+  safeJson(c, async () => {
+    const search = c.req.query('search')
+    const category = c.req.query('category')
+    return await listPotensiItems(search, category)
+  }),
+)
+
+app.get('/potensi/items/:id', (c) =>
+  safeJson(c, async () => {
+    const id = Number(c.req.param('id'))
+    if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+    const data = await getPotensiItemById(id)
+    if (!data) return c.json({ error: 'Not found' }, 404)
+    return data
+  }),
+)
 
 // Public: UMKM + products
 app.get('/umkm', (c) => safeJson(c, async () => {

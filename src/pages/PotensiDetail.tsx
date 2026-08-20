@@ -1,5 +1,6 @@
 import { Navigate, useParams, Link } from 'react-router-dom'
-import { getItemById } from '@/data/potensiData'
+import { useEffect, useState } from 'react'
+import { getItemById, type PotensiItem } from '@/data/potensiData'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Card } from '@/components/ui/card'
@@ -9,7 +10,32 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function PotensiDetail() {
   const { id } = useParams<{ id: string }>()
-  const item = id ? getItemById(id) : undefined
+  const numId = id ? Number(id) : NaN
+  const [item, setItem] = useState<PotensiItem | undefined>(undefined)
+  const [loading, setLoading] = useState(!Number.isNaN(numId))
+
+  useEffect(() => {
+    if (Number.isNaN(numId)) {
+      setLoading(false)
+      return
+    }
+    let cancelled = false
+    getItemById(numId)
+      .then((result) => {
+        if (!cancelled) {
+          setItem(result)
+          setLoading(false)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [numId])
+
+  if (loading) return null
 
   if (item) {
     return <Navigate to="/potensi" replace />
