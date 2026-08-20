@@ -13,7 +13,7 @@ import { Save, MapPin } from 'lucide-react'
 export default function AdminProfil() {
   const { get, update } = useAdminVillageProfile()
   const { data } = get
-  const { addToast } = useToast()
+  const { toasts, addToast, removeToast } = useToast()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -179,7 +179,7 @@ export default function AdminProfil() {
                 </div>
               )}
 
-              <Button type="submit" className="w-full md:w-auto">
+              <Button type="submit" loading={update.isPending} className="w-full md:w-auto">
                 <Save className="w-4 h-4 mr-2" /> Simpan Perubahan
               </Button>
             </form>
@@ -187,7 +187,7 @@ export default function AdminProfil() {
         </Tabs>
       </Card>
 
-      <ToastContainer toasts={[]} onRemove={() => {}} />
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   )
 }
