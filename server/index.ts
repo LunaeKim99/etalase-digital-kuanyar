@@ -8,6 +8,16 @@ import catalog from './routes/catalog.js'
 
 const app = new Hono()
 
+// Security headers middleware
+app.use('*', async (c, next) => {
+  await next()
+  c.header('X-Content-Type-Options', 'nosniff')
+  c.header('X-Frame-Options', 'DENY')
+  c.header('X-XSS-Protection', '1; mode=block')
+  c.header('Referrer-Policy', 'strict-origin-when-cross-origin')
+  c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+})
+
 app.use('*', logger)
 app.route('/api', api)
 app.route('/api', catalog)
@@ -17,7 +27,7 @@ app.get('/health', (c) => c.text('OK'))
 // Global error handler — always JSON, never HTML/text error pages
 app.onError((err: Error, c: Context) => {
   console.error('[onError]', c.req.method, c.req.url, err?.message)
-  return c.json({ success: false, error: 'Internal server error', details: err?.message ?? 'Unknown error' }, 500)
+  return c.json({ success: false, error: 'Terjadi kesalahan pada server' }, 500)
 })
 
 // Not found — JSON for /api/*, fall through to Vercel for the rest (handled by rewrites)

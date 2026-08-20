@@ -30,15 +30,16 @@ export default function AdminDashboard() {
   const { list: postQuery } = useAdminPosts()
   const { list: catQuery } = useAdminCategories()
 
+  const isLoading = umkmQuery.isLoading || prodQuery.isLoading || postQuery.isLoading || catQuery.isLoading
   const umkms = umkmQuery.data ?? []
   const products = prodQuery.data ?? []
   const posts = postQuery.data ?? []
 
   const summaryMetrics = useMemo(() => [
     { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/umkm', color: 'primary' },
-    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/products', color: 'secondary' },
-    { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/posts', color: 'tertiary' },
-    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/categories', color: 'neutral' },
+    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/produk', color: 'secondary' },
+    { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/berita-galeri', color: 'tertiary' },
+    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/berita-galeri', color: 'neutral' },
   ], [umkms.length, products.length, posts.length, catQuery.data?.length])
 
   const alerts = useMemo(() => {
@@ -79,7 +80,7 @@ export default function AdminDashboard() {
         bgColor: 'secondary',
         badgeVariant: 'secondary',
         icon: AlertCircle,
-        href: '/admin/posts',
+        href: '/admin/berita-galeri',
         description: 'Berita yang belum dipublikasikan',
       })
     }
@@ -92,7 +93,7 @@ export default function AdminDashboard() {
         bgColor: 'error',
         badgeVariant: 'error',
         icon: AlertCircle,
-        href: '/admin/products',
+        href: '/admin/produk',
         description: 'Produk yang belum memiliki gambar',
       })
     }
@@ -101,10 +102,10 @@ export default function AdminDashboard() {
   }, [umkms, products, posts])
 
   const quickActions = [
-    { label: 'Tambah UMKM', href: '/admin/umkm/create', icon: Plus, description: 'Daftarkan UMKM baru' },
-    { label: 'Tambah Produk', href: '/admin/products/create', icon: Plus, description: 'Tambah produk ke UMKM' },
-    { label: 'Tulis Berita', href: '/admin/posts/create', icon: FileText, description: 'Buat artikel berita baru' },
-    { label: 'Upload Galeri', href: '/admin/gallery', icon: Image, description: 'Kelola galeri foto desa' },
+    { label: 'Tambah UMKM', href: '/admin/umkm', icon: Plus, description: 'Daftarkan UMKM baru' },
+    { label: 'Tambah Produk', href: '/admin/produk', icon: Plus, description: 'Tambah produk ke UMKM' },
+    { label: 'Tulis Berita', href: '/admin/berita-galeri', icon: FileText, description: 'Buat artikel berita baru' },
+    { label: 'Upload Galeri', href: '/admin/berita-galeri', icon: Image, description: 'Kelola galeri foto desa' },
   ]
 
   const formatDate = (date: Date) => {
@@ -135,8 +136,27 @@ export default function AdminDashboard() {
         </div>
       </Card>
 
+      {/* Loading State */}
+      {isLoading && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} variant="filled" className="p-6">
+                <div className="flex items-center gap-3 animate-pulse">
+                  <div className="w-12 h-12 bg-surface-container-highest rounded-2xl" />
+                  <div className="space-y-2 flex-1">
+                    <div className="h-6 bg-surface-container-highest rounded w-16" />
+                    <div className="h-4 bg-surface-container-highest rounded w-24" />
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Summary Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {!isLoading && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryMetrics.map((metric, i) => (
           <Card key={i} variant="filled" className="p-6 hover:shadow-md transition-shadow cursor-pointer">
             <Link to={metric.href} className="block">
@@ -152,7 +172,7 @@ export default function AdminDashboard() {
             </Link>
           </Card>
         ))}
-      </div>
+      </div>}
 
       {/* Perlu Perhatian Section */}
       {alerts.length > 0 && (

@@ -1,27 +1,34 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Search } from 'lucide-react'
-import {
-  getAllItems,
-  getCategoryMeta,
-  type PotensiItem,
-  type PotensiCategoryMeta,
-  type PotensiCategory,
-} from '@/data/potensiData'
+import { Search, RefreshCw } from 'lucide-react'
+import { usePotensiCategories, usePotensiItems } from '@/services/api'
+import type { PotensiItem, PotensiCategory } from '@/types/catalog'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Typography, Muted } from '@/components/ui/typography'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import PotensiItemCard from '@/components/cards/PotensiItemCard'
 import { PageHero } from '@/components/sections/PageHero'
 import PotensiModal from '@/components/ui/PotensiModal'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 
-type FilterValue = PotensiCategory | 'all'
+type FilterValue = PotensiCategory['slug'] | 'all'
+
+interface CategoryMeta {
+  slug: PotensiCategory['slug']
+  title: string
+  description: string
+  icon: string
+  color: string
+  lightColor: string
+}
 
 export default function Potensi() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
   const [selectedItem, setSelectedItem] = useState<PotensiItem | null>(null)
+<<<<<<< HEAD
   const [selectedCategory, setSelectedCategory] = useState<PotensiCategoryMeta | null>(null)
   const [allItems, setAllItems] = useState<PotensiItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -46,17 +53,37 @@ export default function Potensi() {
     load()
     return () => { cancelled = true }
   }, [])
+=======
+  const [selectedCategory, setSelectedCategory] = useState<CategoryMeta | null>(null)
+
+  const { data: categories, isLoading: categoriesLoading, error: categoriesError, refetch: refetchCategories } = usePotensiCategories()
+  const { data: items, isLoading: itemsLoading, error: itemsError, refetch: refetchItems } = usePotensiItems(search, filter === 'all' ? undefined : filter)
+
+  const isLoading = categoriesLoading || itemsLoading
+  const isError = categoriesError || itemsError
+
+  const categoryMetas = useMemo(() => {
+    if (!categories) return []
+    return categories.map((cat) => ({
+      slug: cat.slug,
+      title: cat.title,
+      description: cat.description ?? '',
+      icon: cat.icon ?? '',
+      color: cat.color ?? '',
+      lightColor: cat.lightColor ?? '',
+    })) as CategoryMeta[]
+  }, [categories])
+>>>>>>> feat/admin-functionality
 
   const filteredItems = useMemo(() => {
+    if (!items) return []
     const query = search.trim().toLowerCase()
-    return allItems.filter((item) => {
-      const matchesFilter = filter === 'all' || item.category === filter
-      if (!matchesFilter) return false
+    return items.filter((item) => {
       if (!query) return true
       const haystack = [
         item.name,
         item.owner ?? '',
-        item.description,
+        item.description ?? '',
         item.dusun ?? '',
         item.rtRw ?? '',
       ]
@@ -64,16 +91,95 @@ export default function Potensi() {
         .toLowerCase()
       return haystack.includes(query)
     })
-  }, [allItems, search, filter])
+  }, [items, search])
 
   const handleCardClick = (item: PotensiItem) => {
     setSelectedItem(item)
-    setSelectedCategory(getCategoryMeta(item.category) ?? null)
+    const catMeta = categoryMetas.find((c) => c.slug === item.category)
+    setSelectedCategory(catMeta ?? null)
   }
 
   const handleCloseModal = () => {
     setSelectedItem(null)
     setSelectedCategory(null)
+  }
+
+  const handleRetry = () => {
+    refetchCategories()
+    refetchItems()
+  }
+
+  const getCategoryMeta = (slug: PotensiCategory['slug']): CategoryMeta | undefined => {
+    return categoryMetas.find((c) => c.slug === slug)
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <PageHero
+          title="Potensi Desa Kuanyar"
+          subtitle="Hasil observasi lapangan: konveksi, UMKM makanan, dan pertanian yang menjadi tulang punggung ekonomi Desa Kuanyar."
+        >
+          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60 pointer-events-none" />
+              <Input
+                placeholder="Cari potensi desa..."
+                disabled
+                className="pl-10 py-3 bg-white/15 border-white/30 text-white placeholder:text-white/60"
+                aria-label="Cari potensi desa"
+              />
+            </div>
+            <select disabled className="w-full sm:max-w-[200px] px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
+              <option value="all">Semua Kategori</option>
+            </select>
+          </div>
+        </PageHero>
+        <Section className="py-16">
+          <Container>
+            <LoadingSkeleton count={6} variant="card" />
+          </Container>
+        </Section>
+      </>
+    )
+  }
+
+  if (isError) {
+    return (
+      <>
+        <PageHero
+          title="Potensi Desa Kuanyar"
+          subtitle="Hasil observasi lapangan: konveksi, UMKM makanan, dan pertanian yang menjadi tulang punggung ekonomi Desa Kuanyar."
+        >
+          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60 pointer-events-none" />
+              <Input
+                placeholder="Cari potensi desa..."
+                disabled
+                className="pl-10 py-3 bg-white/15 border-white/30 text-white placeholder:text-white/60"
+                aria-label="Cari potensi desa"
+              />
+            </div>
+            <select disabled className="w-full sm:max-w-[200px] px-4 h-10 bg-white/15 border border-white/30 rounded-full text-white text-sm appearance-none">
+              <option value="all">Semua Kategori</option>
+            </select>
+          </div>
+        </PageHero>
+        <Section className="py-16">
+          <Container>
+            <div className="text-center py-16 bg-surface-container-low rounded-2xl">
+              <Search className="w-16 h-16 text-on-surface-variant mx-auto mb-4" />
+              <Typography variant="h4" className="mb-2">Gagal Memuat Data</Typography>
+              <Muted className="mb-4">Terjadi kesalahan saat memuat data potensi desa.</Muted>
+              <Button variant="outline" onClick={handleRetry} className="gap-2">
+                <RefreshCw className="w-4 h-4" /> Coba Lagi
+              </Button>
+            </div>
+          </Container>
+        </Section>
+      </>
+    )
   }
 
   return (
@@ -106,9 +212,9 @@ export default function Potensi() {
             aria-label="Filter kategori potensi"
           >
             <option value="all">Semua Kategori</option>
-            <option value="konveksi">Konveksi</option>
-            <option value="umkm-makanan">UMKM Makanan</option>
-            <option value="pertanian">Pertanian</option>
+            {categoryMetas.map((cat) => (
+              <option key={cat.slug} value={cat.slug}>{cat.title}</option>
+            ))}
           </select>
         </div>
       </PageHero>

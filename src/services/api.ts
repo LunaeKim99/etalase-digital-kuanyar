@@ -7,6 +7,8 @@ import type {
   Post,
   PostWithImages,
   VillageProfile,
+  PotensiCategory,
+  PotensiItem,
 } from '@/types/catalog'
 import { formatRupiah } from '@/lib/utils'
 
@@ -41,6 +43,14 @@ export const api = {
     return getJson<ListResponse<Product>>(`/api/products?${params.toString()}`)
   },
   getProduct: (id: number) => getJson<ItemResponse<Product>>(`/api/products/${id}`),
+  getPotensiCategories: () => getJson<ListResponse<PotensiCategory>>('/api/potensi/categories'),
+  getPotensiItems: (search?: string, category?: string) => {
+    const params = new URLSearchParams()
+    if (search) params.set('search', search)
+    if (category) params.set('category', category)
+    return getJson<ListResponse<PotensiItem>>(`/api/potensi/items?${params.toString()}`)
+  },
+  getPotensiItem: (id: number) => getJson<ItemResponse<PotensiItem>>(`/api/potensi/items/${id}`),
 }
 
 export function useVillageProfile() {
@@ -114,6 +124,31 @@ export function useProduct(id: number) {
   return useQuery({
     queryKey: ['product', id],
     queryFn: () => api.getProduct(id),
+    enabled: !!id,
+    select: (r) => r.data,
+  })
+}
+
+export function usePotensiCategories() {
+  return useQuery({
+    queryKey: ['potensi_categories'],
+    queryFn: api.getPotensiCategories,
+    select: (r) => r.data,
+  })
+}
+
+export function usePotensiItems(search?: string, category?: string) {
+  return useQuery({
+    queryKey: ['potensi_items', search, category],
+    queryFn: () => api.getPotensiItems(search, category),
+    select: (r) => r.data,
+  })
+}
+
+export function usePotensiItem(id: number) {
+  return useQuery({
+    queryKey: ['potensi_item', id],
+    queryFn: () => api.getPotensiItem(id),
     enabled: !!id,
     select: (r) => r.data,
   })

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { Umkm, Product, Post, PostImage, VillageProfile } from '@/types/catalog'
+import type { Umkm, Product, Post, PostImage, VillageProfile, PotensiCategory, PotensiItem } from '@/types/catalog'
 
 const TOKEN_KEY = 'auth_token'
 
@@ -179,6 +179,99 @@ export function useAdminVillageProfile() {
       mutationFn: (data: Partial<VillageProfile>) =>
         apiReq<{ data: VillageProfile }>('/api/admin/village-profile', 'PUT', data),
       onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_village_profile'] }),
+    }),
+  }
+}
+
+function invalidatePotensiQueries(qc: ReturnType<typeof useQueryClient>) {
+  qc.invalidateQueries({ queryKey: ['potensi_categories'] })
+  qc.invalidateQueries({ queryKey: ['potensi_items'] })
+}
+
+export function useAdminPotensiCategories() {
+  const qc = useQueryClient()
+  return {
+    list: useAdminList<PotensiCategory>('admin_potensi_categories', '/api/admin/potensi/categories'),
+    create: useMutation({
+      mutationFn: (data: Partial<PotensiCategory>) => apiReq<{ data: PotensiCategory }>('/api/admin/potensi/categories', 'POST', data),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_categories'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+    update: useMutation({
+      mutationFn: ({ id, data }: { id: number; data: Partial<PotensiCategory> }) =>
+        apiReq<{ data: PotensiCategory }>(`/api/admin/potensi/categories/${id}`, 'PUT', data),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_categories'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/categories/${id}`, 'DELETE'),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_categories'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+  }
+}
+
+export function useAdminPotensiItems() {
+  const qc = useQueryClient()
+  return {
+    list: useAdminList<PotensiItem>('admin_potensi_items', '/api/admin/potensi/items'),
+    create: useMutation({
+      mutationFn: (data: Partial<PotensiItem>) => apiReq<{ data: PotensiItem }>('/api/admin/potensi/items', 'POST', data),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_items'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+    update: useMutation({
+      mutationFn: ({ id, data }: { id: number; data: Partial<PotensiItem> }) =>
+        apiReq<{ data: PotensiItem }>(`/api/admin/potensi/items/${id}`, 'PUT', data),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_items'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/items/${id}`, 'DELETE'),
+      onSuccess: () => {
+        qc.invalidateQueries({ queryKey: ['admin_potensi_items'] })
+        invalidatePotensiQueries(qc)
+      },
+    }),
+  }
+}
+
+export function useAdminPotensiImages() {
+  const qc = useQueryClient()
+  return {
+    add: useMutation({
+      mutationFn: (data: { itemId: number; imageUrl: string; sortOrder?: number }) =>
+        apiReq<{ data: unknown }>(`/api/admin/potensi/items/${data.itemId}/images`, 'POST', data),
+      onSuccess: () => invalidatePotensiQueries(qc),
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/images/${id}`, 'DELETE'),
+      onSuccess: () => invalidatePotensiQueries(qc),
+    }),
+  }
+}
+
+export function useAdminPotensiFeatures() {
+  const qc = useQueryClient()
+  return {
+    add: useMutation({
+      mutationFn: (data: { itemId: number; feature: string; sortOrder?: number }) =>
+        apiReq<{ data: unknown }>(`/api/admin/potensi/items/${data.itemId}/features`, 'POST', data),
+      onSuccess: () => invalidatePotensiQueries(qc),
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/features/${id}`, 'DELETE'),
+      onSuccess: () => invalidatePotensiQueries(qc),
     }),
   }
 }

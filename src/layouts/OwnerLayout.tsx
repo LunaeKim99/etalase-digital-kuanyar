@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Store, Package, Menu, X, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { DarkModeToggle } from '@/components/ui/DarkModeToggle'
 import { useAuth } from '@/contexts/AuthContext'
 
 const ownerNavItems = [
@@ -114,9 +115,12 @@ export default function OwnerLayout() {
               Dashboard UMKM
             </h1>
           </div>
-          <span className="hidden sm:inline text-sm text-on-surface-variant">
-            {user?.name}
-          </span>
+          <div className="flex items-center gap-2">
+            <DarkModeToggle />
+            <span className="hidden sm:inline text-sm text-on-surface-variant">
+              {user?.name}
+            </span>
+          </div>
         </header>
 
         <main className="flex-1 p-4 md:p-6">

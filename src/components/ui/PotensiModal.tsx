@@ -17,11 +17,20 @@ import {
 import { Typography, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import LazyImage from '@/components/ui/LazyImage'
-import type { PotensiItem, PotensiCategoryMeta } from '@/data/potensiData'
+import type { PotensiItem, PotensiCategory } from '@/types/catalog'
+
+interface CategoryMeta {
+  slug: PotensiCategory['slug']
+  title: string
+  description: string
+  icon: string
+  color: string
+  lightColor: string
+}
 
 interface PotensiModalProps {
   item: PotensiItem | null
-  categoryMeta: PotensiCategoryMeta | null
+  categoryMeta: CategoryMeta | null
   isOpen: boolean
   onClose: () => void
 }

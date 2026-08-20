@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { useVillageProfile } from '@/services/api'
+import { useVillageProfile, usePotensiItems, usePotensiCategories } from '@/services/api'
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Card } from '@/components/ui/card'
@@ -8,10 +8,15 @@ import { Button } from '@/components/ui/button'
 import { Typography, Text, Muted } from '@/components/ui/typography'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArrowRight, Users, Store, Image, Wheat } from 'lucide-react'
+<<<<<<< HEAD
 import { getAllItems, getCategoryMeta, type PotensiItem } from '@/data/potensiData'
+=======
+>>>>>>> feat/admin-functionality
 
 export default function Home() {
   const { data: profile } = useVillageProfile()
+  const { data: potensiItems, isLoading: potensiLoading } = usePotensiItems()
+  const { data: categories } = usePotensiCategories()
   const [posts, setPosts] = useState<Array<{ slug: string; title: string; coverImage?: string; publishedAt: string }>>([])
   const [postsLoading, setPostsLoading] = useState(true)
   const [allPotensi, setAllPotensi] = useState<PotensiItem[]>([])
@@ -39,7 +44,27 @@ export default function Home() {
     return () => { cancelled = true }
   }, [])
 
+<<<<<<< HEAD
+=======
+  const allPotensi = potensiItems?.filter((item) => !item.isSector) ?? []
+>>>>>>> feat/admin-functionality
   const featuredPotensi = allPotensi.slice(0, 3)
+
+  const categoryMetaMap = useMemo(() => {
+    if (!categories) return new Map()
+    const map = new Map()
+    for (const cat of categories) {
+      map.set(cat.slug, {
+        slug: cat.slug,
+        title: cat.title,
+        description: cat.description ?? '',
+        icon: cat.icon ?? '',
+        color: cat.color ?? '',
+        lightColor: cat.lightColor ?? '',
+      })
+    }
+    return map
+  }, [categories])
 
   const statCards = [
     { icon: Store, label: 'Potensi Desa', value: allPotensi.length, bg: 'bg-primary-container', text: 'text-on-primary-container' },
@@ -104,8 +129,18 @@ export default function Home() {
             </Text>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {featuredPotensi.map((item) => {
-              const meta = getCategoryMeta(item.category)
+            {potensiLoading ? (
+              [1, 2, 3].map((i) => (
+                <Card key={i} className="h-full overflow-hidden animate-pulse">
+                  <div className="aspect-[4/3] bg-surface" />
+                  <div className="p-5 space-y-3">
+                    <div className="h-4 bg-surface rounded w-1/3" />
+                    <div className="h-6 bg-surface rounded w-3/4" />
+                  </div>
+                </Card>
+              ))
+            ) : featuredPotensi.map((item) => {
+              const categoryMeta = categoryMetaMap.get(item.category) ?? null
               return (
                 <Link key={item.id} to="/potensi" className="block group">
                   <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
@@ -116,9 +151,9 @@ export default function Home() {
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
-                      {meta && (
-                        <span className={`absolute top-3 left-3 badge ${meta.lightColor}`}>
-                          {meta.title}
+                      {categoryMeta && (
+                        <span className={`absolute top-3 left-3 badge ${categoryMeta.lightColor}`}>
+                          {categoryMeta.title}
                         </span>
                       )}
                     </div>

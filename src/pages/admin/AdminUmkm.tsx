@@ -178,14 +178,27 @@ export default function AdminUmkm() {
       </Card>
 
       <Card>
-        <DataTable
-          data={filteredData}
-          columns={columns}
-          actions={[
-            { icon: Edit, onClick: openEditDialog, label: 'Edit' },
-            { icon: Trash2, onClick: openDeleteDialog, label: 'Hapus' },
-          ]}
-        />
+        {!list.isLoading && filteredData.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-on-surface-variant mb-4">Belum ada UMKM</p>
+            <p className="text-on-surface-variant mb-4">Tambahkan UMKM pertama untuk memulai</p>
+            <Button onClick={openCreateDialog}>
+              <Plus className="w-4 h-4 mr-2" /> Tambah UMKM
+            </Button>
+          </div>
+        ) : (
+          <DataTable
+            data={filteredData}
+            columns={columns}
+            loading={list.isLoading}
+            error={list.isError ? 'Gagal memuat data UMKM' : null}
+            onRetry={() => list.refetch()}
+            actions={[
+              { icon: Edit, onClick: openEditDialog, label: 'Edit' },
+              { icon: Trash2, onClick: openDeleteDialog, label: 'Hapus' },
+            ]}
+          />
+        )}
       </Card>
 
       <Dialog
