@@ -31,7 +31,7 @@ export function setOnUnauthorized(handler: (() => void) | null) {
   onUnauthorized = handler
 }
 
-async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T> {
+export async function apiReq<T>(url: string, method: string, body?: unknown): Promise<T> {
   const token = getToken()
   const res = await fetch(url, {
     method,
