@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import type { ContextVariables } from '../middleware/auth.js'
 import { safeJson } from '../middleware/safe.js'
+import { validateBody } from '../middleware/validate.js'
 import {
   listUmkms,
   getUmkm,
@@ -28,6 +29,7 @@ import {
   upsertVillageProfile,
 } from '../services/catalog.js'
 import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth.js'
+import { categorySchema, umkmSchema, productSchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
 
@@ -108,9 +110,9 @@ admin.use('*', authMiddleware)
 admin.use('*', requireRole('admin'))
 
 admin.post('/categories', (c) => safeJson(c, async () => {
-  const body = await c.req.json().catch(() => ({}))
-  if (!body.name || !body.slug) return c.json({ error: 'Validation gagal' }, 400)
-  return await createCategory(body)
+  const result = await validateBody(c, categorySchema)
+  if (result.error) return result.error
+  return await createCategory(result.data)
 }))
 
 admin.delete('/categories/:id', (c) => safeJson(c, async () => {
