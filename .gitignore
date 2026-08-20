@@ -36,3 +36,6 @@ dist-ssr
 
 # Project docs
 docs/
+
+# Playwright MCP
+.playwright-mcp/
