@@ -1,7 +1,7 @@
 import type { ReactNode, ComponentType } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { AlertCircle, Loader2 } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 
 export interface Column<T> {
   key: string

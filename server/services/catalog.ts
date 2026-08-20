@@ -59,12 +59,15 @@ export async function listUmkmProducts(umkmId: number) {
   return { data: rows }
 }
 
-export async function createUmkm(data: typeof umkmTbl.$inferInsert) {
+type UmkmCreate = Omit<typeof umkmTbl.$inferInsert, 'createdAt' | 'updatedAt' | 'id'>
+type UmkmUpdate = Partial<UmkmCreate>
+
+export async function createUmkm(data: UmkmCreate) {
   const rows = await db.insert(umkmTbl).values({ ...data, createdAt: nowISO(), updatedAt: nowISO() }).returning()
   return { data: rows[0] }
 }
 
-export async function updateUmkm(id: number, data: Partial<typeof umkmTbl.$inferInsert>) {
+export async function updateUmkm(id: number, data: UmkmUpdate) {
   const rows = await db.update(umkmTbl).set({ ...data, updatedAt: nowISO() }).where(eq(umkmTbl.id, id)).returning()
   return rows[0] ? { data: rows[0] } : null
 }
@@ -89,12 +92,15 @@ export async function getProduct(id: number) {
   return rows[0] ? { data: rows[0] } : null
 }
 
-export async function createProduct(data: typeof productsTbl.$inferInsert) {
+type ProductCreate = Omit<typeof productsTbl.$inferInsert, 'createdAt' | 'updatedAt' | 'id'>
+type ProductUpdate = Partial<ProductCreate>
+
+export async function createProduct(data: ProductCreate) {
   const rows = await db.insert(productsTbl).values({ ...data, createdAt: nowISO(), updatedAt: nowISO() }).returning()
   return { data: rows[0] }
 }
 
-export async function updateProduct(id: number, data: Partial<typeof productsTbl.$inferInsert>) {
+export async function updateProduct(id: number, data: ProductUpdate) {
   const rows = await db.update(productsTbl).set({ ...data, updatedAt: nowISO() }).where(eq(productsTbl.id, id)).returning()
   return rows[0] ? { data: rows[0] } : null
 }
@@ -125,12 +131,15 @@ export async function getPostBySlug(slug: string) {
   return { data: { ...post, images } }
 }
 
-export async function createPost(data: typeof postsTbl.$inferInsert) {
+type PostCreate = Omit<typeof postsTbl.$inferInsert, 'createdAt' | 'updatedAt' | 'id'>
+type PostUpdate = Partial<PostCreate>
+
+export async function createPost(data: PostCreate) {
   const rows = await db.insert(postsTbl).values({ ...data, createdAt: nowISO(), updatedAt: nowISO() }).returning()
   return { data: rows[0] }
 }
 
-export async function updatePost(id: number, data: Partial<typeof postsTbl.$inferInsert>) {
+export async function updatePost(id: number, data: PostUpdate) {
   const rows = await db.update(postsTbl).set({ ...data, updatedAt: nowISO() }).where(eq(postsTbl.id, id)).returning()
   return rows[0] ? { data: rows[0] } : null
 }
@@ -178,7 +187,9 @@ export async function getVillageProfile() {
   return rows[0] ? { data: rows[0] } : null
 }
 
-export async function upsertVillageProfile(data: typeof villageProfileTbl.$inferInsert) {
+type VillageProfileUpsert = Omit<typeof villageProfileTbl.$inferInsert, 'updatedAt' | 'id'>
+
+export async function upsertVillageProfile(data: VillageProfileUpsert) {
   const existing = await db.select().from(villageProfileTbl).limit(1)
   if (existing[0]) {
     const rows = await db.update(villageProfileTbl).set({ ...data, updatedAt: nowISO() }).where(eq(villageProfileTbl.id, existing[0].id)).returning()

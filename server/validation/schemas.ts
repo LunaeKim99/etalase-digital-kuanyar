@@ -40,7 +40,7 @@ export const postSchema = z.object({
   title: z.string().min(1, 'Judul wajib diisi').max(300),
   slug: z.string().min(1, 'Slug wajib diisi').max(300).regex(/^[a-z0-9-]+$/, 'Slug hanya boleh huruf kecil, angka, dan tanda hubung'),
   content: z.string().min(1, 'Konten wajib diisi'),
-  category: z.string().max(100).optional(),
+  category: z.string().min(1, 'Kategori wajib diisi').max(100),
   coverImage: z.string().url('URL sampul tidak valid').max(500).optional().or(z.literal('')),
   publishedAt: z.string().datetime().optional().or(z.literal('')),
 })

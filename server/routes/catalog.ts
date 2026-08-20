@@ -122,16 +122,17 @@ admin.delete('/categories/:id', (c) => safeJson(c, async () => {
 }))
 
 admin.post('/umkm', (c) => safeJson(c, async () => {
-  const body = await c.req.json().catch(() => ({}))
-  if (!body.name || !body.ownerId) return c.json({ error: 'Validation gagal' }, 400)
-  return await createUmkm(body)
+  const result = await validateBody(c, umkmSchema)
+  if (result.error) return result.error
+  return await createUmkm(result.data)
 }))
 
 admin.put('/umkm/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const body = await c.req.json().catch(() => ({}))
-  return await updateUmkm(id, body)
+  const result = await validateBody(c, umkmSchema)
+  if (result.error) return result.error
+  return await updateUmkm(id, result.data)
 }))
 
 admin.delete('/umkm/:id', (c) => safeJson(c, async () => {
@@ -141,16 +142,17 @@ admin.delete('/umkm/:id', (c) => safeJson(c, async () => {
 }))
 
 admin.post('/products', (c) => safeJson(c, async () => {
-  const body = await c.req.json().catch(() => ({}))
-  if (!body.name || !body.umkmId || !body.price) return c.json({ error: 'Validation gagal' }, 400)
-  return await createProduct(body)
+  const result = await validateBody(c, productSchema)
+  if (result.error) return result.error
+  return await createProduct(result.data)
 }))
 
 admin.put('/products/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const body = await c.req.json().catch(() => ({}))
-  return await updateProduct(id, body)
+  const result = await validateBody(c, productSchema)
+  if (result.error) return result.error
+  return await updateProduct(id, result.data)
 }))
 
 admin.delete('/products/:id', (c) => safeJson(c, async () => {
@@ -160,18 +162,19 @@ admin.delete('/products/:id', (c) => safeJson(c, async () => {
 }))
 
 admin.post('/posts', (c) => safeJson(c, async () => {
-  const body = await c.req.json().catch(() => ({}))
-  if (!body.title || !body.slug || !body.content) return c.json({ error: 'Validation gagal' }, 400)
+  const result = await validateBody(c, postSchema)
+  if (result.error) return result.error
   const user = c.get('user')
   if (!user) return c.json({ error: 'Unauthorized' }, 401)
-  return await createPost({ ...body, authorId: user.id })
+  return await createPost({ ...result.data, authorId: user.id })
 }))
 
 admin.put('/posts/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const body = await c.req.json().catch(() => ({}))
-  return await updatePost(id, body)
+  const result = await validateBody(c, postSchema)
+  if (result.error) return result.error
+  return await updatePost(id, result.data)
 }))
 
 admin.delete('/posts/:id', (c) => safeJson(c, async () => {
@@ -183,8 +186,9 @@ admin.delete('/posts/:id', (c) => safeJson(c, async () => {
 admin.post('/posts/:id/images', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const body = await c.req.json().catch(() => ({}))
-  return await addPostImage({ ...body, postId: id })
+  const result = await validateBody(c, postImageSchema)
+  if (result.error) return result.error
+  return await addPostImage({ ...result.data, postId: id })
 }))
 
 admin.get('/images', (c) => safeJson(c, async () => {
@@ -204,8 +208,9 @@ admin.get('/village-profile', (c) => safeJson(c, async () => {
 }))
 
 admin.put('/village-profile', (c) => safeJson(c, async () => {
-  const body = await c.req.json().catch(() => ({}))
-  return await upsertVillageProfile(body)
+  const result = await validateBody(c, villageProfileSchema)
+  if (result.error) return result.error
+  return await upsertVillageProfile(result.data)
 }))
 
 // Mount protected routers

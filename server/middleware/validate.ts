@@ -1,4 +1,4 @@
-import type { Context, ErrorHandler } from 'hono'
+import type { Context } from 'hono'
 import type { ZodSchema } from 'zod'
 
 export async function validateBody<T>(c: Context, schema: ZodSchema<T>): Promise<{ data: T; error?: never } | { data?: never; error: Response }> {

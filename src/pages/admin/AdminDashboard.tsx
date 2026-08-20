@@ -11,7 +11,6 @@ import { Card } from '@/components/ui/card'
 import { Typography, Muted } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import {
   Store,
   Package,
@@ -173,7 +172,7 @@ export default function AdminDashboard() {
             </Link>
           </Card>
         ))}
-      </div>
+      </div>}
 
       {/* Perlu Perhatian Section */}
       {alerts.length > 0 && (
