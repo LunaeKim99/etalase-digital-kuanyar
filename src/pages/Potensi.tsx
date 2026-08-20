@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, RefreshCw } from 'lucide-react'
 import { usePotensiCategories, usePotensiItems } from '@/services/api'
@@ -28,32 +28,6 @@ export default function Potensi() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
   const [selectedItem, setSelectedItem] = useState<PotensiItem | null>(null)
-<<<<<<< HEAD
-  const [selectedCategory, setSelectedCategory] = useState<PotensiCategoryMeta | null>(null)
-  const [allItems, setAllItems] = useState<PotensiItem[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-    const load = async () => {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const data = await getAllItems()
-        if (!cancelled) {
-          setAllItems(data)
-        }
-      } catch {
-        if (!cancelled) setError('Gagal memuat data potensi')
-      } finally {
-        if (!cancelled) setIsLoading(false)
-      }
-    }
-    load()
-    return () => { cancelled = true }
-  }, [])
-=======
   const [selectedCategory, setSelectedCategory] = useState<CategoryMeta | null>(null)
 
   const { data: categories, isLoading: categoriesLoading, error: categoriesError, refetch: refetchCategories } = usePotensiCategories()
@@ -73,7 +47,6 @@ export default function Potensi() {
       lightColor: cat.lightColor ?? '',
     })) as CategoryMeta[]
   }, [categories])
->>>>>>> feat/admin-functionality
 
   const filteredItems = useMemo(() => {
     if (!items) return []
@@ -232,14 +205,6 @@ export default function Potensi() {
                   </div>
                 </div>
               ))}
-            </div>
-          ) : error ? (
-            <div className="text-center py-16 bg-surface-container-low rounded-2xl">
-              <Search className="w-16 h-16 text-on-surface-variant mx-auto mb-4" />
-              <Typography variant="h4" className="mb-2">
-                Gagal Memuat Data
-              </Typography>
-              <Muted>{error}</Muted>
             </div>
           ) : filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

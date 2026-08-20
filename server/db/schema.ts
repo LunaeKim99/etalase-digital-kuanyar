@@ -79,92 +79,46 @@ export const villageProfile = sqliteTable('village_profile', {
   updatedAt: text('updated_at').notNull(),
 })
 
-<<<<<<< HEAD
-=======
 // Potensi Desa (Village Potential)
->>>>>>> feat/admin-functionality
 export const potensiCategories = sqliteTable('potensi_categories', {
   id: integer('id').primaryKey(),
   slug: text('slug').unique().notNull(),
   title: text('title').notNull(),
-<<<<<<< HEAD
-  description: text('description').notNull(),
-  icon: text('icon').notNull(),
-  color: text('color').notNull(),
-  lightColor: text('light_color').notNull(),
-=======
   description: text('description'),
   icon: text('icon'),
   color: text('color'),
   lightColor: text('light_color'),
   sortOrder: integer('sort_order').notNull().default(0),
->>>>>>> feat/admin-functionality
 })
 
 export const potensiItems = sqliteTable('potensi_items', {
   id: integer('id').primaryKey(),
-<<<<<<< HEAD
-  name: text('name').notNull(),
-  description: text('description').notNull(),
-  category: text('category').notNull(),
-=======
   categoryId: integer('category_id').references(() => potensiCategories.id).notNull(),
   name: text('name').notNull(),
   description: text('description'),
->>>>>>> feat/admin-functionality
   owner: text('owner'),
   rtRw: text('rt_rw'),
   dusun: text('dusun'),
   yearFounded: integer('year_founded'),
   capacity: text('capacity'),
-<<<<<<< HEAD
-  whatsapp: text('whatsapp'),
-  instagram: text('instagram'),
-  tiktok: text('tiktok'),
-  marketplace: text('marketplace'),
-  isSector: integer('is_sector').notNull().default(0),
-=======
   contact: text('contact', { mode: 'json' }),
   isSector: integer('is_sector', { mode: 'boolean' }).notNull().default(false),
   sectorData: text('sector_data', { mode: 'json' }),
   sortOrder: integer('sort_order').notNull().default(0),
->>>>>>> feat/admin-functionality
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 })
 
 export const potensiImages = sqliteTable('potensi_images', {
   id: integer('id').primaryKey(),
-<<<<<<< HEAD
-  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
-  imageUrl: text('image_url').notNull(),
-  caption: text('caption'),
-=======
   itemId: integer('item_id').references(() => potensiItems.id, { onDelete: 'cascade' }).notNull(),
   imageUrl: text('image_url').notNull(),
->>>>>>> feat/admin-functionality
   sortOrder: integer('sort_order').notNull().default(0),
 })
 
 export const potensiFeatures = sqliteTable('potensi_features', {
   id: integer('id').primaryKey(),
-<<<<<<< HEAD
-  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
-  feature: text('feature').notNull(),
-  sortOrder: integer('sort_order').notNull().default(0),
-})
-
-export const potensiSectorData = sqliteTable('potensi_sector_data', {
-  id: integer('id').primaryKey(),
-  potensiId: integer('potensi_id').references(() => potensiItems.id).notNull(),
-  komoditas: text('komoditas').notNull(),
-  musimTanam: text('musim_tanam').notNull(),
-  kelompokTani: text('kelompok_tani').notNull(),
-  pemasaran: text('pemasaran').notNull(),
-  modernisasi: text('modernisasi').notNull(),
-=======
   itemId: integer('item_id').references(() => potensiItems.id, { onDelete: 'cascade' }).notNull(),
   feature: text('feature').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
->>>>>>> feat/admin-functionality
 })

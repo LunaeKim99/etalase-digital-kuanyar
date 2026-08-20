@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-import { Navigate, useParams, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { getItemById, type PotensiItem } from '@/data/potensiData'
-=======
 import { useParams, Link } from 'react-router-dom'
 import { usePotensiItem } from '@/services/api'
->>>>>>> feat/admin-functionality
 import { Container } from '@/components/ui/container'
 import { Section } from '@/components/ui/section'
 import { Card } from '@/components/ui/card'
@@ -16,36 +10,7 @@ import { ArrowLeft, Search } from 'lucide-react'
 
 export default function PotensiDetail() {
   const { id } = useParams<{ id: string }>()
-<<<<<<< HEAD
-  const numId = id ? Number(id) : NaN
-  const [item, setItem] = useState<PotensiItem | undefined>(undefined)
-  const [loading, setLoading] = useState(!Number.isNaN(numId))
-
-  useEffect(() => {
-    if (Number.isNaN(numId)) {
-      setLoading(false)
-      return
-    }
-    let cancelled = false
-    getItemById(numId)
-      .then((result) => {
-        if (!cancelled) {
-          setItem(result)
-          setLoading(false)
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setLoading(false)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [numId])
-
-  if (loading) return null
-=======
   const itemId = id ? parseInt(id, 10) : NaN
->>>>>>> feat/admin-functionality
 
   const { data: item, isLoading, error, refetch } = usePotensiItem(itemId)
 

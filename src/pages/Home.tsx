@@ -8,10 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Typography, Text, Muted } from '@/components/ui/typography'
 import { PageHero } from '@/components/sections/PageHero'
 import { ArrowRight, Users, Store, Image, Wheat } from 'lucide-react'
-<<<<<<< HEAD
-import { getAllItems, getCategoryMeta, type PotensiItem } from '@/data/potensiData'
-=======
->>>>>>> feat/admin-functionality
 
 export default function Home() {
   const { data: profile } = useVillageProfile()
@@ -19,21 +15,15 @@ export default function Home() {
   const { data: categories } = usePotensiCategories()
   const [posts, setPosts] = useState<Array<{ slug: string; title: string; coverImage?: string; publishedAt: string }>>([])
   const [postsLoading, setPostsLoading] = useState(true)
-  const [allPotensi, setAllPotensi] = useState<PotensiItem[]>([])
 
   useEffect(() => {
     let cancelled = false
     const fetchData = async () => {
       try {
-        const [postsRes, potensiRes] = await Promise.all([
-          fetch('/api/posts?limit=3'),
-          getAllItems(),
-        ])
+        const postsRes = await fetch('/api/posts?limit=3')
         if (cancelled) return
         const postsData = await postsRes.json()
         setPosts(postsData.data ?? [])
-        const nonSector = potensiRes.filter((item) => !item.isSector)
-        setAllPotensi(nonSector)
       } catch (e) {
         console.error('Failed to fetch home data:', e)
       } finally {
@@ -44,10 +34,7 @@ export default function Home() {
     return () => { cancelled = true }
   }, [])
 
-<<<<<<< HEAD
-=======
   const allPotensi = potensiItems?.filter((item) => !item.isSector) ?? []
->>>>>>> feat/admin-functionality
   const featuredPotensi = allPotensi.slice(0, 3)
 
   const categoryMetaMap = useMemo(() => {

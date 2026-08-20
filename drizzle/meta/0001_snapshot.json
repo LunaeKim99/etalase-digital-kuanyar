@@ -1,11 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-<<<<<<< HEAD
-  "id": "bc3895cc-a2ac-4dd9-bf39-ef4d33e0f738",
-=======
   "id": "ceeec7d7-3cd0-42b3-8f4c-0d6791f0aff4",
->>>>>>> feat/admin-functionality
   "prevId": "4209272a-bddf-4430-a472-a3ef5e5141e6",
   "tables": {
     "categories": {
@@ -237,43 +233,27 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-<<<<<<< HEAD
-          "notNull": true,
-=======
           "notNull": false,
->>>>>>> feat/admin-functionality
           "autoincrement": false
         },
         "icon": {
           "name": "icon",
           "type": "text",
           "primaryKey": false,
-<<<<<<< HEAD
-          "notNull": true,
-=======
           "notNull": false,
->>>>>>> feat/admin-functionality
           "autoincrement": false
         },
         "color": {
           "name": "color",
           "type": "text",
           "primaryKey": false,
-<<<<<<< HEAD
-          "notNull": true,
-=======
           "notNull": false,
->>>>>>> feat/admin-functionality
           "autoincrement": false
         },
         "light_color": {
           "name": "light_color",
           "type": "text",
           "primaryKey": false,
-<<<<<<< HEAD
-          "notNull": true,
-          "autoincrement": false
-=======
           "notNull": false,
           "autoincrement": false
         },
@@ -284,7 +264,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": 0
->>>>>>> feat/admin-functionality
         }
       },
       "indexes": {
@@ -311,13 +290,8 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "potensi_id": {
-          "name": "potensi_id",
-=======
         "item_id": {
           "name": "item_id",
->>>>>>> feat/admin-functionality
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -341,30 +315,17 @@
       },
       "indexes": {},
       "foreignKeys": {
-<<<<<<< HEAD
-        "potensi_features_potensi_id_potensi_items_id_fk": {
-          "name": "potensi_features_potensi_id_potensi_items_id_fk",
-          "tableFrom": "potensi_features",
-          "tableTo": "potensi_items",
-          "columnsFrom": [
-            "potensi_id"
-=======
         "potensi_features_item_id_potensi_items_id_fk": {
           "name": "potensi_features_item_id_potensi_items_id_fk",
           "tableFrom": "potensi_features",
           "tableTo": "potensi_items",
           "columnsFrom": [
             "item_id"
->>>>>>> feat/admin-functionality
           ],
           "columnsTo": [
             "id"
           ],
-<<<<<<< HEAD
-          "onDelete": "no action",
-=======
           "onDelete": "cascade",
->>>>>>> feat/admin-functionality
           "onUpdate": "no action"
         }
       },
@@ -382,13 +343,8 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "potensi_id": {
-          "name": "potensi_id",
-=======
         "item_id": {
           "name": "item_id",
->>>>>>> feat/admin-functionality
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -401,16 +357,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "caption": {
-          "name": "caption",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-=======
->>>>>>> feat/admin-functionality
         "sort_order": {
           "name": "sort_order",
           "type": "integer",
@@ -422,30 +368,17 @@
       },
       "indexes": {},
       "foreignKeys": {
-<<<<<<< HEAD
-        "potensi_images_potensi_id_potensi_items_id_fk": {
-          "name": "potensi_images_potensi_id_potensi_items_id_fk",
-          "tableFrom": "potensi_images",
-          "tableTo": "potensi_items",
-          "columnsFrom": [
-            "potensi_id"
-=======
         "potensi_images_item_id_potensi_items_id_fk": {
           "name": "potensi_images_item_id_potensi_items_id_fk",
           "tableFrom": "potensi_images",
           "tableTo": "potensi_items",
           "columnsFrom": [
             "item_id"
->>>>>>> feat/admin-functionality
           ],
           "columnsTo": [
             "id"
           ],
-<<<<<<< HEAD
-          "onDelete": "no action",
-=======
           "onDelete": "cascade",
->>>>>>> feat/admin-functionality
           "onUpdate": "no action"
         }
       },
@@ -463,8 +396,6 @@
           "notNull": true,
           "autoincrement": false
         },
-<<<<<<< HEAD
-=======
         "category_id": {
           "name": "category_id",
           "type": "integer",
@@ -472,7 +403,6 @@
           "notNull": true,
           "autoincrement": false
         },
->>>>>>> feat/admin-functionality
         "name": {
           "name": "name",
           "type": "text",
@@ -484,18 +414,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-<<<<<<< HEAD
-          "notNull": true,
-          "autoincrement": false
-        },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-=======
           "notNull": false,
->>>>>>> feat/admin-functionality
           "autoincrement": false
         },
         "owner": {
@@ -533,34 +452,8 @@
           "notNull": false,
           "autoincrement": false
         },
-<<<<<<< HEAD
-        "whatsapp": {
-          "name": "whatsapp",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "instagram": {
-          "name": "instagram",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "tiktok": {
-          "name": "tiktok",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "marketplace": {
-          "name": "marketplace",
-=======
         "contact": {
           "name": "contact",
->>>>>>> feat/admin-functionality
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -572,8 +465,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-<<<<<<< HEAD
-=======
           "default": false
         },
         "sector_data": {
@@ -589,7 +480,6 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
->>>>>>> feat/admin-functionality
           "default": 0
         },
         "created_at": {
@@ -608,74 +498,6 @@
         }
       },
       "indexes": {},
-<<<<<<< HEAD
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "potensi_sector_data": {
-      "name": "potensi_sector_data",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "potensi_id": {
-          "name": "potensi_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "komoditas": {
-          "name": "komoditas",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "musim_tanam": {
-          "name": "musim_tanam",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "kelompok_tani": {
-          "name": "kelompok_tani",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "pemasaran": {
-          "name": "pemasaran",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "modernisasi": {
-          "name": "modernisasi",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "potensi_sector_data_potensi_id_potensi_items_id_fk": {
-          "name": "potensi_sector_data_potensi_id_potensi_items_id_fk",
-          "tableFrom": "potensi_sector_data",
-          "tableTo": "potensi_items",
-          "columnsFrom": [
-            "potensi_id"
-=======
       "foreignKeys": {
         "potensi_items_category_id_potensi_categories_id_fk": {
           "name": "potensi_items_category_id_potensi_categories_id_fk",
@@ -683,7 +505,6 @@
           "tableTo": "potensi_categories",
           "columnsFrom": [
             "category_id"
->>>>>>> feat/admin-functionality
           ],
           "columnsTo": [
             "id"
