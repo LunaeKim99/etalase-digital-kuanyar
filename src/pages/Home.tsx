@@ -132,12 +132,18 @@ export default function Home() {
                 <Link key={item.id} to="/potensi" className="block group">
                   <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="relative aspect-[4/3] overflow-hidden bg-surface">
-                      <img
-                        src={item.images[0]}
-                        alt={item.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
+                      {item.images[0] ? (
+                        <img
+                          src={item.images[0]}
+                          alt={item.name}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-surface-container-low text-on-surface-variant text-sm">
+                          Tidak ada gambar
+                        </div>
+                      )}
                       {categoryMeta && (
                         <span className={`absolute top-3 left-3 badge ${categoryMeta.lightColor}`}>
                           {categoryMeta.title}

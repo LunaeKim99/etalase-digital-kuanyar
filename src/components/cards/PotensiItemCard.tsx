@@ -82,22 +82,28 @@ export default function PotensiItemCard({
 
         {item.sectorData && (
           <div className="grid sm:grid-cols-3 gap-4 mb-4">
-            <div className="bg-surface-container p-3 rounded-lg">
-              <Typography variant="h6" className="mb-1">Komoditas</Typography>
-              <Muted className="text-sm">
-                {item.sectorData.komoditas.map((k) => k.nama).join(', ')}
-              </Muted>
-            </div>
-            <div className="bg-surface-container p-3 rounded-lg">
-              <Typography variant="h6" className="mb-1">Musim Tanam</Typography>
-              <Muted className="text-sm">
-                {item.sectorData.musimTanam.map((m) => `${m.musim}: ${m.lahanAktif}`).join(' · ')}
-              </Muted>
-            </div>
-            <div className="bg-surface-container p-3 rounded-lg">
-              <Typography variant="h6" className="mb-1">Kelompok Tani</Typography>
-              <Muted className="text-sm">{item.sectorData.kelompokTani.length} kelompok</Muted>
-            </div>
+            {item.sectorData.komoditas.length > 0 && (
+              <div className="bg-surface-container p-3 rounded-lg">
+                <Typography variant="h6" className="mb-1">Komoditas</Typography>
+                <Muted className="text-sm">
+                  {item.sectorData.komoditas.map((k) => k.nama).join(', ')}
+                </Muted>
+              </div>
+            )}
+            {item.sectorData.musimTanam.length > 0 && (
+              <div className="bg-surface-container p-3 rounded-lg">
+                <Typography variant="h6" className="mb-1">Musim Tanam</Typography>
+                <Muted className="text-sm">
+                  {item.sectorData.musimTanam.map((m) => `${m.musim}: ${m.lahanAktif}`).join(' · ')}
+                </Muted>
+              </div>
+            )}
+            {item.sectorData.kelompokTani.length > 0 && (
+              <div className="bg-surface-container p-3 rounded-lg">
+                <Typography variant="h6" className="mb-1">Kelompok Tani</Typography>
+                <Muted className="text-sm">{item.sectorData.kelompokTani.length} kelompok</Muted>
+              </div>
+            )}
           </div>
         )}
 
@@ -118,13 +124,19 @@ export default function PotensiItemCard({
       aria-label={`Lihat detail ${item.name}`}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface">
-        <LazyImage
-          src={item.images[0]}
-          alt={item.name}
-          width={600}
-          height={400}
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-        />
+        {item.images[0] ? (
+          <LazyImage
+            src={item.images[0]}
+            alt={item.name}
+            width={600}
+            height={400}
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-surface-container-low text-on-surface-variant text-sm">
+            Tidak ada gambar
+          </div>
+        )}
         <span className={cn('absolute top-3 left-3 badge', categoryMeta.color)}>
           {categoryMeta.title}
         </span>

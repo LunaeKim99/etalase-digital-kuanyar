@@ -195,7 +195,7 @@ export default function AdminPotensi() {
       cell: (row: PotensiItem) => (
         <span className="flex items-center gap-1 text-sm">
           <ImageIcon className="w-4 h-4 text-on-surface-variant" />
-          {row.images.length}
+          {row.images?.length ?? 0}
         </span>
       ),
     },

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface LazyImageProps {
-  src: string
+  src?: string
   alt: string
   className?: string
   width?: number
@@ -14,10 +14,10 @@ export default function LazyImage({ src, alt, className, width, height, loading 
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(false)
 
-  if (error) {
+  if (!src || error) {
     return (
       <div
-        className={cn('bg-surface border border-border rounded-lg flex items-center justify-center text-on-surface-variant', className)}
+        className={cn('bg-surface-container-low border border-outline-variant rounded-lg flex items-center justify-center text-on-surface-variant text-sm', className)}
         style={width && height ? { aspectRatio: width / height } : undefined}
       >
         Gambar tidak tersedia

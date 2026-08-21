@@ -141,60 +141,70 @@ export default function PotensiDetail() {
 
               {item.sectorData && (
                 <>
-                  <section>
-                    <Typography variant="h4" className="mb-3">Komoditas Unggulan</Typography>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      {item.sectorData.komoditas.map((k) => (
-                        <div key={k.nama} className="bg-surface-container-low p-4 rounded-lg">
-                          <Typography variant="h5" className="mb-1">{k.nama}</Typography>
-                          <Muted className="text-sm">{k.deskripsi}</Muted>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
+                  {item.sectorData.komoditas.length > 0 && (
+                    <section>
+                      <Typography variant="h4" className="mb-3">Komoditas Unggulan</Typography>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        {item.sectorData.komoditas.map((k) => (
+                          <div key={k.nama} className="bg-surface-container-low p-4 rounded-lg">
+                            <Typography variant="h5" className="mb-1">{k.nama}</Typography>
+                            <Muted className="text-sm">{k.deskripsi}</Muted>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
 
-                  <section>
-                    <Typography variant="h4" className="mb-3">Musim Tanam</Typography>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm border border-outline-variant rounded-lg overflow-hidden">
-                        <thead className="bg-surface-container-highest">
-                          <tr className="text-left text-on-surface-variant">
-                            <th className="px-4 py-2 font-medium">Musim</th>
-                            <th className="px-4 py-2 font-medium">Lahan Aktif</th>
-                            <th className="px-4 py-2 font-medium">Lahan Kosong</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {item.sectorData.musimTanam.map((m) => (
-                            <tr key={m.musim} className="border-t border-outline-variant">
-                              <td className="px-4 py-2 font-medium">{m.musim}</td>
-                              <td className="px-4 py-2">{m.lahanAktif}</td>
-                              <td className="px-4 py-2">{m.lahanKosong}</td>
+                  {item.sectorData.musimTanam.length > 0 && (
+                    <section>
+                      <Typography variant="h4" className="mb-3">Musim Tanam</Typography>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm border border-outline-variant rounded-lg overflow-hidden">
+                          <thead className="bg-surface-container-highest">
+                            <tr className="text-left text-on-surface-variant">
+                              <th className="px-4 py-2 font-medium">Musim</th>
+                              <th className="px-4 py-2 font-medium">Lahan Aktif</th>
+                              <th className="px-4 py-2 font-medium">Lahan Kosong</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </section>
+                          </thead>
+                          <tbody>
+                            {item.sectorData.musimTanam.map((m) => (
+                              <tr key={m.musim} className="border-t border-outline-variant">
+                                <td className="px-4 py-2 font-medium">{m.musim}</td>
+                                <td className="px-4 py-2">{m.lahanAktif}</td>
+                                <td className="px-4 py-2">{m.lahanKosong}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  )}
 
-                  <section>
-                    <Typography variant="h4" className="mb-3">Kelompok Tani</Typography>
-                    <div className="flex flex-wrap gap-2">
-                      {item.sectorData.kelompokTani.map((k) => (
-                        <span key={k} className="badge">{k}</span>
-                      ))}
-                    </div>
-                  </section>
+                  {item.sectorData.kelompokTani.length > 0 && (
+                    <section>
+                      <Typography variant="h4" className="mb-3">Kelompok Tani</Typography>
+                      <div className="flex flex-wrap gap-2">
+                        {item.sectorData.kelompokTani.map((k) => (
+                          <span key={k} className="badge">{k}</span>
+                        ))}
+                      </div>
+                    </section>
+                  )}
 
-                  <section className="bg-primary-container/40 p-4 rounded-lg">
-                    <Typography variant="h5" className="mb-2">Modernisasi</Typography>
-                    <Muted className="text-sm leading-relaxed">{item.sectorData.modernisasi}</Muted>
-                  </section>
+                  {item.sectorData.modernisasi && (
+                    <section className="bg-primary-container/40 p-4 rounded-lg">
+                      <Typography variant="h5" className="mb-2">Modernisasi</Typography>
+                      <Muted className="text-sm leading-relaxed">{item.sectorData.modernisasi}</Muted>
+                    </section>
+                  )}
 
-                  <section className="bg-primary-container/40 p-4 rounded-lg">
-                    <Typography variant="h5" className="mb-2">Pemasaran</Typography>
-                    <Muted className="text-sm leading-relaxed">{item.sectorData.pemasaran}</Muted>
-                  </section>
+                  {item.sectorData.pemasaran && (
+                    <section className="bg-primary-container/40 p-4 rounded-lg">
+                      <Typography variant="h5" className="mb-2">Pemasaran</Typography>
+                      <Muted className="text-sm leading-relaxed">{item.sectorData.pemasaran}</Muted>
+                    </section>
+                  )}
                 </>
               )}
             </div>

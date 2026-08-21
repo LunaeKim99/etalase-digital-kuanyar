@@ -8,9 +8,9 @@ import type {
   PostWithImages,
   VillageProfile,
   PotensiCategory,
-  PotensiItem,
 } from '@/types/catalog'
 import { formatRupiah } from '@/lib/utils'
+import { normalizePotensiItem, normalizePotensiItems } from '@/lib/potensi-normalize'
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url)
@@ -48,9 +48,9 @@ export const api = {
     const params = new URLSearchParams()
     if (search) params.set('search', search)
     if (category) params.set('category', category)
-    return getJson<ListResponse<PotensiItem>>(`/api/potensi/items?${params.toString()}`)
+    return getJson<unknown>(`/api/potensi/items?${params.toString()}`)
   },
-  getPotensiItem: (id: number) => getJson<ItemResponse<PotensiItem>>(`/api/potensi/items/${id}`),
+  getPotensiItem: (id: number) => getJson<unknown>(`/api/potensi/items/${id}`),
 }
 
 export function useVillageProfile() {
@@ -133,7 +133,7 @@ export function usePotensiCategories() {
   return useQuery({
     queryKey: ['potensi_categories'],
     queryFn: api.getPotensiCategories,
-    select: (r) => r.data,
+    select: (r) => r.data ?? [],
   })
 }
 
@@ -141,7 +141,7 @@ export function usePotensiItems(search?: string, category?: string) {
   return useQuery({
     queryKey: ['potensi_items', search, category],
     queryFn: () => api.getPotensiItems(search, category),
-    select: (r) => r.data,
+    select: (r) => normalizePotensiItems((r as { data?: unknown })?.data),
   })
 }
 
@@ -149,7 +149,7 @@ export function usePotensiItem(id: number) {
   return useQuery({
     queryKey: ['potensi_item', id],
     queryFn: () => api.getPotensiItem(id),
-    enabled: !!id,
-    select: (r) => r.data,
+    enabled: !!id && !Number.isNaN(id),
+    select: (r) => normalizePotensiItem((r as { data?: unknown })?.data),
   })
 }
