@@ -5,6 +5,7 @@ import {
   Store,
   Package,
   FileText,
+  Wheat,
   Building2,
   Layout,
   Settings,
@@ -30,6 +31,7 @@ const navSections = [
     label: 'KONTEN',
     items: [
       { to: '/admin/berita-galeri', label: 'Berita & Galeri', icon: FileText },
+      { to: '/admin/potensi', label: 'Potensi Desa', icon: Wheat },
     ],
   },
   {
@@ -52,6 +54,7 @@ const pageTitleMap: Record<string, string> = {
   '/admin/umkm': 'UMKM',
   '/admin/produk': 'Produk',
   '/admin/berita-galeri': 'Berita & Galeri',
+  '/admin/potensi': 'Potensi Desa',
   '/admin/profil': 'Profil Desa',
   '/admin/tampilan': 'Tampilan Website',
   '/admin/pengaturan': 'Pengaturan',

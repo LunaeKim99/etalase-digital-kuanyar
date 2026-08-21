@@ -139,6 +139,8 @@ const admin = new Hono<{ Variables: ContextVariables }>()
 admin.use('*', authMiddleware)
 admin.use('*', requireRole('admin'))
 
+admin.get('/categories', (c) => safeJson(c, () => listCategories()))
+
 admin.post('/categories', (c) => safeJson(c, async () => {
   const result = await validateBody(c, categorySchema)
   if (result.error) return result.error
@@ -149,6 +151,11 @@ admin.delete('/categories/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   return await deleteCategory(id)
+}))
+
+admin.get('/umkm', (c) => safeJson(c, async () => {
+  const search = c.req.query('search')
+  return await listUmkms(search)
 }))
 
 admin.post('/umkm', (c) => safeJson(c, async () => {
@@ -171,6 +178,11 @@ admin.delete('/umkm/:id', (c) => safeJson(c, async () => {
   return await deleteUmkm(id)
 }))
 
+admin.get('/products', (c) => safeJson(c, async () => {
+  const search = c.req.query('search')
+  return await listProducts(search)
+}))
+
 admin.post('/products', (c) => safeJson(c, async () => {
   const result = await validateBody(c, productSchema)
   if (result.error) return result.error
@@ -189,6 +201,14 @@ admin.delete('/products/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   return await deleteProduct(id)
+}))
+
+admin.get('/posts', (c) => safeJson(c, async () => {
+  const search = c.req.query('search')
+  const category = c.req.query('category')
+  const limit = Number(c.req.query('limit')) || 50
+  const offset = Number(c.req.query('offset')) || 0
+  return await listPosts(search, category, limit, offset)
 }))
 
 admin.post('/posts', (c) => safeJson(c, async () => {
