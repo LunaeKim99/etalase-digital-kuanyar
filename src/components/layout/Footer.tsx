@@ -38,10 +38,10 @@ export const Footer = memo(function Footer() {
                   d="M3 12l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2m-5-9l2-2v8a1 1 0 001 1h2"
                 />
               </svg>
-              <span className="font-bold text-lg text-on-surface">Desa Kuanyar</span>
+              <span className="font-bold text-lg text-on-surface">Ruang Digital Potensi dan Karya Desa Kuanyar</span>
             </div>
             <p className="text-on-surface-variant text-sm leading-relaxed">
-              Etalase digital desa untuk memajukan potensi lokal, produk, dan wisata
+              Ruang digital untuk memajukan potensi, karya, produk, dan wisata
               desa ke seluruh Indonesia.
             </p>
           </div>
