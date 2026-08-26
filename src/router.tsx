@@ -7,6 +7,7 @@ import { AdminGuard } from '@/components/auth/AdminGuard'
 import { OwnerGuard } from '@/components/auth/OwnerGuard'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { TopProgress } from '@/components/ui/TopProgress'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 
 const Home = lazy(() => import('@/pages/Home'))
 const Profil = lazy(() => import('@/pages/Profil'))
@@ -43,6 +44,7 @@ function RootLayout() {
   return (
     <>
       <TopProgress />
+      <ScrollToTop />
       <Outlet />
     </>
   )
