@@ -9,7 +9,7 @@ export interface HeroData {
 }
 
 export const hero: HeroData = {
-  title: 'Etalase Digital Desa Kuanyar',
+  title: 'Ruang Digital Potensi dan Karya Desa Kuanyar',
   subtitle:
     'Temui kekayaan potensi, UMKM, produk unggulan, dan wisata budaya Desa Kuanyar — modern, responsif, dan terhubung.',
   ctaPrimary: { label: 'Jelajahi Potensi', href: '/potensi' },

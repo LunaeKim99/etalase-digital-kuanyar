@@ -18,7 +18,7 @@ export default function AdminSettings() {
   const { user } = useAuth()
 
   // Umum form state
-  const [websiteName, setWebsiteName] = useState('Etalase Digital Kuanyar')
+  const [websiteName, setWebsiteName] = useState('Ruang Digital Potensi dan Karya Desa Kuanyar')
   const [contactEmail, setContactEmail] = useState('admin@kuanyar.desa.id')
   const [whatsapp, setWhatsApp] = useState('+62 812-3456-7890')
   const [facebook, setFacebook] = useState('')

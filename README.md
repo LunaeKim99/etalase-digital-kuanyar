@@ -1,4 +1,4 @@
-# Etalase Digital Desa Kuanyar
+# Ruang Digital Potensi dan Karya Desa Kuanyar
 
 Platform digital untuk mempromosikan potensi Desa Kuanyar — profil desa, UMKM, produk unggulan, berita, dan informasi kontak.
 

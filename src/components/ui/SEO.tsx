@@ -15,7 +15,7 @@ interface SEOProps {
 }
 
 export function SEO({
-  title = 'Etalase Digital Desa Kuanyar',
+  title = 'Ruang Digital Potensi dan Karya Desa Kuanyar',
   description = 'Temui kekayaan potensi Desa Kuanyar — konveksi, UMKM makanan, dan pertanian yang menjadi tulang punggung ekonomi desa.',
   image = 'https://etalase-kuanyar.vercel.app/og-default.jpg',
   url,
@@ -28,7 +28,7 @@ export function SEO({
 }: SEOProps) {
   const location = useLocation()
   const fullUrl = url ?? `https://etalase-kuanyar.vercel.app${location.pathname}`
-  const siteName = 'Etalase Digital Desa Kuanyar'
+  const siteName = 'Ruang Digital Potensi dan Karya Desa Kuanyar'
 
   return (
     <Helmet>
@@ -71,7 +71,7 @@ export const schema = {
   website: {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Etalase Digital Desa Kuanyar',
+    name: 'Ruang Digital Potensi dan Karya Desa Kuanyar',
     url: 'https://etalase-kuanyar.vercel.app',
   },
   organization: {

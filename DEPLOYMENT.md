@@ -1,4 +1,4 @@
-# Deployment Checklist — Etalase Digital Desa Kuanyar
+# Deployment Checklist — Ruang Digital Potensi dan Karya Desa Kuanyar
 
 ## Vercel Environment Variables (Production)
 

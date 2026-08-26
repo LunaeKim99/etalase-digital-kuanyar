@@ -246,7 +246,7 @@ export default function Home() {
               Ingin Potensi Anda Terlihat di Sini?
             </Typography>
             <Text className="mb-8 opacity-90">
-              Daftarkan potensi Anda ke Etalase Digital Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
+              Daftarkan potensi Anda ke Ruang Digital Potensi dan Karya Desa Kuanyar dan jangkau pembeli di seluruh Indonesia.
             </Text>
             <Button asChild size="lg" className="bg-primary text-on-primary hover:bg-primary/90">
               <Link to="/kontak">Hubungi Kami <ArrowRight className="w-4 h-4 ml-2" /></Link>
