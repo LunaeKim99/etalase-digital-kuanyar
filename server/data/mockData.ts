@@ -2,7 +2,7 @@ export const villageProfile = {
   id: 1,
   name: 'Desa Kuanyar',
   overview:
-    'Desa Kuanyar merupakan salah satu desa di Kecamatan Mayong, Kabupaten Jepara, Jawa Tengah. Desa ini dikenal dengan potensi konveksi, kuliner, dan pertanian yang menjadi sumber ekonomi utama masyarakat setempat.',
+    'Desa Kuanyar merupakan salah satu desa di Kecamatan Mayong, Kabupaten Jepara, Jawa Tengah yang terkenal dengan usaha konveksi, katering, snack, dan pertanian sebagai sumber ekonomi utama masyarakat setempat.',
   history:
     'Desa Kuanyar berdiri sejak zaman kolonial Belanda. Nama Kuanyar berasal dari kata "Kali" dan "Anyar" yang berarti sungai baru, merujuk pada keberadaan sungai yang melintasi desa. Seiring berjalannya waktu, desa berkembang menjadi pusat kerajinan dan perdagangan di wilayah Kecamatan Mayong.',
   vision:
@@ -10,7 +10,7 @@ export const villageProfile = {
   mission:
     'Meningkatkan kesejahteraan masyarakat melalui pengembangan ekonomi kerakyatan berbasis UMKM dan potensi lokal; Menyelenggarakan pemerintahan desa yang bersih, transparan, dan akuntabel; Meningkatkan kualitas sumber daya manusia melalui pendidikan dan pelatihan; Membangun infrastruktur desa yang merata dan berkelanjutan.',
   demographics:
-    'Jumlah penduduk Desa Kuanyar tercatat sekitar 4.500 jiwa dengan 1.300 kepala keluarga. Mayoritas penduduk bekerja di sektor konveksi, kuliner, dan pertanian. Rasio penduduk laki-laki dan perempuan relatif seimbang, dengan jumlah penduduk usia produktif sekitar 65%.',
+    'Jumlah penduduk Desa Kuanyar tercatat sekitar 4.500 jiwa dengan 1.300 kepala keluarga. Mayoritas penduduk bekerja di sektor konveksi, katering, snack, dan pertanian. Tidak sedikit anak muda dan pendatang dari luar desa yang bekerja sebagai buruh pabrik konveksi. Rasio penduduk laki-laki dan perempuan relatif seimbang, dengan jumlah penduduk usia produktif sekitar 65%.',
   facilities:
     'Desa Kuanyar memiliki berbagai fasilitas umum antara lain: Balai Desa, Kantor Pemerintah Desa, Puskesmas Pembantu (Pustu), Sekolah Dasar Negeri, Taman Kanak-Kanak, Masjid, Lapangan Olahraga, dan Pasar Desa.',
   adminInfo:
