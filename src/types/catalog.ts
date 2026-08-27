@@ -2,7 +2,7 @@ export interface User {
   id: number
   name: string
   email: string
-  role: 'admin' | 'umkm_owner'
+  role: 'admin'
 }
 
 export interface Umkm {
