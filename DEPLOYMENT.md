@@ -36,8 +36,8 @@ Verify in Vercel dashboard → Project → Settings → Environment Variables. P
 | Endpoint | Expected | Check |
 |----------|----------|-------|
 | `GET /health` | `200 text/plain "OK"` | Server alive |
-| `GET /api/products` | `200 application/json {"data":[...]}` | DB reachable + tables exist |
-| `GET /api/umkm` | `200 application/json {"data":[...]}` | UMKM table |
+| `GET /api/potensi/categories` | `200 application/json {"data":[...]}` | Potensi tables |
+| `GET /api/potensi/items` | `200 application/json {"data":[...]}` | Potensi items table |
 | `GET /api/posts` | `200 application/json {"data":[...]}` | Posts table |
 | `GET /api/village-profile` | `200 application/json {"data":{...}}` | village_profile table |
 | `GET /api/categories` | `200 application/json {"data":[...]}` | categories table |
@@ -56,7 +56,7 @@ Any `500 text/html` or `500 text/plain "A server e..."` = regression. Error hand
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| `{"success":false,"error":"Database not initialized","table":"products"}` (503) | Turso DB has no tables | Run migration. |
+| `{"success":false,"error":"Database not initialized"}` (503) | Turso DB has no tables | Run migration. |
 | `{"success":false,"error":"Database configuration error"}` (503) | `TURSO_DATABASE_URL`/`TURSO_AUTH_TOKEN` missing or invalid | Set Vercel env vars. |
 | `{"success":false,"error":"Internal server error"}` (500) | Other runtime error | Check Vercel function logs. |
 | Frontend `Unexpected token 'A' is not valid JSON` | Server returned HTML text error page | Should not happen after hardening; check if route bypasses `safeJson`. |
