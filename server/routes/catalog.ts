@@ -27,11 +27,17 @@ import {
   deletePotensiItem,
   addPotensiImage,
   deletePotensiImage,
+  listPotensiImageRows,
+  reorderPotensiImages,
   addPotensiFeature,
   deletePotensiFeature,
+  reorderPostImages,
 } from '../services/catalog.js'
+import { processAndStoreImage, deleteMediaByUrl, MediaValidationError } from '../services/media.js'
 import { authMiddleware, requireRole } from '../middleware/auth.js'
-import { categorySchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
+import { checkRateLimit, getClientIp } from '../middleware/rateLimit.js'
+import { categorySchema, postSchema, postImageSchema, villageProfileSchema, reorderImagesSchema } from '../validation/schemas.js'
+import { isMediaContext, MAX_UPLOAD_BYTES } from '../config/media.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
 
@@ -143,6 +149,58 @@ admin.delete('/images/:id', (c) => safeJson(c, async () => {
   return await deletePostImage(id)
 }))
 
+admin.put('/posts/images/reorder', (c) => safeJson(c, async () => {
+  const result = await validateBody(c, reorderImagesSchema)
+  if (result.error) return result.error
+  return await reorderPostImages(result.data.orderedIds)
+}))
+
+// Admin: media upload (multipart/form-data)
+admin.post('/media/upload', async (c) => {
+  // Admin-only endpoint, but multi-file uploads are legitimate — allow more
+  // requests per minute than the auth endpoints' default limit.
+  const limit = checkRateLimit(`media:${getClientIp(c)}`, 60)
+  if (!limit.allowed) {
+    c.header('Retry-After', String(limit.retryAfterSec))
+    return c.json({ success: false, error: 'Terlalu banyak upload, coba lagi nanti' }, 429)
+  }
+
+  try {
+    const body = await c.req.parseBody()
+    const file = body.file
+    const context = body.context
+    if (!(file instanceof File)) {
+      return c.json({ success: false, error: 'File tidak ditemukan' }, 400)
+    }
+    if (!isMediaContext(context)) {
+      return c.json({ success: false, error: 'Context tidak valid' }, 400)
+    }
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return c.json({
+        success: false,
+        error: `Gambar terlalu besar. Maksimum ${Math.floor(MAX_UPLOAD_BYTES / (1024 * 1024))} MB.`,
+      }, 413)
+    }
+    const buffer = Buffer.from(await file.arrayBuffer())
+    const data = await processAndStoreImage(buffer, file.type, context)
+    return c.json({ success: true, data })
+  } catch (err) {
+    if (err instanceof MediaValidationError) {
+      return c.json({ success: false, error: err.message }, 400)
+    }
+    console.error('[media upload]', err)
+    return c.json({ success: false, error: 'Upload gagal. Silakan coba lagi.' }, 500)
+  }
+})
+
+// Admin: rollback orphan upload (only URLs matching our own storage key pattern)
+admin.delete('/media', (c) => safeJson(c, async () => {
+  const url = c.req.query('url')
+  if (!url) return c.json({ success: false, error: 'URL wajib diisi' }, 400)
+  await deleteMediaByUrl(url)
+  return { success: true }
+}))
+
 admin.get('/village-profile', (c) => safeJson(c, async () => {
   const profile = await getVillageProfile()
   if (!profile) return { data: null }
@@ -211,6 +269,22 @@ admin.delete('/potensi/images/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   return await deletePotensiImage(id)
+}))
+
+admin.get('/potensi/items/:id/images', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  return await listPotensiImageRows(id)
+}))
+
+admin.put('/potensi/items/:id/images/reorder', (c) => safeJson(c, async () => {
+  const id = Number(c.req.param('id'))
+  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
+  const result = await validateBody(c, reorderImagesSchema)
+  if (result.error) return result.error
+  const reordered = await reorderPotensiImages(id, result.data.orderedIds)
+  if (!reordered) return c.json({ error: 'Beberapa gambar tidak ditemukan pada item ini' }, 400)
+  return reordered
 }))
 
 admin.post('/potensi/items/:id/features', (c) => safeJson(c, async () => {

@@ -10,8 +10,9 @@ import {
   potensiImages as potensiImagesTbl,
   potensiFeatures as potensiFeaturesTbl,
 } from '../db/schema.js'
-import { eq, like, and, or, desc, type SQL, asc } from 'drizzle-orm'
+import { eq, like, and, or, desc, asc, inArray, type SQL } from 'drizzle-orm'
 import { verifyPassword } from '../middleware/password.js'
+import { deleteMediaByUrl } from './media.js'
 
 const nowISO = () => new Date().toISOString()
 
@@ -69,14 +70,26 @@ export async function createPost(data: PostCreate) {
 }
 
 export async function updatePost(id: number, data: PostUpdate) {
+  const existing = await db.select().from(postsTbl).where(eq(postsTbl.id, id)).limit(1)
   const rows = await db.update(postsTbl).set({ ...data, updatedAt: nowISO() }).where(eq(postsTbl.id, id)).returning()
+  if (rows[0] && existing[0] && existing[0].coverImage && existing[0].coverImage !== rows[0].coverImage) {
+    await deleteMediaByUrl(existing[0].coverImage)
+  }
   return rows[0] ? { data: rows[0] } : null
 }
 
 export async function deletePost(id: number) {
+  const images = await db.select().from(postImagesTbl).where(eq(postImagesTbl.postId, id))
   await db.delete(postImagesTbl).where(eq(postImagesTbl.postId, id))
   const rows = await db.delete(postsTbl).where(eq(postsTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
+  const deleted = rows[0] ?? null
+  if (deleted) {
+    await Promise.all([
+      deleteMediaByUrl(deleted.coverImage),
+      ...images.map((img) => deleteMediaByUrl(img.imageUrl)),
+    ])
+  }
+  return deleted ? { data: deleted } : null
 }
 
 export async function addPostImage(data: typeof postImagesTbl.$inferInsert) {
@@ -91,7 +104,18 @@ export async function listPostImages() {
 
 export async function deletePostImage(id: number) {
   const rows = await db.delete(postImagesTbl).where(eq(postImagesTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
+  const deleted = rows[0] ?? null
+  if (deleted) await deleteMediaByUrl(deleted.imageUrl)
+  return deleted ? { data: deleted } : null
+}
+
+export async function reorderPostImages(orderedIds: number[]) {
+  await Promise.all(
+    orderedIds.map((id, index) =>
+      db.update(postImagesTbl).set({ sortOrder: index }).where(eq(postImagesTbl.id, id)),
+    ),
+  )
+  return { data: { orderedIds } }
 }
 
 // Categories
@@ -230,8 +254,13 @@ export async function updatePotensiItem(id: number, data: PotensiItemUpdate) {
 }
 
 export async function deletePotensiItem(id: number) {
+  const images = await db.select().from(potensiImagesTbl).where(eq(potensiImagesTbl.itemId, id))
   const rows = await db.delete(potensiItemsTbl).where(eq(potensiItemsTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
+  const deleted = rows[0] ?? null
+  if (deleted) {
+    await Promise.all(images.map((img) => deleteMediaByUrl(img.imageUrl)))
+  }
+  return deleted ? { data: deleted } : null
 }
 
 export async function addPotensiImage(data: typeof potensiImagesTbl.$inferInsert) {
@@ -239,9 +268,39 @@ export async function addPotensiImage(data: typeof potensiImagesTbl.$inferInsert
   return { data: rows[0] }
 }
 
+export async function listPotensiImageRows(itemId: number) {
+  const rows = await db
+    .select()
+    .from(potensiImagesTbl)
+    .where(eq(potensiImagesTbl.itemId, itemId))
+    .orderBy(asc(potensiImagesTbl.sortOrder))
+  return { data: rows }
+}
+
 export async function deletePotensiImage(id: number) {
   const rows = await db.delete(potensiImagesTbl).where(eq(potensiImagesTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
+  const deleted = rows[0] ?? null
+  if (deleted) await deleteMediaByUrl(deleted.imageUrl)
+  return deleted ? { data: deleted } : null
+}
+
+export async function reorderPotensiImages(itemId: number, orderedIds: number[]) {
+  // Only reorder images that actually belong to this item.
+  const owned = await db
+    .select({ id: potensiImagesTbl.id })
+    .from(potensiImagesTbl)
+    .where(and(eq(potensiImagesTbl.itemId, itemId), inArray(potensiImagesTbl.id, orderedIds)))
+  const ownedIds = new Set(owned.map((row) => row.id))
+  const valid = orderedIds.filter((id) => ownedIds.has(id))
+  if (valid.length !== orderedIds.length) {
+    return null
+  }
+  await Promise.all(
+    valid.map((id, index) =>
+      db.update(potensiImagesTbl).set({ sortOrder: index }).where(eq(potensiImagesTbl.id, id)),
+    ),
+  )
+  return { data: { orderedIds: valid } }
 }
 
 export async function addPotensiFeature(data: typeof potensiFeaturesTbl.$inferInsert) {
