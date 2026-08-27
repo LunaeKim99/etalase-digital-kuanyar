@@ -1,8 +1,6 @@
 import { db } from '../db/client.js'
 import {
   users as usersTbl,
-  umkm as umkmTbl,
-  products as productsTbl,
   posts as postsTbl,
   postImages as postImagesTbl,
   categories as categoriesTbl,
@@ -39,79 +37,6 @@ export async function authenticateUser(email: string, password: string) {
   const valid = await verifyPassword(password, user.passwordHash)
   if (!valid) return null
   return user
-}
-
-// UMKM
-export async function listUmkms(search?: string) {
-  const conditions: SQL[] = []
-  if (search) {
-    const q = `%${search}%`
-    conditions.push(or(like(umkmTbl.name, q), like(umkmTbl.address, q))!)
-  }
-  const query = db.select().from(umkmTbl)
-  const rows = conditions.length ? await query.where(and(...conditions)) : await query
-  return { data: rows }
-}
-
-export async function getUmkm(id: number) {
-  const rows = await db.select().from(umkmTbl).where(eq(umkmTbl.id, id)).limit(1)
-  return rows[0] ? { data: rows[0] } : null
-}
-
-export async function listUmkmProducts(umkmId: number) {
-  const rows = await db.select().from(productsTbl).where(eq(productsTbl.umkmId, umkmId))
-  return { data: rows }
-}
-
-type UmkmCreate = Omit<typeof umkmTbl.$inferInsert, 'createdAt' | 'updatedAt' | 'id'>
-type UmkmUpdate = Partial<UmkmCreate>
-
-export async function createUmkm(data: UmkmCreate) {
-  const rows = await db.insert(umkmTbl).values({ ...data, createdAt: nowISO(), updatedAt: nowISO() }).returning()
-  return { data: rows[0] }
-}
-
-export async function updateUmkm(id: number, data: UmkmUpdate) {
-  const rows = await db.update(umkmTbl).set({ ...data, updatedAt: nowISO() }).where(eq(umkmTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
-}
-
-export async function deleteUmkm(id: number) {
-  const rows = await db.delete(umkmTbl).where(eq(umkmTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
-}
-
-// Products
-export async function listProducts(search?: string) {
-  const conditions: SQL[] = []
-  if (search) conditions.push(like(productsTbl.name, `%${search}%`))
-
-  const query = db.select().from(productsTbl)
-  const rows = conditions.length ? await query.where(and(...conditions)) : await query
-  return { data: rows }
-}
-
-export async function getProduct(id: number) {
-  const rows = await db.select().from(productsTbl).where(eq(productsTbl.id, id)).limit(1)
-  return rows[0] ? { data: rows[0] } : null
-}
-
-type ProductCreate = Omit<typeof productsTbl.$inferInsert, 'createdAt' | 'updatedAt' | 'id'>
-type ProductUpdate = Partial<ProductCreate>
-
-export async function createProduct(data: ProductCreate) {
-  const rows = await db.insert(productsTbl).values({ ...data, createdAt: nowISO(), updatedAt: nowISO() }).returning()
-  return { data: rows[0] }
-}
-
-export async function updateProduct(id: number, data: ProductUpdate) {
-  const rows = await db.update(productsTbl).set({ ...data, updatedAt: nowISO() }).where(eq(productsTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
-}
-
-export async function deleteProduct(id: number) {
-  const rows = await db.delete(productsTbl).where(eq(productsTbl.id, id)).returning()
-  return rows[0] ? { data: rows[0] } : null
 }
 
 // Posts (merged Berita + Galeri)
