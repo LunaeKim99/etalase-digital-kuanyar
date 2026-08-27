@@ -14,7 +14,6 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx server/db/seed.ts",
-    "seed:potensi": "tsx server/db/seed-potensi.ts",
     "seed:berita": "tsx server/db/seed-berita.ts",
     "test:auth": "tsx scripts/test-auth.mts",
     "test:auth:e2e": "tsx scripts/test-auth-e2e.mts"

@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:4000'
+const BASE = process.env.BASE ?? 'http://localhost:4000'
 
 async function req(path: string, opts: RequestInit = {}): Promise<{ status: number; body: any }> {
   const res = await fetch(`${BASE}${path}`, {
@@ -48,12 +48,12 @@ const emptyP = await req('/api/auth/login', {
 })
 assert('POST /api/auth/login empty payload → 400 or 401', emptyP.status === 400 || emptyP.status === 401, JSON.stringify(emptyP.body))
 
-// Test 6: register role=admin (must be ignored)
+// Test 6: register ignores role field (admin is the only management role)
 const regAdmin = await req('/api/auth/register', {
   method: 'POST',
   body: JSON.stringify({ name: 'Hacker', email: `hacker${Date.now()}@test.com`, password: 'pass1234', role: 'admin' }),
 })
-assert('POST /api/auth/register with role=admin → user gets umkm_owner', regAdmin.status === 200 && regAdmin.body?.user?.role === 'umkm_owner', JSON.stringify(regAdmin.body))
+assert('POST /api/auth/register with role=admin → user gets admin', regAdmin.status === 200 && regAdmin.body?.user?.role === 'admin', JSON.stringify(regAdmin.body))
 
 // Test 7: /api/auth/me with no token
 const noToken = await req('/api/auth/me')
@@ -71,19 +71,16 @@ assert('GET /api/auth/me valid token → 200 + user', me.status === 200 && me.bo
 const adminNoAuth = await req('/api/admin/posts')
 assert('GET /api/admin/posts no token → 401', adminNoAuth.status === 401, JSON.stringify(adminNoAuth.body))
 
-// Test 11: admin API with umkm_owner token
+// Test 11: legacy owner account no longer exists
 const ownerLogin = await req('/api/auth/login', {
   method: 'POST',
   body: JSON.stringify({ email: 'sutrisno@kuanyar.desa.id', password: 'owner123' }),
 })
-assert('login umkm_owner → 200', ownerLogin.status === 200 && !!ownerLogin.body?.token, JSON.stringify(ownerLogin.body))
-const ownerToken = ownerLogin.body?.token
-const adminWithOwner = await req('/api/admin/posts', { headers: { Authorization: `Bearer ${ownerToken}` } })
-assert('GET /api/admin/posts with umkm_owner → 403', adminWithOwner.status === 403, JSON.stringify(adminWithOwner.body))
+assert('login legacy owner account → 401', ownerLogin.status === 401, JSON.stringify(ownerLogin.body))
 
-// Test 12: owner API with admin token
+// Test 12: owner API was removed
 const adminOwnerApi = await req('/api/owner/me/umkm', { headers: { Authorization: `Bearer ${adminToken}` } })
-assert('GET /api/owner/me/umkm with admin → 200 or 201', adminOwnerApi.status === 200 || adminOwnerApi.status === 201, JSON.stringify(adminOwnerApi.body))
+assert('GET /api/owner/me/umkm → 404 (removed)', adminOwnerApi.status === 404, JSON.stringify(adminOwnerApi.body))
 
 // Test 13: public posts endpoint (no auth required)
 const publicPosts = await req('/api/posts')

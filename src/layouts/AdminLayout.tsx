@@ -59,7 +59,6 @@ const pageTitleMap: Record<string, string> = {
 }
 
 function resolvePageTitle(pathname: string): string {
-  if (/^\/admin\/potensi\/umkm\/\d+\/produk/.test(pathname)) return 'Produk UMKM'
   if (/^\/admin\/potensi\/umkm\/\d+/.test(pathname)) return 'Detail UMKM'
   if (/^\/admin\/potensi\/pertanian\/\d+/.test(pathname)) return 'Detail Pertanian'
   if (pathname === '/admin/potensi') return pageTitleMap[pathname]

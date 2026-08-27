@@ -10,32 +10,6 @@ export const users = sqliteTable('users', {
   updatedAt: text('updated_at').notNull(),
 })
 
-export const umkm = sqliteTable('umkm', {
-  id: integer('id').primaryKey(),
-  ownerId: integer('owner_id').references(() => users.id).notNull(),
-  name: text('name').notNull(),
-  description: text('description'),
-  address: text('address'),
-  whatsapp: text('whatsapp'),
-  logo: text('logo'),
-  status: text('status').notNull().default('pending'),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-})
-
-export const products = sqliteTable('products', {
-  id: integer('id').primaryKey(),
-  umkmId: integer('umkm_id').references(() => umkm.id).notNull(),
-  name: text('name').notNull(),
-  description: text('description'),
-  price: integer('price').notNull(),
-  image: text('image'),
-  stock: integer('stock').notNull().default(0),
-  status: text('status').notNull().default('active'),
-  createdAt: text('created_at').notNull(),
-  updatedAt: text('updated_at').notNull(),
-})
-
 export const posts = sqliteTable('posts', {
   id: integer('id').primaryKey(),
   title: text('title').notNull(),

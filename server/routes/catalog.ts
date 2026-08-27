@@ -3,17 +3,6 @@ import type { ContextVariables } from '../middleware/auth.js'
 import { safeJson } from '../middleware/safe.js'
 import { validateBody } from '../middleware/validate.js'
 import {
-  listUmkms,
-  getUmkm,
-  listUmkmProducts,
-  listProducts,
-  getProduct,
-  createUmkm,
-  updateUmkm,
-  deleteUmkm,
-  createProduct,
-  updateProduct,
-  deleteProduct,
   listPosts,
   getPostBySlug,
   createPost,
@@ -42,7 +31,7 @@ import {
   deletePotensiFeature,
 } from '../services/catalog.js'
 import { authMiddleware, requireRole } from '../middleware/auth.js'
-import { categorySchema, umkmSchema, productSchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
+import { categorySchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
 
@@ -87,39 +76,6 @@ app.get('/potensi/items/:id', (c) => safeJson(c, async () => {
   return data
 }))
 
-// Public: UMKM + products
-app.get('/umkm', (c) => safeJson(c, async () => {
-  const search = c.req.query('search')
-  return await listUmkms(search)
-}))
-
-app.get('/umkm/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const data = await getUmkm(id)
-  if (!data) return c.json({ error: 'Not found' }, 404)
-  return data
-}))
-
-app.get('/umkm/:id/products', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  return await listUmkmProducts(id)
-}))
-
-app.get('/products', (c) => safeJson(c, async () => {
-  const search = c.req.query('search')
-  return await listProducts(search)
-}))
-
-app.get('/products/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const data = await getProduct(id)
-  if (!data) return c.json({ error: 'Not found' }, 404)
-  return data
-}))
-
 // Protected admin routes
 const admin = new Hono<{ Variables: ContextVariables }>()
 admin.use('*', authMiddleware)
@@ -137,56 +93,6 @@ admin.delete('/categories/:id', (c) => safeJson(c, async () => {
   const id = Number(c.req.param('id'))
   if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
   return await deleteCategory(id)
-}))
-
-admin.get('/umkm', (c) => safeJson(c, async () => {
-  const search = c.req.query('search')
-  return await listUmkms(search)
-}))
-
-admin.post('/umkm', (c) => safeJson(c, async () => {
-  const result = await validateBody(c, umkmSchema)
-  if (result.error) return result.error
-  return await createUmkm(result.data)
-}))
-
-admin.put('/umkm/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const result = await validateBody(c, umkmSchema)
-  if (result.error) return result.error
-  return await updateUmkm(id, result.data)
-}))
-
-admin.delete('/umkm/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  return await deleteUmkm(id)
-}))
-
-admin.get('/products', (c) => safeJson(c, async () => {
-  const search = c.req.query('search')
-  return await listProducts(search)
-}))
-
-admin.post('/products', (c) => safeJson(c, async () => {
-  const result = await validateBody(c, productSchema)
-  if (result.error) return result.error
-  return await createProduct(result.data)
-}))
-
-admin.put('/products/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  const result = await validateBody(c, productSchema)
-  if (result.error) return result.error
-  return await updateProduct(id, result.data)
-}))
-
-admin.delete('/products/:id', (c) => safeJson(c, async () => {
-  const id = Number(c.req.param('id'))
-  if (Number.isNaN(id)) return c.json({ error: 'Invalid id' }, 400)
-  return await deleteProduct(id)
 }))
 
 admin.get('/posts', (c) => safeJson(c, async () => {

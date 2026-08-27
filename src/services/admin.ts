@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { Umkm, Product, Post, PostImage, VillageProfile, PotensiCategory, PotensiItem } from '@/types/catalog'
+import type { Post, PostImage, VillageProfile, PotensiCategory, PotensiItem } from '@/types/catalog'
 
 const TOKEN_KEY = 'auth_token'
 
@@ -115,24 +115,6 @@ function useAdminUpdate<T>(key: string, endpoint: string) {
       apiReq<{ data: T }>(`${endpoint}/${id}`, 'PUT', data),
     onSuccess: () => qc.invalidateQueries({ queryKey: [key] }),
   })
-}
-
-export function useAdminUmkms() {
-  return {
-    list: useAdminList<Umkm>('admin_umkm', '/api/admin/umkm'),
-    create: useAdminCreate<Umkm>('admin_umkm', '/api/admin/umkm'),
-    update: useAdminUpdate<Umkm>('admin_umkm', '/api/admin/umkm'),
-    del: useAdminDelete('admin_umkm', '/api/admin/umkm'),
-  }
-}
-
-export function useAdminProducts() {
-  return {
-    list: useAdminList<Product>('admin_produk', '/api/admin/products'),
-    create: useAdminCreate<Product>('admin_produk', '/api/admin/products'),
-    update: useAdminUpdate<Product>('admin_produk', '/api/admin/products'),
-    del: useAdminDelete('admin_produk', '/api/admin/products'),
-  }
 }
 
 export function useAdminPosts() {

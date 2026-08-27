@@ -15,6 +15,13 @@
       "when": 1787260094242,
       "tag": "0001_far_calypso",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787844067961,
+      "tag": "0002_drop-legacy-umkm-products",
+      "breakpoints": true
     }
   ]
 }
