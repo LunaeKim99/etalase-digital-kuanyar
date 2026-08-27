@@ -35,7 +35,17 @@ export default function Home() {
   }, [])
 
   const allPotensi = potensiItems?.filter((item) => !item.isSector) ?? []
-  const featuredPotensi = allPotensi.slice(0, 3)
+
+  const featuredPotensi = (() => {
+    const byCategory = new Map<string, typeof allPotensi[0]>()
+    for (const item of allPotensi) {
+      if (!byCategory.has(item.category)) {
+        byCategory.set(item.category, item)
+      }
+    }
+    const priority = ['konveksi', 'umkm-makanan', 'pertanian']
+    return priority.map((cat) => byCategory.get(cat)).filter(Boolean) as typeof allPotensi
+  })()
 
   const categoryMetaMap = useMemo(() => {
     if (!categories) return new Map()
