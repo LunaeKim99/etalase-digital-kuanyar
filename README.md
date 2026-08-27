@@ -1,6 +1,6 @@
 # Ruang Digital Potensi dan Karya Desa Kuanyar
 
-Platform digital untuk mempromosikan potensi Desa Kuanyar — profil desa, UMKM, produk unggulan, berita, dan informasi kontak.
+Platform digital untuk mempromosikan potensi Desa Kuanyar — profil desa, UMKM, pertanian, berita, dan informasi kontak.
 
 ---
 
@@ -10,16 +10,15 @@ Platform digital untuk mempromosikan potensi Desa Kuanyar — profil desa, UMKM,
 |---------|--------|
 | **Beranda** | Tampilan utama dengan statistik desa, UMKM unggulan, dan berita terkini |
 | **Profil Desa** | Sejarah, visi & misi, demografi, fasilitas, dan lokasi desa |
-| **UMKM** | Daftar pelaku UMKM desa beserta kontak WhatsApp |
-| **Produk** | Katalog produk UMKM |
-| **Berita & Galeri** | Informasi dan kegiatan desa |
+| **Potensi Desa** | UMKM dan sektor pertanian desa |
+| **Berita & Galeri** | Informasi dan kegiatan desa beserta album foto |
 | **Kontak** | Alamat kantor desa dan peta lokasi |
 
 ---
 
 ## Akses Admin
 
-Panel admin digunakan untuk mengelola konten website (UMKM, produk, berita, profil desa).
+Panel admin digunakan untuk mengelola konten website (UMKM, pertanian, berita, galeri, profil desa).
 
 **URL Admin:**  
 `https://etalase-kuanyar.vercel.app/admin/login`
@@ -39,21 +38,24 @@ Panel admin digunakan untuk mengelola konten website (UMKM, produk, berita, prof
 2. Masukkan email dan password
 3. Klik **Masuk**
 
-### Mengelola UMKM
-1. Masuk menu **UMKM**
-2. Klik **Tambah UMKM** untuk menambah data baru
-3. Klik ikon pensil untuk mengedit, ikon tempat sampah untuk menghapus
+### Upload Gambar
+Gambar diunggah langsung dari komputer: klik area upload atau drag & drop file (JPG, PNG, WebP — maks 4 MB). Gambar otomatis dikonversi ke **WebP** dan di-resize sebelum disimpan, jadi tidak perlu edit foto terlebih dahulu.
 
-### Mengelola Produk
-1. Masuk menu **Produk**
-2. Klik **Tambah Produk** untuk menambah produk baru
-3. Pilih UMKM pemilik produk
-4. Lengkapi informasi produk (nama, harga, stok, foto)
+### Mengelola UMKM
+1. Masuk menu **Potensi Desa › UMKM**
+2. Klik **Tambah UMKM** untuk menambah data baru
+3. Tambahkan foto UMKM di halaman detail (bisa beberapa foto sekaligus, atur urutan dengan tombol panah)
+4. Klik ikon pensil untuk mengedit, ikon tempat sampah untuk menghapus
+
+### Mengelola Pertanian
+1. Masuk menu **Potensi Desa › Pertanian**
+2. Klik **Tambah** untuk menambah data sektor pertanian
+3. Tambahkan foto dan data sektor (komoditas, musim tanam) di halaman detail
 
 ### Mengelola Berita & Galeri
 1. Masuk menu **Berita & Galeri**
-2. Klik **Tambah Berita** untuk membuat konten baru
-3. Tambahkan judul, isi berita, kategori, dan gambar pendukung
+2. **Berita**: klik **Tambah Berita**, lengkapi judul, isi, dan gambar sampul
+3. **Galeri**: klik **Upload Gambar**, pilih album, lalu unggah beberapa foto sekaligus — urutan bisa diatur dengan tombol panah
 
 ### Mengelola Profil Desa
 1. Masuk menu **Profil Desa**
@@ -61,19 +63,7 @@ Panel admin digunakan untuk mengelola konten website (UMKM, produk, berita, prof
 3. Klik **Simpan**
 
 ### Logout
-Klik tombol **Keluar** di pojok kiri bawah sidebar.
-
----
-
-## Struktur Konten
-
-Website menampilkan informasi dalam struktur berikut:
-
-- **Profil Desa** — Informasi resmi desa
-- **UMKM** — Data pelaku usaha mikro kecil menengah
-- **Produk** — Katalog produk UMKM
-- **Berita** — Kegiatan dan informasi terkini
-- **Kontak** — Informasi kontak dan lokasi
+Klik tombol **Keluar** di sidebar.
 
 ---
 
@@ -82,6 +72,7 @@ Website menampilkan informasi dalam struktur berikut:
 - Frontend: React, TypeScript, Tailwind CSS
 - Backend: Hono API
 - Database: Turso (SQLite cloud)
+- Media: Upload gambar dengan konversi otomatis ke WebP (sharp) + Vercel Blob
 - Hosting: Vercel
 
 ---
