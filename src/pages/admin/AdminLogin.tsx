@@ -27,7 +27,7 @@ export default function AdminLogin() {
     }
     try {
       const res = await mutation.mutateAsync({ email: email.trim(), password })
-      const role = res.user.role as 'admin' | 'umkm_owner'
+      const role = res.user.role as 'admin'
       if (role !== 'admin') {
         setError('Akun ini tidak memiliki akses admin')
         return
@@ -123,10 +123,6 @@ export default function AdminLogin() {
         </Card>
 
         <div className="text-center mt-6 text-sm text-on-surface-variant">
-          <Link to="/owner/login" className="hover:text-primary transition-colors">
-            Masuk sebagai pemilik UMKM
-          </Link>
-          <span className="mx-2">·</span>
           <Link to="/" className="hover:text-primary transition-colors">
             Kembali ke Beranda
           </Link>
