@@ -275,3 +275,46 @@ export function useAdminPotensiFeatures() {
     }),
   }
 }
+
+export function useAdminPertanianItems() {
+  const qc = useQueryClient()
+
+  function invalidate() {
+    qc.invalidateQueries({ queryKey: ['admin_pertanian_items'] })
+    invalidatePotensiQueries(qc)
+  }
+
+  const categories = useAdminList<PotensiCategory>(
+    'admin_potensi_categories',
+    '/api/admin/potensi/categories',
+  )
+
+  return {
+    list: useAdminList<PotensiItem>(
+      'admin_pertanian_items',
+      '/api/admin/potensi/items?category=pertanian',
+    ),
+    pertanianCategoryId: categories.data?.find((c) => c.slug === 'pertanian')?.id,
+    create: useMutation({
+      mutationFn: async (data: Partial<PotensiItem>) => {
+        const catId = categories.data?.find((c) => c.slug === 'pertanian')?.id
+        if (!catId) throw new ApiError('Kategori pertanian tidak ditemukan', 400)
+        return apiReq<{ data: PotensiItem }>('/api/admin/potensi/items', 'POST', {
+          ...data,
+          categoryId: catId,
+          isSector: true,
+        })
+      },
+      onSuccess: invalidate,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, data }: { id: number; data: Partial<PotensiItem> }) =>
+        apiReq<{ data: PotensiItem }>(`/api/admin/potensi/items/${id}`, 'PUT', data),
+      onSuccess: invalidate,
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/items/${id}`, 'DELETE'),
+      onSuccess: invalidate,
+    }),
+  }
+}
