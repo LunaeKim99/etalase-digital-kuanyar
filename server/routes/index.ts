@@ -28,7 +28,7 @@ publicRoutes.post('/auth/login', async (c) => {
     }
     const user = await authenticateUser(email, password)
     if (!user) return c.json({ success: false, error: 'Email atau password salah' }, 401)
-    const token = await generateToken({ id: user.id, name: user.name, email: user.email, role: user.role as 'admin' | 'umkm_owner' })
+    const token = await generateToken({ id: user.id, name: user.name, email: user.email, role: 'admin' })
     return c.json({
       success: true,
       token,
@@ -63,16 +63,16 @@ publicRoutes.post('/auth/register', async (c) => {
       name,
       email,
       passwordHash: hashPassword(password),
-      role: 'umkm_owner',
+      role: 'admin',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
     if (!created) return c.json({ success: false, error: 'Gagal membuat akun' }, 500)
-    const token = await generateToken({ id: created.id, name: created.name, email: created.email, role: 'umkm_owner' })
+    const token = await generateToken({ id: created.id, name: created.name, email: created.email, role: 'admin' })
     return c.json({
       success: true,
       token,
-      user: { id: created.id, name: created.name, email: created.email, role: 'umkm_owner' },
+      user: { id: created.id, name: created.name, email: created.email, role: 'admin' },
     })
   } catch (err: any) {
     if (typeof err?.message === 'string' && err.message.includes('UNIQUE')) {

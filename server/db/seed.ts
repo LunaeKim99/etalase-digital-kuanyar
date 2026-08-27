@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { db } from './client.js'
-import { users, umkm, products, posts, postImages, categories as categoriesTbl, villageProfile, potensiCategories, potensiItems, potensiImages, potensiFeatures } from './schema.js'
+import { users, posts, postImages, categories as categoriesTbl, villageProfile, potensiCategories, potensiItems, potensiImages, potensiFeatures } from './schema.js'
 import { hashPassword } from '../middleware/password.js'
 import * as mockData from '../data/mockData.js'
 import { sql, eq } from 'drizzle-orm'
@@ -146,7 +146,7 @@ function kebabCase(s: string): string {
   return s.toLowerCase().replace(/\s+/g, '-')
 }
 
-async function countRows(): Promise<{ users: number; umkm: number; products: number; posts: number; villageProfile: number; potensiCategories: number; potensiItems: number }> {
+async function countRows(): Promise<{ users: number; posts: number; villageProfile: number; potensiCategories: number; potensiItems: number }> {
   const safe = async (t: string) => {
     try {
       const r = await db.run(sql`SELECT COUNT(*) as c FROM ${sql.identifier(t)}`)
@@ -157,8 +157,6 @@ async function countRows(): Promise<{ users: number; umkm: number; products: num
   }
   return {
     users: await safe('users'),
-    umkm: await safe('umkm'),
-    products: await safe('products'),
     posts: await safe('posts'),
     villageProfile: await safe('village_profile'),
     potensiCategories: await safe('potensi_categories'),
@@ -171,10 +169,10 @@ async function seed() {
 
   const counts = await countRows()
   const alreadySeeded =
-    counts.users > 0 && counts.villageProfile > 0 && counts.umkm > 0 && counts.products > 0 && counts.posts > 0 && counts.potensiCategories > 0 && counts.potensiItems > 0
+    counts.users > 0 && counts.villageProfile > 0 && counts.posts > 0 && counts.potensiCategories > 0 && counts.potensiItems > 0
   if (alreadySeeded) {
     console.log('Database already seeded. Skipping.')
-    console.log(`  users: ${counts.users}, umkm: ${counts.umkm}, products: ${counts.products}, posts: ${counts.posts}, village_profile: ${counts.villageProfile}, potensi_categories: ${counts.potensiCategories}, potensi_items: ${counts.potensiItems}`)
+    console.log(`  users: ${counts.users}, posts: ${counts.posts}, village_profile: ${counts.villageProfile}, potensi_categories: ${counts.potensiCategories}, potensi_items: ${counts.potensiItems}`)
     return
   }
 
@@ -194,68 +192,9 @@ async function seed() {
     .onConflictDoNothing({ target: users.email })
     .catch((e) => console.warn('admin insert skipped:', e.message))
 
-  const userRows = [
-    { id: 2, name: 'H. Miftah', email: 'miftah@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 3, name: 'Nur Aini', email: 'nuraini@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 4, name: 'Hj. Solikin', email: 'solikin@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 5, name: 'Mahmudah', email: 'mahmudah@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 6, name: 'Dwi Ratna Safitri', email: 'dwi.ratna@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 7, name: 'Naning', email: 'naning@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 8, name: 'Iswati', email: 'iswati@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 9, name: 'Pak Anyam', email: 'anyaman@kuanyar.desa.id', role: 'umkm_owner' as const },
-    { id: 10, name: 'Pak Ukir', email: 'ukirjati@kuanyar.desa.id', role: 'umkm_owner' as const },
-  ]
-
-  for (const u of userRows) {
-    await db.insert(users)
-      .values({
-        id: u.id,
-        name: u.name,
-        email: u.email,
-        passwordHash: hashPassword('owner123'),
-        role: u.role,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .onConflictDoNothing({ target: users.email })
-      .catch((e) => console.warn(`user ${u.email} insert skipped:`, e.message))
-  }
-
   const categoryRows = mockData.categories.map((c) => ({ name: c, slug: kebabCase(c) }))
   for (const c of categoryRows) {
     await db.insert(categoriesTbl).values(c).onConflictDoNothing({ target: categoriesTbl.slug }).catch((e) => console.warn(`category ${c.slug} skipped:`, e.message))
-  }
-
-  const umkmRows = mockData.umkms.map((u) => ({
-    id: u.id,
-    ownerId: u.ownerId,
-    name: u.name,
-    description: u.description,
-    address: u.address,
-    whatsapp: u.whatsapp,
-    logo: u.logo,
-    status: u.status as 'pending' | 'approved' | 'rejected',
-    createdAt: now,
-    updatedAt: now,
-  }))
-  for (const u of umkmRows) {
-    await db.insert(umkm).values(u).onConflictDoNothing({ target: umkm.id }).catch((e) => console.warn(`umkm ${u.id} skipped:`, e.message))
-  }
-
-  const productRows = mockData.products.map((p) => ({
-    id: p.id,
-    umkmId: p.umkmId,
-    name: p.name,
-    description: p.description,
-    price: p.price,
-    image: p.image,
-    stock: p.stock,
-    status: p.status as 'active' | 'draft' | 'inactive',
-    createdAt: now,
-    updatedAt: now,
-  }))
-  for (const p of productRows) {
-    await db.insert(products).values(p).onConflictDoNothing({ target: products.id }).catch((e) => console.warn(`product ${p.id} skipped:`, e.message))
   }
 
   for (const post of mockData.posts) {
@@ -397,8 +336,6 @@ async function seed() {
   console.log('Seed completed:')
   console.log(`  users: ${final.users}`)
   console.log(`  categories: ${categoryRows.length}`)
-  console.log(`  umkm: ${final.umkm}`)
-  console.log(`  products: ${final.products}`)
   console.log(`  posts: ${final.posts}`)
   console.log(`  village_profile: ${final.villageProfile}`)
   console.log(`  potensi_categories: ${final.potensiCategories}`)

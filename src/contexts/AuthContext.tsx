@@ -6,7 +6,7 @@ export interface User {
   id: number
   name: string
   email: string
-  role: 'admin' | 'umkm_owner'
+  role: 'admin'
 }
 
 export type AuthStatus = 'initializing' | 'authenticated' | 'unauthenticated'
@@ -33,7 +33,7 @@ function safeReadUser(): User | null {
       parsed !== null &&
       typeof parsed.id === 'number' &&
       typeof parsed.email === 'string' &&
-      (parsed.role === 'admin' || parsed.role === 'umkm_owner')
+      parsed.role === 'admin'
     ) {
       return parsed as User
     }
@@ -73,7 +73,7 @@ async function fetchMe(token: string): Promise<User | null> {
     if (
       typeof u.id === 'number' &&
       typeof u.email === 'string' &&
-      (u.role === 'admin' || u.role === 'umkm_owner')
+      u.role === 'admin'
     ) {
       return { id: u.id, name: String(u.name ?? ''), email: u.email, role: u.role }
     }

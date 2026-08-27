@@ -15,7 +15,7 @@ export interface JwtPayload {
   id: number
   name: string
   email: string
-  role: 'admin' | 'umkm_owner'
+  role: 'admin'
 }
 
 export type ContextVariables = {
@@ -36,7 +36,7 @@ export async function verifyToken(token: string): Promise<JwtPayload | null> {
     if (
       typeof payload.id !== 'number' ||
       typeof payload.role !== 'string' ||
-      (payload.role !== 'admin' && payload.role !== 'umkm_owner')
+      payload.role !== 'admin'
     ) {
       return null
     }
@@ -72,20 +72,11 @@ export async function authMiddleware(c: any, next: any) {
   await next()
 }
 
-export function requireRole(role: 'admin' | 'umkm_owner') {
+export function requireRole(role: 'admin') {
   return async (c: any, next: any) => {
     const user = c.get('user')
     if (!user) return c.json({ success: false, error: 'Unauthorized' }, 401)
     if (user.role !== role) return c.json({ success: false, error: 'Forbidden' }, 403)
-    await next()
-  }
-}
-
-export function requireAnyRole(...roles: Array<'admin' | 'umkm_owner'>) {
-  return async (c: any, next: any) => {
-    const user = c.get('user')
-    if (!user) return c.json({ success: false, error: 'Unauthorized' }, 401)
-    if (!roles.includes(user.role)) return c.json({ success: false, error: 'Forbidden' }, 403)
     await next()
   }
 }

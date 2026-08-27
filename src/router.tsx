@@ -2,9 +2,7 @@ import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import MainLayout from '@/layouts/MainLayout'
 import AdminLayout from '@/layouts/AdminLayout'
-import OwnerLayout from '@/layouts/OwnerLayout'
 import { AdminGuard } from '@/components/auth/AdminGuard'
-import { OwnerGuard } from '@/components/auth/OwnerGuard'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
 import { TopProgress } from '@/components/ui/TopProgress'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
@@ -32,11 +30,7 @@ const AdminPotensi = lazy(() => import('@/pages/admin/AdminPotensi'))
 const AdminPertanian = lazy(() => import('@/pages/admin/AdminPertanian'))
 const AdminPertanianDetail = lazy(() => import('@/pages/admin/AdminPertanianDetail'))
 
-const OwnerLogin = lazy(() => import('@/pages/owner/OwnerLogin'))
-const OwnerUnauthorized = lazy(() => import('@/pages/owner/OwnerUnauthorized'))
-const OwnerDashboard = lazy(() => import('@/pages/owner/OwnerDashboard'))
-const OwnerUmkm = lazy(() => import('@/pages/owner/OwnerUmkm'))
-const OwnerProduk = lazy(() => import('@/pages/owner/OwnerProduk'))
+
 
 function LazyWrapper({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<LoadingSkeleton variant="card" count={1} />}>{children}</Suspense>
@@ -104,25 +98,7 @@ export const router = createBrowserRouter([
           { path: 'pengaturan', element: <LazyWrapper><AdminSettings /></LazyWrapper> },
         ],
       },
-      // Owner routes — accessible to umkm_owner and admin roles (via OwnerGuard)
-      {
-        path: '/owner/login',
-        element: <LazyWrapper><OwnerLogin /></LazyWrapper>,
-      },
-      {
-        path: '/owner/unauthorized',
-        element: <LazyWrapper><OwnerUnauthorized /></LazyWrapper>,
-      },
-      {
-        path: '/owner',
-        element: <OwnerGuard><OwnerLayout /></OwnerGuard>,
-        children: [
-          { index: true, element: <Navigate to="/owner/dashboard" replace /> },
-          { path: 'dashboard', element: <LazyWrapper><OwnerDashboard /></LazyWrapper> },
-          { path: 'umkm', element: <LazyWrapper><OwnerUmkm /></LazyWrapper> },
-          { path: 'produk', element: <LazyWrapper><OwnerProduk /></LazyWrapper> },
-        ],
-      },
+
     ],
   },
 ])
