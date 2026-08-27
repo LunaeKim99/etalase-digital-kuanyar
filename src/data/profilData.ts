@@ -71,7 +71,7 @@ export const penggunaanLahan = [
   { kategori: 'Fasilitas Umum', deskripsi: 'Sarana pendidikan, tempat ibadah, pasar desa, puskesmas pembantu, dan pemerintahan desa.' },
 ]
 
-export type PotensiSummaryCategory = 'umkm' | 'wisata' | 'pertanian'
+export type PotensiSummaryCategory = 'konveksi' | 'umkm-makanan' | 'pertanian'
 export interface PotensiSummaryItem {
   kategori: PotensiSummaryCategory
   judul: string
@@ -81,32 +81,34 @@ export interface PotensiSummaryItem {
 }
 export const potensiDesa: PotensiSummaryItem[] = [
   {
-    kategori: 'umkm',
-    judul: 'UMKM',
-    ikon: 'ShoppingBasket',
+    kategori: 'konveksi',
+    judul: 'Konveksi',
+    ikon: 'Shirt',
     items: [
-      { judul: 'Sentra Konveksi', deskripsi: '55 tukang jahit menghasilkan pakaian jadi, seragam sekolah/kerja.' },
-      { judul: 'Kerajinan Kayu/Mebel', deskripsi: '46 tukang kayu memproduksi mebel dan kusen untuk lokal dan ekspor.' },
+      { judul: 'MYG Collection', deskripsi: 'Konveksi celana cewek & cowok, kapasitas ~1.000 pcs/bulan, pesanan custom.' },
+      { judul: 'Reza Collection', deskripsi: 'Atasan seragam sekolah, celana anak & dewasa, grosir ke Pasar Kliwon.' },
+      { judul: 'Mila Collection', deskripsi: 'Celana kulot & cewek, kapasitas ~500 pcs/minggu, distribusi via pengiriman.' },
+      { judul: 'Mudah Collection', deskripsi: 'Celana kulot, pendek, panjang, pemasaran via TikTok, grosir ke Surabaya/Jepara/Demak/Kudus.' },
     ],
     link: { label: 'Lihat Detail', href: '/potensi' },
   },
   {
-    kategori: 'wisata',
-    judul: 'Wisata Religi & Budaya',
-    ikon: 'Landmark',
+    kategori: 'umkm-makanan',
+    judul: 'Katering & Bakery',
+    ikon: 'UtensilsCrossed',
     items: [
-      { judul: 'Masjid Baitul Mujtahidin (Masjid Kauman)', deskripsi: 'Didirikan 1880 di lokasi jatuhnya bedug yang ditendang Mbah Wali.' },
-      { judul: 'Makam Nyai Safah (Mbok Emban)', deskripsi: 'Situs bersejarah pengasuh Ratu Kalinyamat, magnet bagi peziarah.' },
+      { judul: 'Dahlia Jaya Catering', deskripsi: 'Nasi box ayam bakar (unggulan), jajan basah, bento, tumpeng, snack untuk hajatan & rapat.' },
+      { judul: 'Naning Bakery', deskripsi: 'Roti pisang (unggulan), jajan basah, kue, roti, dessert, nasi box savory.' },
     ],
-    link: { label: 'Lihat Potensi', href: '/potensi' },
+    link: { label: 'Lihat Detail', href: '/potensi' },
   },
   {
     kategori: 'pertanian',
     judul: 'Pertanian',
     ikon: 'Wheat',
     items: [
-      { judul: 'Lahan Sawah', deskripsi: 'Komoditas padi dan palawija dengan sistem pengairan yang terus ditingkatkan.' },
-      { judul: 'Ketahanan Pangan', deskripsi: 'Lahan tetap dipelihara sebagai penyangga ketahanan pangan desa.' },
+      { judul: 'Lahan Sawah', deskripsi: 'Komoditas utama padi dan jagung, didukung 4 kelompok tani aktif.' },
+      { judul: 'Ketahanan Pangan', deskripsi: 'Lahan dipelihara sebagai penyangga ketahanan pangan, modernisasi via alsintan & bibit unggul.' },
     ],
     link: { label: 'Lihat Detail', href: '/potensi' },
   },

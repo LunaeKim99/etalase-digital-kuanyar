@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Link } from 'react-router-dom'
 import {
   MapPin, ArrowRight, Users, Building2, Calendar, Mail, Phone, Clock,
-  ShoppingBasket, Landmark, Wheat,
+  ShoppingBasket, Landmark, Wheat, Shirt, UtensilsCrossed,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
@@ -29,12 +29,14 @@ import {
    sejarahNaratif,
    tokohPenerus,
    periodePemerintahan,
- } from '@/data/profilData'
+} from '@/data/profilData'
 
 const iconMap: Record<string, LucideIcon> = {
   ShoppingBasket,
   Landmark,
   Wheat,
+  Shirt,
+  UtensilsCrossed,
 }
 
 export default function Profil() {
