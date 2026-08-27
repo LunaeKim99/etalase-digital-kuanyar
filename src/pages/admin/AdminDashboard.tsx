@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  useAdminUmkms,
-  useAdminProducts,
+  useAdminUmkmItems,
+  useAdminPertanianItems,
   useAdminPosts,
-  useAdminCategories,
+  useAdminPotensiCategories,
 } from '@/services/admin'
 import { useAuth } from '@/contexts/AuthContext'
 import { Card } from '@/components/ui/card'
@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   Store,
-  Package,
+  Wheat,
   FileText,
   Image,
   Plus,
@@ -25,28 +25,27 @@ import {
 
 export default function AdminDashboard() {
   const { user } = useAuth()
-  const { list: umkmQuery } = useAdminUmkms()
-  const { list: prodQuery } = useAdminProducts()
+  const { list: umkmQuery, umkmCategoryIds } = useAdminUmkmItems()
+  const { list: pertanianQuery } = useAdminPertanianItems()
   const { list: postQuery } = useAdminPosts()
-  const { list: catQuery } = useAdminCategories()
+  const { list: catQuery } = useAdminPotensiCategories()
 
-  const isLoading = umkmQuery.isLoading || prodQuery.isLoading || postQuery.isLoading || catQuery.isLoading
-  const umkms = umkmQuery.data ?? []
-  const products = prodQuery.data ?? []
+  const isLoading = umkmQuery.isLoading || pertanianQuery.isLoading || postQuery.isLoading || catQuery.isLoading
+  const allPotensiItems = umkmQuery.data ?? []
+  const umkms = allPotensiItems.filter((item) => umkmCategoryIds.includes(item.categoryId))
+  const pertanian = pertanianQuery.data ?? []
   const posts = postQuery.data ?? []
 
   const summaryMetrics = useMemo(() => [
-    { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/umkm', color: 'primary' },
-    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/produk', color: 'secondary' },
+    { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/potensi/umkm', color: 'primary' },
+    { label: 'Total Pertanian', value: pertanian.length, icon: Wheat, href: '/admin/potensi/pertanian', color: 'secondary' },
     { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/berita-galeri', color: 'tertiary' },
-    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/berita-galeri', color: 'neutral' },
-  ], [umkms.length, products.length, posts.length, catQuery.data?.length])
+    { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/potensi', color: 'neutral' },
+  ], [umkms.length, pertanian.length, posts.length, catQuery.data?.length])
 
   const alerts = useMemo(() => {
-    const umkmIdsWithProducts = new Set(products.map(p => p.umkmId))
-    const umkmsWithoutProducts = umkms.filter(u => !umkmIdsWithProducts.has(u.id))
-    const draftPosts = posts.filter(p => !p.publishedAt)
-    const productsWithoutImages = products.filter(p => !p.image || p.image.trim() === '')
+    const umkmsWithoutImages = umkms.filter((u) => !u.images || u.images.length === 0)
+    const draftPosts = posts.filter((p) => !p.publishedAt)
 
     const items = [] as Array<{
       label: string
@@ -59,16 +58,16 @@ export default function AdminDashboard() {
       description: string
     }>
 
-    if (umkmsWithoutProducts.length > 0) {
+    if (umkmsWithoutImages.length > 0) {
       items.push({
-        label: 'UMKM tanpa produk',
-        count: umkmsWithoutProducts.length,
+        label: 'UMKM tanpa foto',
+        count: umkmsWithoutImages.length,
         variant: 'warning',
         bgColor: 'warning',
         badgeVariant: 'warning',
         icon: AlertCircle,
-        href: '/admin/umkm',
-        description: 'UMKM yang belum memiliki produk',
+        href: '/admin/potensi/umkm',
+        description: 'UMKM yang belum memiliki foto',
       })
     }
 
@@ -85,27 +84,14 @@ export default function AdminDashboard() {
       })
     }
 
-    if (productsWithoutImages.length > 0) {
-      items.push({
-        label: 'Produk tanpa gambar',
-        count: productsWithoutImages.length,
-        variant: 'error',
-        bgColor: 'error',
-        badgeVariant: 'error',
-        icon: AlertCircle,
-        href: '/admin/produk',
-        description: 'Produk yang belum memiliki gambar',
-      })
-    }
-
     return items
-  }, [umkms, products, posts])
+  }, [umkms, posts])
 
   const quickActions = [
-    { label: 'Tambah UMKM', href: '/admin/umkm', icon: Plus, description: 'Daftarkan UMKM baru' },
-    { label: 'Tambah Produk', href: '/admin/produk', icon: Plus, description: 'Tambah produk ke UMKM' },
+    { label: 'Kelola Potensi Desa', href: '/admin/potensi', icon: Plus, description: 'UMKM dan pertanian desa' },
+    { label: 'Tambah UMKM', href: '/admin/potensi/umkm', icon: Store, description: 'Daftarkan UMKM baru' },
+    { label: 'Tambah Pertanian', href: '/admin/potensi/pertanian', icon: Wheat, description: 'Tambah data pertanian' },
     { label: 'Tulis Berita', href: '/admin/berita-galeri', icon: FileText, description: 'Buat artikel berita baru' },
-    { label: 'Upload Galeri', href: '/admin/berita-galeri', icon: Image, description: 'Kelola galeri foto desa' },
   ]
 
   const formatDate = (date: Date) => {
@@ -119,7 +105,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Section */}
       <Card variant="filled" className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -131,12 +116,11 @@ export default function AdminDashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-on-surface-variant" />
-            <Muted>{umkms.length} UMKM terdaftar</Muted>
+            <Muted>{umkms.length + pertanian.length} potensi desa</Muted>
           </div>
         </div>
       </Card>
 
-      {/* Loading State */}
       {isLoading && (
         <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -155,7 +139,6 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Summary Metrics */}
       {!isLoading && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {summaryMetrics.map((metric, i) => (
           <Card key={i} variant="filled" className="p-6 hover:shadow-md transition-shadow cursor-pointer">
@@ -174,7 +157,6 @@ export default function AdminDashboard() {
         ))}
       </div>}
 
-      {/* Perlu Perhatian Section */}
       {alerts.length > 0 && (
         <Card variant="outlined" className="p-6">
           <div className="flex items-center gap-2 mb-4">
@@ -184,7 +166,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {alerts.map((alert, i) => (
               <Link key={i} to={alert.href} className="block">
-                <div className={`p-4 rounded-xl border border-outline-variant hover:bg-surface-container-lowest transition-colors`}>
+                <div className="p-4 rounded-xl border border-outline-variant hover:bg-surface-container-lowest transition-colors">
                   <div className="flex items-start gap-3">
                     <div className={`p-2 rounded-xl bg-${alert.bgColor}-container text-on-${alert.bgColor}-container flex-shrink-0`}>
                       <alert.icon className="w-5 h-5" />
@@ -205,7 +187,6 @@ export default function AdminDashboard() {
         </Card>
       )}
 
-      {/* Quick Actions Section */}
       <Card variant="filled" className="p-6">
         <Typography variant="h5" className="mb-4">Aksi Cepat</Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

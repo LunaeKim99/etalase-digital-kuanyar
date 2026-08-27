@@ -3,7 +3,6 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   Store,
-  Package,
   FileText,
   Wheat,
   Building2,
@@ -21,17 +20,16 @@ import { useAuth } from '@/contexts/AuthContext'
 
 const navSections = [
   {
-    label: 'ETALASE',
+    label: 'POTENSI DESA',
     items: [
-      { to: '/admin/umkm', label: 'UMKM', icon: Store },
-      { to: '/admin/produk', label: 'Produk', icon: Package },
+      { to: '/admin/potensi/umkm', label: 'UMKM', icon: Store },
+      { to: '/admin/potensi/pertanian', label: 'Pertanian', icon: Wheat },
     ],
   },
   {
     label: 'KONTEN',
     items: [
       { to: '/admin/berita-galeri', label: 'Berita & Galeri', icon: FileText },
-      { to: '/admin/potensi', label: 'Potensi Desa', icon: Wheat },
     ],
   },
   {
@@ -51,13 +49,27 @@ const navSections = [
 
 const pageTitleMap: Record<string, string> = {
   '/admin/dashboard': 'Dashboard',
-  '/admin/umkm': 'UMKM',
-  '/admin/produk': 'Produk',
-  '/admin/berita-galeri': 'Berita & Galeri',
   '/admin/potensi': 'Potensi Desa',
+  '/admin/potensi/umkm': 'UMKM',
+  '/admin/potensi/pertanian': 'Pertanian',
+  '/admin/berita-galeri': 'Berita & Galeri',
   '/admin/profil': 'Profil Desa',
   '/admin/tampilan': 'Tampilan Website',
   '/admin/pengaturan': 'Pengaturan',
+}
+
+function resolvePageTitle(pathname: string): string {
+  if (/^\/admin\/potensi\/umkm\/\d+\/produk/.test(pathname)) return 'Produk UMKM'
+  if (/^\/admin\/potensi\/umkm\/\d+/.test(pathname)) return 'Detail UMKM'
+  if (/^\/admin\/potensi\/pertanian\/\d+/.test(pathname)) return 'Detail Pertanian'
+  if (pathname === '/admin/potensi') return pageTitleMap[pathname]
+  let bestPrefix = ''
+  for (const prefix of Object.keys(pageTitleMap)) {
+    if (pathname.startsWith(prefix + '/') || pathname === prefix) {
+      if (prefix.length > bestPrefix.length) bestPrefix = prefix
+    }
+  }
+  return bestPrefix ? pageTitleMap[bestPrefix] : 'Dashboard'
 }
 
 export default function AdminLayout() {
@@ -179,7 +191,7 @@ export default function AdminLayout() {
           </button>
 
           <h1 className="flex-1 truncate text-lg font-semibold text-on-surface">
-            {pageTitleMap[location.pathname] || 'Dashboard'}
+            {resolvePageTitle(location.pathname)}
           </h1>
 
           <div className="flex items-center gap-2">

@@ -23,12 +23,14 @@ const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'))
 const AdminUnauthorized = lazy(() => import('@/pages/admin/AdminUnauthorized'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const AdminUmkm = lazy(() => import('@/pages/admin/AdminUmkm'))
-const AdminProduk = lazy(() => import('@/pages/admin/AdminProduk'))
+const AdminUmkmDetail = lazy(() => import('@/pages/admin/AdminUmkmDetail'))
 const AdminBeritaGaleri = lazy(() => import('@/pages/admin/AdminBeritaGaleri'))
 const AdminProfil = lazy(() => import('@/pages/admin/AdminProfil'))
 const AdminTampilan = lazy(() => import('@/pages/admin/AdminTampilan'))
 const AdminSettings = lazy(() => import('@/pages/admin/AdminSettings'))
 const AdminPotensi = lazy(() => import('@/pages/admin/AdminPotensi'))
+const AdminPertanian = lazy(() => import('@/pages/admin/AdminPertanian'))
+const AdminPertanianDetail = lazy(() => import('@/pages/admin/AdminPertanianDetail'))
 
 const OwnerLogin = lazy(() => import('@/pages/owner/OwnerLogin'))
 const OwnerUnauthorized = lazy(() => import('@/pages/owner/OwnerUnauthorized'))
@@ -84,10 +86,19 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/admin/dashboard" replace /> },
           { path: 'dashboard', element: <LazyWrapper><AdminDashboard /></LazyWrapper> },
-          { path: 'umkm', element: <LazyWrapper><AdminUmkm /></LazyWrapper> },
-          { path: 'produk', element: <LazyWrapper><AdminProduk /></LazyWrapper> },
-          { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
+
+          // Potensi Desa — pusat pengelolaan potensi desa
           { path: 'potensi', element: <LazyWrapper><AdminPotensi /></LazyWrapper> },
+          { path: 'potensi/umkm', element: <LazyWrapper><AdminUmkm /></LazyWrapper> },
+          { path: 'potensi/umkm/:umkmId', element: <LazyWrapper><AdminUmkmDetail /></LazyWrapper> },
+          { path: 'potensi/pertanian', element: <LazyWrapper><AdminPertanian /></LazyWrapper> },
+          { path: 'potensi/pertanian/:itemId', element: <LazyWrapper><AdminPertanianDetail /></LazyWrapper> },
+
+          // Legacy redirect (route lama Etalase UMKM)
+          { path: 'umkm', element: <Navigate to="/admin/potensi/umkm" replace /> },
+          { path: 'produk', element: <Navigate to="/admin/potensi/umkm" replace /> },
+
+          { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
           { path: 'profil', element: <LazyWrapper><AdminProfil /></LazyWrapper> },
           { path: 'tampilan', element: <LazyWrapper><AdminTampilan /></LazyWrapper> },
           { path: 'pengaturan', element: <LazyWrapper><AdminSettings /></LazyWrapper> },

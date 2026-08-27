@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useAdminUmkms } from '@/services/admin'
+import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAdminUmkmItems, useAdminPotensiCategories } from '@/services/admin'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,64 +13,99 @@ import { Badge } from '@/components/ui/badge'
 import { Typography, Muted } from '@/components/ui/typography'
 import { ToastContainer } from '@/components/ui/toast'
 import { useToast } from '@/hooks/use-toast'
-import { Plus, Edit, Trash2, Search, Filter } from 'lucide-react'
-import type { Umkm } from '@/types/catalog'
+import { Plus, Edit, Trash2, Search, Eye, Image as ImageIcon } from 'lucide-react'
+import type { PotensiItem } from '@/types/catalog'
+
+interface UmkmFormData {
+  categoryId: number
+  name: string
+  description: string
+  owner: string
+  rtRw: string
+  dusun: string
+  yearFounded: number | null
+  capacity: string
+  contactWhatsapp: string
+  contactInstagram: string
+  contactTiktok: string
+  contactMarketplace: string
+}
+
+const emptyForm: UmkmFormData = {
+  categoryId: 0,
+  name: '',
+  description: '',
+  owner: '',
+  rtRw: '',
+  dusun: '',
+  yearFounded: null,
+  capacity: '',
+  contactWhatsapp: '',
+  contactInstagram: '',
+  contactTiktok: '',
+  contactMarketplace: '',
+}
 
 export default function AdminUmkm() {
-  const { list, create, update, del } = useAdminUmkms()
+  const navigate = useNavigate()
+  const { list, create, update, del, umkmCategoryIds } = useAdminUmkmItems()
+  const { list: catList } = useAdminPotensiCategories()
   const { toasts, addToast, removeToast } = useToast()
 
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all')
-
+  const [categoryFilter, setCategoryFilter] = useState<string>('all')
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [editing, setEditing] = useState<Umkm | null>(null)
-  const [formData, setFormData] = useState<{
-    ownerId: number
-    name: string
-    description: string
-    address: string
-    whatsapp: string
-    logo: string
-    status: 'pending' | 'approved' | 'rejected'
-  }>({
-    ownerId: 2,
-    name: '',
-    description: '',
-    address: '',
-    whatsapp: '',
-    logo: '',
-    status: 'pending',
-  })
-
-  const [deleteTarget, setDeleteTarget] = useState<Umkm | null>(null)
+  const [editing, setEditing] = useState<PotensiItem | null>(null)
+  const [formData, setFormData] = useState<UmkmFormData>(emptyForm)
+  const [deleteTarget, setDeleteTarget] = useState<PotensiItem | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const filteredData = list.data?.filter((umkm) => {
-    const matchesSearch =
-      umkm.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      umkm.address.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || umkm.status === statusFilter
-    return matchesSearch && matchesStatus
-  }) ?? []
+  const categories = useMemo(() => catList.data ?? [], [catList.data])
+
+  const filteredData = useMemo(() => {
+    return (list.data ?? []).filter((item) => {
+      const isUmkm = umkmCategoryIds.includes(item.categoryId)
+      if (!isUmkm) return false
+      const q = searchQuery.toLowerCase()
+      const matchesSearch =
+        !q ||
+        item.name.toLowerCase().includes(q) ||
+        (item.description ?? '').toLowerCase().includes(q) ||
+        (item.owner ?? '').toLowerCase().includes(q)
+      const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter
+      return matchesSearch && matchesCategory
+    })
+  }, [list.data, searchQuery, categoryFilter, umkmCategoryIds])
+
+  const getCategoryTitle = (slug: string) => {
+    return categories.find((c) => c.slug === slug)?.title ?? slug
+  }
 
   const openCreateDialog = () => {
     setEditing(null)
-    setFormData({ ownerId: 2, name: '', description: '', address: '', whatsapp: '', logo: '', status: 'pending' })
+    setFormData({
+      ...emptyForm,
+      categoryId: categories.find((c) => c.slug === 'konveksi')?.id ?? 0,
+    })
     setDialogOpen(true)
   }
 
-  const openEditDialog = (umkm: Umkm) => {
-    setEditing(umkm)
+  const openEditDialog = (item: PotensiItem) => {
+    setEditing(item)
     setFormData({
-      ownerId: umkm.ownerId,
-      name: umkm.name,
-      description: umkm.description,
-      address: umkm.address,
-      whatsapp: umkm.whatsapp,
-      logo: umkm.logo,
-      status: umkm.status,
+      categoryId: item.categoryId,
+      name: item.name,
+      description: item.description ?? '',
+      owner: item.owner ?? '',
+      rtRw: item.rtRw ?? '',
+      dusun: item.dusun ?? '',
+      yearFounded: item.yearFounded,
+      capacity: item.capacity ?? '',
+      contactWhatsapp: item.contact?.whatsapp ?? '',
+      contactInstagram: item.contact?.instagram ?? '',
+      contactTiktok: item.contact?.tiktok ?? '',
+      contactMarketplace: item.contact?.marketplace ?? '',
     })
     setDialogOpen(true)
   }
@@ -77,18 +113,37 @@ export default function AdminUmkm() {
   const closeDialog = () => {
     setDialogOpen(false)
     setEditing(null)
-    setFormData({ ownerId: 2, name: '', description: '', address: '', whatsapp: '', logo: '', status: 'pending' })
+    setFormData(emptyForm)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     try {
+      const payload = {
+        categoryId: formData.categoryId,
+        name: formData.name,
+        description: formData.description || null,
+        owner: formData.owner || null,
+        rtRw: formData.rtRw || null,
+        dusun: formData.dusun || null,
+        yearFounded: formData.yearFounded,
+        capacity: formData.capacity || null,
+        contact:
+          formData.contactWhatsapp || formData.contactInstagram || formData.contactTiktok || formData.contactMarketplace
+            ? {
+                whatsapp: formData.contactWhatsapp || undefined,
+                instagram: formData.contactInstagram || undefined,
+                tiktok: formData.contactTiktok || undefined,
+                marketplace: formData.contactMarketplace || undefined,
+              }
+            : null,
+      }
       if (editing) {
-        await update.mutateAsync({ id: editing.id, data: formData })
+        await update.mutateAsync({ id: editing.id, data: payload })
         addToast('success', 'UMKM berhasil diperbarui')
       } else {
-        await create.mutateAsync(formData)
+        await create.mutateAsync({ ...payload, isSector: false })
         addToast('success', 'UMKM berhasil ditambahkan')
       }
       closeDialog()
@@ -114,28 +169,34 @@ export default function AdminUmkm() {
     }
   }
 
-  const openDeleteDialog = (umkm: Umkm) => {
-    setDeleteTarget(umkm)
-  }
-
-  const getStatusBadge = (status: Umkm['status']) => {
-    switch (status) {
-      case 'approved':
-        return <Badge variant="success" size="sm">Disetujui</Badge>
-      case 'rejected':
-        return <Badge variant="error" size="sm">Ditolak</Badge>
-      case 'pending':
-      default:
-        return <Badge variant="warning" size="sm">Menunggu</Badge>
-    }
-  }
-
   const columns = [
-    { key: 'name', header: 'Nama UMKM', cell: (row: any) => <span className="font-medium">{row.name}</span> },
-    { key: 'ownerId', header: 'Pemilik ID', cell: (row: any) => <span>#{row.ownerId}</span> },
-    { key: 'address', header: 'Alamat', cell: (row: any) => <span className="truncate max-w-xs">{row.address}</span> },
-    { key: 'whatsapp', header: 'WhatsApp', cell: (row: any) => <span>{row.whatsapp}</span> },
-    { key: 'status', header: 'Status', cell: (row: any) => getStatusBadge(row.status) },
+    {
+      key: 'name',
+      header: 'Nama UMKM',
+      cell: (row: PotensiItem) => <span className="font-medium">{row.name}</span>,
+    },
+    {
+      key: 'category',
+      header: 'Kategori',
+      cell: (row: PotensiItem) => (
+        <Badge variant="secondary" size="sm">{getCategoryTitle(row.category)}</Badge>
+      ),
+    },
+    {
+      key: 'owner',
+      header: 'Pemilik',
+      cell: (row: PotensiItem) => row.owner ?? <Muted>—</Muted>,
+    },
+    {
+      key: 'images',
+      header: 'Gambar',
+      cell: (row: PotensiItem) => (
+        <span className="flex items-center gap-1 text-sm">
+          <ImageIcon className="w-4 h-4 text-on-surface-variant" />
+          {row.images?.length ?? 0}
+        </span>
+      ),
+    },
   ]
 
   return (
@@ -143,7 +204,7 @@ export default function AdminUmkm() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <Typography variant="h3">Kelola UMKM</Typography>
-          <Muted className="mt-1">Kelola data UMKM di Kelurahan Kuanyar</Muted>
+          <Muted className="mt-1">Potensi Desa › UMKM — kelola data usaha masyarakat Desa Kuanyar</Muted>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="w-4 h-4 mr-2" /> Tambah UMKM
@@ -155,23 +216,24 @@ export default function AdminUmkm() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant" />
             <Input
-              placeholder="Cari nama atau alamat..."
+              placeholder="Cari nama atau deskripsi..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-on-surface-variant" />
             <Select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
               className="w-[180px]"
             >
-              <option value="all">Semua Status</option>
-              <option value="pending">Menunggu</option>
-              <option value="approved">Disetujui</option>
-              <option value="rejected">Ditolak</option>
+              <option value="all">Semua Kategori</option>
+              {categories
+                .filter((c) => c.slug === 'konveksi' || c.slug === 'umkm-makanan')
+                .map((c) => (
+                  <option key={c.id} value={c.slug}>{c.title}</option>
+                ))}
             </Select>
           </div>
         </div>
@@ -181,7 +243,6 @@ export default function AdminUmkm() {
         {!list.isLoading && filteredData.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-on-surface-variant mb-4">Belum ada UMKM</p>
-            <p className="text-on-surface-variant mb-4">Tambahkan UMKM pertama untuk memulai</p>
             <Button onClick={openCreateDialog}>
               <Plus className="w-4 h-4 mr-2" /> Tambah UMKM
             </Button>
@@ -194,8 +255,9 @@ export default function AdminUmkm() {
             error={list.isError ? 'Gagal memuat data UMKM' : null}
             onRetry={() => list.refetch()}
             actions={[
+              { icon: Eye, onClick: (row: PotensiItem) => navigate(`/admin/potensi/umkm/${row.id}`), label: 'Detail' },
               { icon: Edit, onClick: openEditDialog, label: 'Edit' },
-              { icon: Trash2, onClick: openDeleteDialog, label: 'Hapus' },
+              { icon: Trash2, onClick: (row: PotensiItem) => setDeleteTarget(row), label: 'Hapus' },
             ]}
           />
         )}
@@ -206,29 +268,23 @@ export default function AdminUmkm() {
         onClose={closeDialog}
         title={editing ? 'Edit UMKM' : 'Tambah UMKM'}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="label">Pemilik ID *</label>
-              <Input
-                type="number"
-                value={formData.ownerId}
-                onChange={(e) => setFormData({ ...formData, ownerId: parseInt(e.target.value) || 0 })}
-                required
-              />
-            </div>
-            <div>
-              <label className="label">Status</label>
-              <Select
-                value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as typeof formData.status })}
-              >
-                <option value="pending">Menunggu</option>
-                <option value="approved">Disetujui</option>
-                <option value="rejected">Ditolak</option>
-              </Select>
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+          <div>
+            <label className="label">Kategori *</label>
+            <Select
+              value={formData.categoryId}
+              onChange={(e) => setFormData({ ...formData, categoryId: parseInt(e.target.value) })}
+              required
+            >
+              <option value="">Pilih kategori</option>
+              {categories
+                .filter((c) => c.slug === 'konveksi' || c.slug === 'umkm-makanan')
+                .map((c) => (
+                  <option key={c.id} value={c.id}>{c.title}</option>
+                ))}
+            </Select>
           </div>
+
           <div>
             <label className="label">Nama UMKM *</label>
             <Input
@@ -237,6 +293,7 @@ export default function AdminUmkm() {
               required
             />
           </div>
+
           <div>
             <label className="label">Deskripsi</label>
             <Textarea
@@ -245,32 +302,92 @@ export default function AdminUmkm() {
               rows={3}
             />
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="label">Alamat</label>
+              <label className="label">Pemilik / Pengelola</label>
               <Input
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                value={formData.owner}
+                onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
               />
             </div>
             <div>
-              <label className="label">WhatsApp</label>
+              <label className="label">RT/RW</label>
               <Input
-                value={formData.whatsapp}
-                onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                placeholder="628xxxxxxxxxx"
+                value={formData.rtRw}
+                onChange={(e) => setFormData({ ...formData, rtRw: e.target.value })}
+                placeholder="RT 01/RW 01"
               />
             </div>
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="label">Dusun</label>
+              <Input
+                value={formData.dusun}
+                onChange={(e) => setFormData({ ...formData, dusun: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="label">Tahun Berdiri</label>
+              <Input
+                type="number"
+                value={formData.yearFounded ?? ''}
+                onChange={(e) =>
+                  setFormData({ ...formData, yearFounded: e.target.value ? parseInt(e.target.value) : null })
+                }
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="label">Logo URL</label>
+            <label className="label">Kapasitas Produksi</label>
             <Input
-              value={formData.logo}
-              onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-              placeholder="https://..."
+              value={formData.capacity}
+              onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+              placeholder="cth: 1000 pcs/bulan"
             />
           </div>
-          <div className="flex gap-2 justify-end">
+
+          <div className="border-t border-outline-variant pt-4">
+            <Typography variant="h6" className="mb-3">Kontak (opsional)</Typography>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="label">WhatsApp</label>
+                <Input
+                  value={formData.contactWhatsapp}
+                  onChange={(e) => setFormData({ ...formData, contactWhatsapp: e.target.value })}
+                  placeholder="628xxxxxxxxxx"
+                />
+              </div>
+              <div>
+                <label className="label">Instagram</label>
+                <Input
+                  value={formData.contactInstagram}
+                  onChange={(e) => setFormData({ ...formData, contactInstagram: e.target.value })}
+                  placeholder="username"
+                />
+              </div>
+              <div>
+                <label className="label">TikTok</label>
+                <Input
+                  value={formData.contactTiktok}
+                  onChange={(e) => setFormData({ ...formData, contactTiktok: e.target.value })}
+                  placeholder="username"
+                />
+              </div>
+              <div>
+                <label className="label">Marketplace</label>
+                <Input
+                  value={formData.contactMarketplace}
+                  onChange={(e) => setFormData({ ...formData, contactMarketplace: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-2 justify-end pt-2">
             <Button type="button" variant="outline" onClick={closeDialog} disabled={isSubmitting}>
               Batal
             </Button>
@@ -286,7 +403,7 @@ export default function AdminUmkm() {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         title="Hapus UMKM"
-        description={`Apakah Anda yakin ingin menghapus "${deleteTarget?.name}"? Tindakan ini tidak dapat dibatalkan.`}
+        description={`Apakah Anda yakin ingin menghapus "${deleteTarget?.name}"? Semua gambar dan fitur terkait juga akan dihapus.`}
         confirmLabel="Hapus"
         cancelLabel="Batal"
         loading={isDeleting}
