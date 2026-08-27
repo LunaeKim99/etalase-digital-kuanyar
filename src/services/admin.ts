@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Post, PostImage, VillageProfile, PotensiCategory, PotensiItem } from '@/types/catalog'
+import { normalizePotensiItems } from '@/lib/potensi-normalize'
 
 const TOKEN_KEY = 'auth_token'
 
@@ -89,6 +90,14 @@ function useAdminList<T>(key: string, endpoint: string) {
     queryKey: [key],
     queryFn: () => apiReq<{ data: T[] }>(endpoint, 'GET'),
     select: (r) => r.data,
+  })
+}
+
+function useAdminPotensiItemList(key: string, endpoint: string) {
+  return useQuery({
+    queryKey: [key],
+    queryFn: () => apiReq<{ data: unknown[] }>(endpoint, 'GET'),
+    select: (r) => normalizePotensiItems(r.data),
   })
 }
 
@@ -207,7 +216,7 @@ export function useAdminPotensiCategories() {
 export function useAdminPotensiItems() {
   const qc = useQueryClient()
   return {
-    list: useAdminList<PotensiItem>('admin_potensi_items', '/api/admin/potensi/items'),
+    list: useAdminPotensiItemList('admin_potensi_items', '/api/admin/potensi/items'),
     create: useMutation({
       mutationFn: (data: Partial<PotensiItem>) => apiReq<{ data: PotensiItem }>('/api/admin/potensi/items', 'POST', data),
       onSuccess: () => {
@@ -288,7 +297,7 @@ export function useAdminUmkmItems() {
   )
 
   return {
-    list: useAdminList<PotensiItem>(
+    list: useAdminPotensiItemList(
       'admin_umkm_items',
       '/api/admin/potensi/items',
     ),
@@ -333,7 +342,7 @@ export function useAdminPertanianItems() {
   )
 
   return {
-    list: useAdminList<PotensiItem>(
+    list: useAdminPotensiItemList(
       'admin_pertanian_items',
       '/api/admin/potensi/items?category=pertanian',
     ),
