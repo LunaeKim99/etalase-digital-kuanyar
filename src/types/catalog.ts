@@ -5,28 +5,6 @@ export interface User {
   role: 'admin'
 }
 
-export interface Umkm {
-  id: number
-  ownerId: number
-  name: string
-  description: string
-  address: string
-  whatsapp: string
-  logo: string
-  status: 'pending' | 'approved' | 'rejected'
-}
-
-export interface Product {
-  id: number
-  umkmId: number
-  name: string
-  description: string
-  price: number
-  image: string
-  stock: number
-  status: 'active' | 'draft' | 'inactive'
-}
-
 export interface Post {
   id: number
   title: string
@@ -72,11 +50,6 @@ export interface PostImage {
 export interface PostWithImages extends Post {
   images: PostImage[]
   authorName: string
-}
-
-export interface UmkmWithProducts extends Umkm {
-  products: Product[]
-  ownerName: string
 }
 
 // Potensi Desa types

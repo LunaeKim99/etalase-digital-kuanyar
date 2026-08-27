@@ -13,7 +13,6 @@ const BeritaGaleri = lazy(() => import('@/pages/BeritaGaleri'))
 const BeritaGaleriDetail = lazy(() => import('@/pages/BeritaGaleriDetail'))
 const Potensi = lazy(() => import('@/pages/Potensi'))
 const PotensiDetail = lazy(() => import('@/pages/PotensiDetail'))
-const ProductDetail = lazy(() => import('@/pages/ProductDetail'))
 const Kontak = lazy(() => import('@/pages/Kontak'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
@@ -60,7 +59,6 @@ export const router = createBrowserRouter([
           { path: 'berita-galeri/:slug', element: <LazyWrapper><BeritaGaleriDetail /></LazyWrapper> },
           { path: 'potensi', element: <LazyWrapper><Potensi /></LazyWrapper> },
           { path: 'potensi/:id', element: <LazyWrapper><PotensiDetail /></LazyWrapper> },
-          { path: 'produk/:id', element: <LazyWrapper><ProductDetail /></LazyWrapper> },
           { path: 'kontak', element: <LazyWrapper><Kontak /></LazyWrapper> },
           { path: '*', element: <LazyWrapper><NotFound /></LazyWrapper> },
         ],
@@ -90,7 +88,6 @@ export const router = createBrowserRouter([
 
           // Legacy redirect (route lama Etalase UMKM)
           { path: 'umkm', element: <Navigate to="/admin/potensi/umkm" replace /> },
-          { path: 'produk', element: <Navigate to="/admin/potensi/umkm" replace /> },
 
           { path: 'berita-galeri', element: <LazyWrapper><AdminBeritaGaleri /></LazyWrapper> },
           { path: 'profil', element: <LazyWrapper><AdminProfil /></LazyWrapper> },
