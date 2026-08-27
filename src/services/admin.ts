@@ -138,6 +138,11 @@ export function useAdminPostImages() {
       mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/images/${id}`, 'DELETE'),
       onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_posts'] }),
     }),
+    reorder: useMutation({
+      mutationFn: (orderedIds: number[]) =>
+        apiReq<{ data: unknown }>('/api/admin/posts/images/reorder', 'PUT', { orderedIds }),
+      onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_posts'] }),
+    }),
   }
 }
 
@@ -228,9 +233,15 @@ export function useAdminPotensiItems() {
   }
 }
 
-export function useAdminPotensiImages() {
+export function useAdminPotensiImages(itemId: number) {
   const qc = useQueryClient()
   return {
+    rows: useQuery({
+      queryKey: ['admin_potensi_image_rows', itemId],
+      queryFn: () => apiReq<{ data: { id: number; imageUrl: string; sortOrder: number }[] }>(`/api/admin/potensi/items/${itemId}/images`, 'GET'),
+      select: (r) => r.data,
+      enabled: !!itemId && !Number.isNaN(itemId),
+    }),
     add: useMutation({
       mutationFn: (data: { itemId: number; imageUrl: string; sortOrder?: number }) =>
         apiReq<{ data: unknown }>(`/api/admin/potensi/items/${data.itemId}/images`, 'POST', data),
@@ -238,6 +249,11 @@ export function useAdminPotensiImages() {
     }),
     del: useMutation({
       mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/images/${id}`, 'DELETE'),
+      onSuccess: () => invalidatePotensiQueries(qc),
+    }),
+    reorder: useMutation({
+      mutationFn: ({ itemId: id, orderedIds }: { itemId: number; orderedIds: number[] }) =>
+        apiReq<{ data: unknown }>(`/api/admin/potensi/items/${id}/images/reorder`, 'PUT', { orderedIds }),
       onSuccess: () => invalidatePotensiQueries(qc),
     }),
   }
