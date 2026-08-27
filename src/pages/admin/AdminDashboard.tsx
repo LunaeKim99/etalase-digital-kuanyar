@@ -36,8 +36,8 @@ export default function AdminDashboard() {
   const posts = postQuery.data ?? []
 
   const summaryMetrics = useMemo(() => [
-    { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/umkm', color: 'primary' },
-    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/produk', color: 'secondary' },
+    { label: 'Total UMKM', value: umkms.length, icon: Store, href: '/admin/potensi/umkm', color: 'primary' },
+    { label: 'Total Produk', value: products.length, icon: Package, href: '/admin/potensi/umkm', color: 'secondary' },
     { label: 'Total Berita', value: posts.length, icon: FileText, href: '/admin/berita-galeri', color: 'tertiary' },
     { label: 'Total Kategori', value: catQuery.data?.length ?? 0, icon: Image, href: '/admin/berita-galeri', color: 'neutral' },
   ], [umkms.length, products.length, posts.length, catQuery.data?.length])
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
         bgColor: 'warning',
         badgeVariant: 'warning',
         icon: AlertCircle,
-        href: '/admin/umkm',
+        href: '/admin/potensi/umkm',
         description: 'UMKM yang belum memiliki produk',
       })
     }
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
         bgColor: 'error',
         badgeVariant: 'error',
         icon: AlertCircle,
-        href: '/admin/produk',
+        href: '/admin/potensi/umkm',
         description: 'Produk yang belum memiliki gambar',
       })
     }
@@ -102,8 +102,8 @@ export default function AdminDashboard() {
   }, [umkms, products, posts])
 
   const quickActions = [
-    { label: 'Tambah UMKM', href: '/admin/umkm', icon: Plus, description: 'Daftarkan UMKM baru' },
-    { label: 'Tambah Produk', href: '/admin/produk', icon: Plus, description: 'Tambah produk ke UMKM' },
+    { label: 'Kelola Potensi Desa', href: '/admin/potensi', icon: Plus, description: 'UMKM dan pertanian desa' },
+    { label: 'Tambah UMKM', href: '/admin/potensi/umkm', icon: Store, description: 'Daftarkan UMKM baru' },
     { label: 'Tulis Berita', href: '/admin/berita-galeri', icon: FileText, description: 'Buat artikel berita baru' },
     { label: 'Upload Galeri', href: '/admin/berita-galeri', icon: Image, description: 'Kelola galeri foto desa' },
   ]
