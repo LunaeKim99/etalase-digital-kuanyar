@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useAdminPertanianItems } from '@/services/admin'
+import { useAdminPertanianItems, useAdminPotensiImages } from '@/services/admin'
+import { deleteOrphanMedia } from '@/services/media'
+import { MultiImageUploader } from '@/components/admin/MultiImageUploader'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
@@ -22,6 +24,7 @@ export default function AdminPertanianDetail() {
   const itemId = Number(useParams().itemId)
   const navigate = useNavigate()
   const { list, update, del } = useAdminPertanianItems()
+  const imagesApi = useAdminPotensiImages(itemId)
   const { toasts, addToast, removeToast } = useToast()
 
   const [editOpen, setEditOpen] = useState(false)
@@ -31,6 +34,52 @@ export default function AdminPertanianDetail() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const item = useMemo(() => list.data?.find((i) => i.id === itemId), [list.data, itemId])
+  const imageRows = useMemo(() => imagesApi.rows.data ?? [], [imagesApi.rows.data])
+  const imageUrls = useMemo(
+    () => (imageRows.length > 0 ? imageRows.map((r) => r.imageUrl) : item?.images ?? []),
+    [imageRows, item],
+  )
+
+  const handleImagesChange = async (nextUrls: string[]) => {
+    const added = nextUrls.filter((url) => !imageUrls.includes(url))
+    const removedIds = imageUrls
+      .filter((url) => !nextUrls.includes(url))
+      .map((url) => imageRows.find((r) => r.imageUrl === url)?.id)
+      .filter((id): id is number => typeof id === 'number')
+
+    for (const url of added) {
+      try {
+        await imagesApi.add.mutateAsync({
+          itemId,
+          imageUrl: url,
+          sortOrder: nextUrls.indexOf(url),
+        })
+      } catch {
+        void deleteOrphanMedia(url)
+        addToast('error', 'Gagal menyimpan salah satu gambar. File upload dihapus.')
+      }
+    }
+    for (const id of removedIds) {
+      try {
+        await imagesApi.del.mutateAsync(id)
+        addToast('success', 'Gambar dihapus')
+      } catch {
+        addToast('error', 'Gagal menghapus gambar')
+      }
+    }
+  }
+
+  const handleImagesReorder = async (nextUrls: string[]) => {
+    const orderedIds = nextUrls
+      .map((url) => imageRows.find((r) => r.imageUrl === url)?.id)
+      .filter((id): id is number => typeof id === 'number')
+    if (orderedIds.length !== nextUrls.length) return
+    try {
+      await imagesApi.reorder.mutateAsync({ itemId, orderedIds })
+    } catch {
+      addToast('error', 'Gagal mengubah urutan gambar')
+    }
+  }
 
   const openEdit = () => {
     if (!item) return
@@ -188,6 +237,20 @@ export default function AdminPertanianDetail() {
             <div className="h-4 bg-surface-container-highest rounded w-1/2" />
           </div>
         )}
+      </Card>
+
+      <Card variant="outlined" className="p-6">
+        <Typography variant="h5" className="mb-4">Foto</Typography>
+        <MultiImageUploader
+          label="Foto Potensi Pertanian"
+          context="potensi"
+          value={imageUrls}
+          max={20}
+          disabled={!item}
+          onChange={(next) => void handleImagesChange(next)}
+          onReorder={(next) => void handleImagesReorder(next)}
+          itemAlt={(_, i) => `Foto ${i + 1} ${item?.name ?? 'pertanian'}`}
+        />
       </Card>
 
       {sector && (
