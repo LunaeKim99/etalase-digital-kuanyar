@@ -41,7 +41,7 @@ import {
   addPotensiFeature,
   deletePotensiFeature,
 } from '../services/catalog.js'
-import { authMiddleware, requireRole, requireAnyRole } from '../middleware/auth.js'
+import { authMiddleware, requireRole } from '../middleware/auth.js'
 import { categorySchema, umkmSchema, productSchema, postSchema, postImageSchema, villageProfileSchema } from '../validation/schemas.js'
 
 const app = new Hono<{ Variables: ContextVariables }>()
@@ -118,20 +118,6 @@ app.get('/products/:id', (c) => safeJson(c, async () => {
   const data = await getProduct(id)
   if (!data) return c.json({ error: 'Not found' }, 404)
   return data
-}))
-
-// Protected owner routes (both admin and umkm_owner can manage their UMKM data)
-const owner = new Hono<{ Variables: ContextVariables }>()
-owner.use('*', authMiddleware)
-owner.use('*', requireAnyRole('admin', 'umkm_owner'))
-
-// Current user's UMKM management
-owner.get('/me/umkm', (c) => safeJson(c, async () => {
-  const user = c.get('user')
-  if (!user) return c.json({ error: 'Unauthorized' }, 401)
-  const umkms = await listUmkms()
-  const myUmkms = umkms.data.filter((u) => u.ownerId === user.id)
-  return { data: myUmkms }
 }))
 
 // Protected admin routes
@@ -335,7 +321,6 @@ admin.delete('/potensi/features/:id', (c) => safeJson(c, async () => {
 }))
 
 // Mount protected routers
-app.route('/owner', owner)
 app.route('/admin', admin)
 
 export default app
