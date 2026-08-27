@@ -18,10 +18,10 @@ function getBucket(key: string): Bucket {
   return bucket
 }
 
-export function checkRateLimit(key: string): { allowed: boolean; retryAfterSec: number } {
+export function checkRateLimit(key: string, maxAttempts: number = MAX_ATTEMPTS): { allowed: boolean; retryAfterSec: number } {
   const bucket = getBucket(key)
   bucket.count++
-  if (bucket.count > MAX_ATTEMPTS) {
+  if (bucket.count > maxAttempts) {
     const retryAfter = Math.ceil((bucket.resetAt - Date.now()) / 1000)
     return { allowed: false, retryAfterSec: Math.max(retryAfter, 1) }
   }

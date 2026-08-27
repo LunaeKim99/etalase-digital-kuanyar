@@ -12,7 +12,9 @@ import { Badge } from '@/components/ui/badge'
 import { Typography, Muted } from '@/components/ui/typography'
 import { ToastContainer } from '@/components/ui/toast'
 import { useToast } from '@/hooks/use-toast'
-import { ArrowLeft, Edit, Trash2, Plus, ExternalLink, Image as ImageIcon, Tag } from 'lucide-react'
+import { deleteOrphanMedia } from '@/services/media'
+import { MultiImageUploader } from '@/components/admin/MultiImageUploader'
+import { ArrowLeft, Edit, Trash2, Plus, ExternalLink, Tag } from 'lucide-react'
 
 interface UmkmFormData {
   categoryId: number
@@ -49,7 +51,7 @@ export default function AdminUmkmDetail() {
   const navigate = useNavigate()
   const { list, update, del, umkmCategoryIds } = useAdminUmkmItems()
   const { list: catList } = useAdminPotensiCategories()
-  const imagesApi = useAdminPotensiImages()
+  const imagesApi = useAdminPotensiImages(umkmId)
   const featuresApi = useAdminPotensiFeatures()
   const { toasts, addToast, removeToast } = useToast()
 
@@ -58,9 +60,7 @@ export default function AdminUmkmDetail() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [newImageUrl, setNewImageUrl] = useState('')
   const [newFeature, setNewFeature] = useState('')
-
   const categories = useMemo(() => catList.data ?? [], [catList.data])
   const item = useMemo(
     () => list.data?.find((i) => i.id === umkmId && umkmCategoryIds.includes(i.categoryId)),
@@ -132,14 +132,50 @@ export default function AdminUmkmDetail() {
     }
   }
 
-  const handleAddImage = async () => {
-    if (!newImageUrl.trim()) return
+  const imageRows = useMemo(() => imagesApi.rows.data ?? [], [imagesApi.rows.data])
+  const imageUrls = useMemo(
+    () => (imageRows.length > 0 ? imageRows.map((r) => r.imageUrl) : item?.images ?? []),
+    [imageRows, item],
+  )
+
+  const handleImagesChange = async (nextUrls: string[]) => {
+    const added = nextUrls.filter((url) => !imageUrls.includes(url))
+    const removedIds = imageUrls
+      .filter((url) => !nextUrls.includes(url))
+      .map((url) => imageRows.find((r) => r.imageUrl === url)?.id)
+      .filter((id): id is number => typeof id === 'number')
+
+    for (const url of added) {
+      try {
+        await imagesApi.add.mutateAsync({
+          itemId: umkmId,
+          imageUrl: url,
+          sortOrder: nextUrls.indexOf(url),
+        })
+      } catch {
+        void deleteOrphanMedia(url)
+        addToast('error', 'Gagal menyimpan salah satu gambar. File upload dihapus.')
+      }
+    }
+    for (const id of removedIds) {
+      try {
+        await imagesApi.del.mutateAsync(id)
+        addToast('success', 'Gambar dihapus')
+      } catch {
+        addToast('error', 'Gagal menghapus gambar')
+      }
+    }
+  }
+
+  const handleImagesReorder = async (nextUrls: string[]) => {
+    const orderedIds = nextUrls
+      .map((url) => imageRows.find((r) => r.imageUrl === url)?.id)
+      .filter((id): id is number => typeof id === 'number')
+    if (orderedIds.length !== nextUrls.length) return
     try {
-      await imagesApi.add.mutateAsync({ itemId: umkmId, imageUrl: newImageUrl.trim() })
-      addToast('success', 'Gambar ditambahkan')
-      setNewImageUrl('')
+      await imagesApi.reorder.mutateAsync({ itemId: umkmId, orderedIds })
     } catch {
-      addToast('error', 'Gagal menambahkan gambar')
+      addToast('error', 'Gagal mengubah urutan gambar')
     }
   }
 
@@ -289,29 +325,18 @@ export default function AdminUmkmDetail() {
       <Card variant="outlined" className="p-6">
         <div className="flex items-center justify-between mb-4">
           <Typography variant="h5">Foto</Typography>
-          <Badge variant="secondary" size="sm">{item?.images?.length ?? 0}</Badge>
+          <Badge variant="secondary" size="sm">{imageUrls.length}</Badge>
         </div>
-        {item && item.images.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {item.images.map((src, idx) => (
-              <div key={idx} className="aspect-square rounded-lg border border-outline-variant overflow-hidden bg-surface-container-lowest">
-                <img src={src} alt="" className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <Muted>Belum ada foto</Muted>
-        )}
-        <div className="flex gap-2 mt-4">
-          <Input
-            placeholder="URL gambar baru..."
-            value={newImageUrl}
-            onChange={(e) => setNewImageUrl(e.target.value)}
-          />
-          <Button onClick={handleAddImage} disabled={!newImageUrl.trim()}>
-            <ImageIcon className="w-4 h-4" />
-          </Button>
-        </div>
+        <MultiImageUploader
+          label="Foto UMKM"
+          context="umkm"
+          value={imageUrls}
+          max={20}
+          disabled={!item}
+          onChange={(next) => void handleImagesChange(next)}
+          onReorder={(next) => void handleImagesReorder(next)}
+          itemAlt={(_, i) => `Foto ${i + 1} ${item?.name ?? 'UMKM'}`}
+        />
       </Card>
 
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} title="Edit UMKM">

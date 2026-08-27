@@ -46,6 +46,13 @@ export const villageProfileSchema = z.object({
   lng: z.number().min(-180).max(180).optional().nullable(),
 })
 
+export const reorderImagesSchema = z.object({
+  orderedIds: z
+    .array(z.number().int().positive('ID gambar harus angka positif'))
+    .min(1, 'Daftar urutan tidak boleh kosong')
+    .max(200),
+})
+
 export type LoginInput = z.infer<typeof loginSchema>
 export type RegisterInput = z.infer<typeof registerSchema>
 export type CategoryInput = z.infer<typeof categorySchema>

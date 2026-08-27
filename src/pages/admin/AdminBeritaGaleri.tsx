@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Tabs } from '@/components/ui/tabs'
 import { Dialog } from '@/components/ui/dialog'
@@ -15,7 +15,10 @@ import { ToastContainer } from '@/components/ui/toast'
 import { useToast } from '@/hooks/use-toast'
 import { useAdminPosts } from '@/services/admin'
 import { apiReq } from '@/services/admin'
-import { FileText, Image, Plus, Edit, Trash2, Upload } from 'lucide-react'
+import { deleteOrphanMedia } from '@/services/media'
+import { ImageUploader } from '@/components/admin/ImageUploader'
+import { MultiImageUploader } from '@/components/admin/MultiImageUploader'
+import { ArrowDown, ArrowUp, FileText, Image, Plus, Edit, Trash2, Upload } from 'lucide-react'
 import type { Post, PostImage } from '@/types/catalog'
 
 function useAdminPostImagesList() {
@@ -38,13 +41,18 @@ function useAdminPostImagesMutations() {
       mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/images/${id}`, 'DELETE'),
       onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_post_images'] }),
     }),
+    reorder: useMutation({
+      mutationFn: (orderedIds: number[]) =>
+        apiReq<{ data: unknown }>('/api/admin/posts/images/reorder', 'PUT', { orderedIds }),
+      onSuccess: () => qc.invalidateQueries({ queryKey: ['admin_post_images'] }),
+    }),
   }
 }
 
 export default function AdminBeritaGaleri() {
   const { list: postsList, create: createPost, update: updatePost, del: deletePost } = useAdminPosts()
   const { data: imagesList } = useAdminPostImagesList()
-  const { add: addImage, del: deleteImage } = useAdminPostImagesMutations()
+  const { add: addImage, del: deleteImage, reorder: reorderImages } = useAdminPostImagesMutations()
   const { toasts, addToast, removeToast } = useToast()
 
   // Berita state
@@ -58,16 +66,16 @@ export default function AdminBeritaGaleri() {
     coverImage: '',
     publishedAt: '',
   })
+  const originalCoverRef = useRef('')
+  const isSavingRef = useRef(false)
 
   // Galeri state
   const [galeriDialogOpen, setGaleriDialogOpen] = useState(false)
-  const [editingImage, setEditingImage] = useState<PostImage | null>(null)
   const [galeriFormData, setGaleriFormData] = useState({
     postId: '',
-    imageUrl: '',
     caption: '',
-    sortOrder: 0,
   })
+  const [isAddingImages, setIsAddingImages] = useState(false)
 
   // Delete confirmations
   const [deletePostId, setDeletePostId] = useState<number | null>(null)
@@ -75,6 +83,7 @@ export default function AdminBeritaGaleri() {
 
   const handleBeritaSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    isSavingRef.current = true
     try {
       if (editingPost) {
         await updatePost.mutateAsync({ id: editingPost.id, data: beritaFormData })
@@ -83,8 +92,10 @@ export default function AdminBeritaGaleri() {
         await createPost.mutateAsync(beritaFormData)
         addToast('success', 'Berita berhasil ditambahkan')
       }
+      isSavingRef.current = false
       closeBeritaDialog()
     } catch (err) {
+      isSavingRef.current = false
       console.error(err)
       addToast('error', 'Gagal menyimpan berita')
     }
@@ -92,6 +103,7 @@ export default function AdminBeritaGaleri() {
 
   const handleBeritaEdit = (post: Post) => {
     setEditingPost(post)
+    originalCoverRef.current = post.coverImage || ''
     setBeritaFormData({
       title: post.title,
       slug: post.slug,
@@ -116,43 +128,52 @@ export default function AdminBeritaGaleri() {
   }
 
   const closeBeritaDialog = () => {
+    // Cancel setelah upload baru tapi sebelum disimpan → hapus file orphan.
+    if (!isSavingRef.current && beritaFormData.coverImage && beritaFormData.coverImage !== originalCoverRef.current) {
+      void deleteOrphanMedia(beritaFormData.coverImage)
+    }
+    originalCoverRef.current = ''
     setBeritaDialogOpen(false)
     setEditingPost(null)
     setBeritaFormData({ title: '', slug: '', content: '', category: '', coverImage: '', publishedAt: '' })
   }
 
-  const handleGaleriSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      if (editingImage) {
-        // Note: API only supports add/delete, not update for images
-        // For simplicity, we'll delete and re-add (or just show toast)
-        addToast('warning', 'Edit gambar belum didukung, hapus dan upload ulang')
-      } else {
+  const handleGaleriUpload = async (nextUrls: string[]) => {
+    // Uploader selalu mulai kosong, jadi setiap URL adalah gambar baru.
+    const postId = Number(galeriFormData.postId)
+    if (!postId) return
+    const existingForPost = (imagesList ?? []).filter((img) => img.postId === postId).length
+    setIsAddingImages(true)
+    let saved = 0
+    for (let i = 0; i < nextUrls.length; i++) {
+      try {
         await addImage.mutateAsync({
-          postId: Number(galeriFormData.postId),
-          imageUrl: galeriFormData.imageUrl,
-          caption: galeriFormData.caption,
-          sortOrder: galeriFormData.sortOrder,
+          postId,
+          imageUrl: nextUrls[i],
+          caption: galeriFormData.caption || undefined,
+          sortOrder: existingForPost + i,
         })
-        addToast('success', 'Gambar berhasil diupload')
+        saved++
+      } catch {
+        void deleteOrphanMedia(nextUrls[i])
+        addToast('error', `Gagal menyimpan gambar ${i + 1}. File dihapus, silakan coba lagi.`)
       }
-      closeGaleriDialog()
-    } catch (err) {
-      console.error(err)
-      addToast('error', 'Gagal menyimpan gambar')
     }
+    setIsAddingImages(false)
+    if (saved > 0) addToast('success', `${saved} gambar berhasil ditambahkan`)
   }
 
-  const handleGaleriEdit = (image: PostImage) => {
-    setEditingImage(image)
-    setGaleriFormData({
-      postId: String(image.postId),
-      imageUrl: image.imageUrl,
-      caption: image.caption || '',
-      sortOrder: image.sortOrder,
-    })
-    setGaleriDialogOpen(true)
+  const moveGaleriImage = (image: PostImage, direction: -1 | 1) => {
+    const siblings = (imagesList ?? [])
+      .filter((img) => img.postId === image.postId)
+      .sort((a, b) => a.sortOrder - b.sortOrder)
+    const index = siblings.findIndex((img) => img.id === image.id)
+    const target = index + direction
+    if (index < 0 || target < 0 || target >= siblings.length) return
+    const next = [...siblings]
+    const [moved] = next.splice(index, 1)
+    next.splice(target, 0, moved)
+    void reorderImages.mutateAsync(next.map((img) => img.id))
   }
 
   const handleGaleriDeleteConfirm = async () => {
@@ -169,8 +190,7 @@ export default function AdminBeritaGaleri() {
 
   const closeGaleriDialog = () => {
     setGaleriDialogOpen(false)
-    setEditingImage(null)
-    setGaleriFormData({ postId: '', imageUrl: '', caption: '', sortOrder: 0 })
+    setGaleriFormData({ postId: '', caption: '' })
   }
 
   // Berita columns
@@ -280,23 +300,24 @@ export default function AdminBeritaGaleri() {
                         rows={6}
                       />
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="label">Sampul URL</label>
-                        <Input
-                          value={beritaFormData.coverImage}
-                          onChange={(e) => setBeritaFormData({ ...beritaFormData, coverImage: e.target.value })}
-                          placeholder="https://..."
-                        />
-                      </div>
-                      <div>
-                        <label className="label">Tanggal Terbit</label>
-                        <Input
-                          type="datetime-local"
-                          value={beritaFormData.publishedAt}
-                          onChange={(e) => setBeritaFormData({ ...beritaFormData, publishedAt: e.target.value })}
-                        />
-                      </div>
+                    <div>
+                      <ImageUploader
+                        label="Gambar Sampul"
+                        context="berita"
+                        value={beritaFormData.coverImage}
+                        alt={beritaFormData.title || 'Sampul berita'}
+                        onChange={(url) => setBeritaFormData({ ...beritaFormData, coverImage: url })}
+                        onRemove={() => setBeritaFormData({ ...beritaFormData, coverImage: '' })}
+                        hint="Otomatis dikonversi ke WebP dan di-resize (maks lebar 1920px)."
+                      />
+                    </div>
+                    <div>
+                      <label className="label">Tanggal Terbit</label>
+                      <Input
+                        type="datetime-local"
+                        value={beritaFormData.publishedAt}
+                        onChange={(e) => setBeritaFormData({ ...beritaFormData, publishedAt: e.target.value })}
+                      />
                     </div>
                     <div className="flex gap-2 justify-end">
                       <Button type="button" variant="outline" onClick={closeBeritaDialog}>
@@ -359,21 +380,24 @@ export default function AdminBeritaGaleri() {
                   <Typography variant="h3">Kelola Galeri</Typography>
                   <Button
                     onClick={() => {
-                      setEditingImage(null)
-                      setGaleriFormData({ postId: '', imageUrl: '', caption: '', sortOrder: 0 })
+                      setGaleriFormData({ postId: '', caption: '' })
                       setGaleriDialogOpen(true)
                     }}
+                    disabled={!postsForSelect.length}
                   >
                     <Upload className="w-4 h-4 mr-2" /> Upload Gambar
                   </Button>
                 </div>
 
                 {/* Galeri Dialog */}
-                <Dialog open={galeriDialogOpen} onClose={closeGaleriDialog} title={editingImage ? 'Edit Gambar' : 'Upload Gambar'}>
-                  <form onSubmit={handleGaleriSubmit} className="space-y-4 max-w-2xl">
+                <Dialog open={galeriDialogOpen} onClose={closeGaleriDialog} title="Upload Gambar Galeri">
+                  <div className="space-y-4 max-w-2xl">
                     <div>
                       <label className="label">Post (Album) *</label>
-                      <Select value={galeriFormData.postId} onChange={(e) => setGaleriFormData({ ...galeriFormData, postId: e.target.value })}>
+                      <Select
+                        value={galeriFormData.postId}
+                        onChange={(e) => setGaleriFormData({ ...galeriFormData, postId: e.target.value })}
+                      >
                         <option value="">Pilih Post</option>
                         {postsForSelect.map((post) => (
                           <option key={post.id} value={String(post.id)}>
@@ -383,38 +407,33 @@ export default function AdminBeritaGaleri() {
                       </Select>
                     </div>
                     <div>
-                      <label className="label">URL Gambar *</label>
-                      <Input
-                        value={galeriFormData.imageUrl}
-                        onChange={(e) => setGaleriFormData({ ...galeriFormData, imageUrl: e.target.value })}
-                        placeholder="https://..."
-                        required
-                      />
-                    </div>
-                    <div>
                       <label className="label">Caption</label>
                       <Textarea
                         value={galeriFormData.caption}
                         onChange={(e) => setGaleriFormData({ ...galeriFormData, caption: e.target.value })}
                         rows={3}
+                        placeholder="Keterangan yang berlaku untuk gambar yang diupload"
                       />
                     </div>
-                    <div>
-                      <label className="label">Urutan</label>
-                      <Input
-                        type="number"
-                        value={galeriFormData.sortOrder}
-                        onChange={(e) => setGaleriFormData({ ...galeriFormData, sortOrder: Number(e.target.value) })}
-                        min={0}
+                    {galeriFormData.postId ? (
+                      <MultiImageUploader
+                        label="Gambar"
+                        context="galeri"
+                        value={[]}
+                        max={20}
+                        onChange={(next) => void handleGaleriUpload(next)}
+                        itemAlt={(_, i) => `Gambar galeri baru ${i + 1}`}
                       />
-                    </div>
+                    ) : (
+                      <Muted>Pilih post terlebih dahulu untuk mengupload gambar.</Muted>
+                    )}
+                    {isAddingImages && <Muted>Menyimpan gambar ke album...</Muted>}
                     <div className="flex gap-2 justify-end">
                       <Button type="button" variant="outline" onClick={closeGaleriDialog}>
-                        Batal
+                        Selesai
                       </Button>
-                      <Button type="submit">{editingImage ? 'Update' : 'Upload'}</Button>
                     </div>
-                  </form>
+                  </div>
                 </Dialog>
 
                 {/* Galeri Delete Confirm */}
@@ -453,10 +472,20 @@ export default function AdminBeritaGaleri() {
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  onClick={() => handleGaleriEdit(image)}
+                                  aria-label="Naikkan urutan gambar"
+                                  onClick={() => moveGaleriImage(image, -1)}
                                   className="text-primary"
                                 >
-                                  <Edit className="w-4 h-4" />
+                                  <ArrowUp className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  aria-label="Turunkan urutan gambar"
+                                  onClick={() => moveGaleriImage(image, 1)}
+                                  className="text-primary"
+                                >
+                                  <ArrowDown className="w-4 h-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
