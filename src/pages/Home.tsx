@@ -34,7 +34,7 @@ export default function Home() {
     return () => { cancelled = true }
   }, [])
 
-  const allPotensi = potensiItems?.filter((item) => !item.isSector) ?? []
+  const allPotensi = potensiItems ?? []
 
   const featuredPotensi = (() => {
     const byCategory = new Map<string, typeof allPotensi[0]>()
