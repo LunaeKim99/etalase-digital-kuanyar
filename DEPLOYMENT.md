@@ -7,6 +7,8 @@
 | `TURSO_DATABASE_URL` | YES | `libsql://<db>.turso.io` | Remote Turso libSQL URL. Not `file:` in prod. |
 | `TURSO_AUTH_TOKEN` | YES (if Turso) | `eyJ...` | Turso auth token. |
 | `JWT_SECRET` | YES | 64+ random base64 | Used for HS256 sign/verify. If unset, server generates random per cold start (sessions invalidate on restart). |
+| `MEDIA_STORAGE` | YES (prod) | `vercel-blob` | Must be `vercel-blob` on Vercel. `local` (dev default) fails: serverless filesystem is read-only. |
+| `BLOB_READ_WRITE_TOKEN` | YES (if `MEDIA_STORAGE=vercel-blob`) | `vercel_blob_rw_...` | Auto-injected when creating a Blob store via Project → Storage tab. |
 | `SITE_URL` | Optional | `https://etalase-digital-kuanyar.vercel.app` | For SEO/OG canonical. |
 | `PORT` | No | `4000` | Only for local `dev:server`; ignored by Vercel. |
 | `VITE_API_BASE_URL` | No | — | Frontend uses relative `/api/*` in prod. |
