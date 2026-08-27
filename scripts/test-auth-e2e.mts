@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:4000'
+const BASE = process.env.BASE ?? 'http://localhost:4000'
 
 async function req(path: string, opts: RequestInit = {}): Promise<{ status: number; body: any }> {
   const res = await fetch(`${BASE}${path}`, {
