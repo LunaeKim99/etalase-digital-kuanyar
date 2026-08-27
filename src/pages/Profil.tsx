@@ -74,7 +74,8 @@ export default function Profil() {
 
   const infoCards = [
     { icon: Users, label: 'Penduduk', value: `${demografiPenduduk.total.toLocaleString('id-ID')} jiwa`, desc: 'Per Desember 2025' },
-    { icon: Building2, label: 'Dusun', value: `${demographyStats.find((s) => s.label === 'Dusun')?.value ?? '5'} Dusun`, desc: 'Krajan, Kembang, Makam, Pandak, dll' },
+    { icon: Building2, label: 'RT', value: `${demographyStats.find((s) => s.label === 'RT')?.value ?? '16'} RT`, desc: 'Total Rukun Tetangga' },
+    { icon: Building2, label: 'RW', value: `${demographyStats.find((s) => s.label === 'RW')?.value ?? '3'} RW`, desc: 'Total Rukun Warga' },
     { icon: Calendar, label: 'Jam Kerja', value: 'Senin - Sabtu', desc: '08.00 - 16.00 WIB' },
     { icon: MapPin, label: 'Kecamatan', value: 'Mayong', desc: 'Kab. Jepara, Jawa Tengah' },
   ]
@@ -91,7 +92,7 @@ export default function Profil() {
       {/* 2. Stat Cards */}
       <Section className="py-16">
         <Container>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
             {infoCards.map((card, i) => (
               <Card key={i} variant="filled" className="p-6 text-center hover:shadow-lg transition-shadow">
                 <div className="w-14 h-14 rounded-2xl bg-primary-container flex items-center justify-center mx-auto mb-4">

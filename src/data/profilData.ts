@@ -34,7 +34,8 @@ export const demographyStats = [
   { value: '4.504', label: 'Total Jiwa' },
   { value: '2.294', label: 'Laki-laki' },
   { value: '2.210', label: 'Perempuan' },
-  { value: '5', label: 'Dusun' },
+  { value: '16', label: 'RT' },
+  { value: '3', label: 'RW' },
 ]
 
 export const demografiPenduduk = { total: 4504, laki: 2294, perempuan: 2210 }
