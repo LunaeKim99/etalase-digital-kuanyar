@@ -276,6 +276,51 @@ export function useAdminPotensiFeatures() {
   }
 }
 
+export function useAdminUmkmItems() {
+  const qc = useQueryClient()
+
+  function invalidate() {
+    qc.invalidateQueries({ queryKey: ['admin_umkm_items'] })
+    invalidatePotensiQueries(qc)
+  }
+
+  const categories = useAdminList<PotensiCategory>(
+    'admin_potensi_categories',
+    '/api/admin/potensi/categories',
+  )
+
+  return {
+    list: useAdminList<PotensiItem>(
+      'admin_umkm_items',
+      '/api/admin/potensi/items',
+    ),
+    umkmCategoryIds: categories.data
+      ?.filter((c) => c.slug === 'konveksi' || c.slug === 'umkm-makanan')
+      .map((c) => c.id) ?? [],
+    create: useMutation({
+      mutationFn: async (data: Partial<PotensiItem>) => {
+        const catId = categories.data?.find((c) => c.slug === 'konveksi')?.id
+        if (!catId) throw new ApiError('Kategori UMKM tidak ditemukan', 400)
+        return apiReq<{ data: PotensiItem }>('/api/admin/potensi/items', 'POST', {
+          ...data,
+          categoryId: catId,
+          isSector: false,
+        })
+      },
+      onSuccess: invalidate,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, data }: { id: number; data: Partial<PotensiItem> }) =>
+        apiReq<{ data: PotensiItem }>(`/api/admin/potensi/items/${id}`, 'PUT', data),
+      onSuccess: invalidate,
+    }),
+    del: useMutation({
+      mutationFn: (id: number) => apiReq<{ data: unknown }>(`/api/admin/potensi/items/${id}`, 'DELETE'),
+      onSuccess: invalidate,
+    }),
+  }
+}
+
 export function useAdminPertanianItems() {
   const qc = useQueryClient()
 

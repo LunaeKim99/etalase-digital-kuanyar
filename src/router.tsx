@@ -24,7 +24,6 @@ const AdminUnauthorized = lazy(() => import('@/pages/admin/AdminUnauthorized'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const AdminUmkm = lazy(() => import('@/pages/admin/AdminUmkm'))
 const AdminUmkmDetail = lazy(() => import('@/pages/admin/AdminUmkmDetail'))
-const AdminUmkmProduk = lazy(() => import('@/pages/admin/AdminUmkmProduk'))
 const AdminBeritaGaleri = lazy(() => import('@/pages/admin/AdminBeritaGaleri'))
 const AdminProfil = lazy(() => import('@/pages/admin/AdminProfil'))
 const AdminTampilan = lazy(() => import('@/pages/admin/AdminTampilan'))
@@ -92,7 +91,6 @@ export const router = createBrowserRouter([
           { path: 'potensi', element: <LazyWrapper><AdminPotensi /></LazyWrapper> },
           { path: 'potensi/umkm', element: <LazyWrapper><AdminUmkm /></LazyWrapper> },
           { path: 'potensi/umkm/:umkmId', element: <LazyWrapper><AdminUmkmDetail /></LazyWrapper> },
-          { path: 'potensi/umkm/:umkmId/produk', element: <LazyWrapper><AdminUmkmProduk /></LazyWrapper> },
           { path: 'potensi/pertanian', element: <LazyWrapper><AdminPertanian /></LazyWrapper> },
           { path: 'potensi/pertanian/:itemId', element: <LazyWrapper><AdminPertanianDetail /></LazyWrapper> },
 
