@@ -20,6 +20,9 @@ dist-ssr
 *.db
 *.db-journal
 
+# Local media uploads (dev storage adapter)
+uploads/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
